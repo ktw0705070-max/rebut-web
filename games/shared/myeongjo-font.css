@@ -1,0 +1,9 @@
+/* UI font trial: one self-hosted face, matching the existing Nanum Myeongjo artwork.
+   Keep sizes, line heights and weights in the original component styles. */
+@font-face {
+  font-family: "REBUT Myeongjo";
+  src: url("./assets/fonts/a03d520bccc43ae1.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}

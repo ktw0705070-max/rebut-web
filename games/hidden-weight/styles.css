@@ -22,7 +22,7 @@
   --popup-top: 103.5px;
   color: #1d1d1d;
   background: var(--screen-paper);
-  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  font-family: "REBUT Myeongjo", "AppleMyungjo", serif;
   font-synthesis: none;
 }
 
@@ -42,7 +42,7 @@ body {
 body,
 button {
   color: #111;
-  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  font-family: "REBUT Myeongjo", "AppleMyungjo", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;

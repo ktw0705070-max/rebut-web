@@ -41,7 +41,7 @@ body {
 body,
 button {
   color: var(--ink);
-  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  font-family: "REBUT Myeongjo", "AppleMyungjo", serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
