@@ -1,0 +1,21 @@
+/* The board, popup, type and hit targets retain their original design coordinates. */
+html.rebut-viewport-fit,
+.rebut-viewport-fit body {
+  background: var(--paper, var(--screen-paper, #fafaf8));
+}
+
+.rebut-viewport-fit :is(.game-stage, .stage, #app) {
+  overflow: visible;
+  /* Clip at the actual viewport edges, not at the narrower scaled artwork. */
+  clip-path: inset(0 calc(-1 * var(--rebut-inline-bleed, 0px)));
+}
+
+.rebut-viewport-fit :is(.dim-layer, .tutorial-dim, .screen-dimmer) {
+  left: calc(-1 * var(--rebut-inline-bleed, 0px));
+  right: calc(-1 * var(--rebut-inline-bleed, 0px));
+}
+
+/* The off-canvas menu must remain hidden while sliding closed. */
+.rebut-viewport-fit .game-menu-layer {
+  overflow: hidden;
+}

@@ -37,7 +37,7 @@
         }
         branch = parent;
       }
-      popup.querySelectorAll(".dim-layer, .screen-dimmer").forEach(el => {
+      popup.querySelectorAll(".dim-layer, .tutorial-dim, .screen-dimmer").forEach(el => {
         el.style.setProperty("background", "transparent", "important");
       });
       document.querySelectorAll("iframe").forEach(frame => {
