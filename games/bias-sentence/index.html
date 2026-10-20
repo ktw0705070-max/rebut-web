@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta name="description" content="REBUT 판단력 게임 편향 문장 판정 레벨 1 게임" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23fafaf8'/%3E%3Cpath d='M12 15h40v34H12z' fill='white' stroke='%23111' stroke-width='4'/%3E%3Cpath d='M12 26h40M12 37h40M25 15v34M39 15v34' stroke='%23111' stroke-width='2'/%3E%3Cpath d='M38 20c9 0 15 5 15 13S47 46 38 46 23 41 23 33s6-13 15-13Z' fill='none' stroke='%23f04444' stroke-width='4' transform='rotate(-8 38 33)'/%3E%3C/svg%3E"
+    />
+    <title>REBUT — 편향 문장 판정 1-1</title>
+    <link rel="preload" as="image" href="./assets/stamp-mark.png" />
+    <link rel="preload" as="image" href="./assets/stamp-mark-normal.png" />
+    <link rel="preload" as="image" href="./assets/tutorial-ipad.png" />
+    <link rel="preload" as="image" href="./assets/tutorial-pencil.png" />
+    <link rel="preload" as="image" href="./assets/tutorial-desktop.png" />
+    <link rel="preload" as="image" href="./assets/tutorial-desktop-cursor.svg" />
+    <link rel="preload" as="image" href="./assets/tutorial-desktop-check.png" />
+    <link rel="preload" as="image" href="./assets/desktop-game-frame.png" />
+    <link rel="preload" as="image" href="./assets/desktop-game-cursor.png" />
+    <link rel="stylesheet" href="./styles.css?v=20261005-6" />
+    <link rel="stylesheet" href="./game-menu.css?v=20261020-menu-layer" />
+    <script src="./game-menu.js?v=20261012-web-navigation" defer></script>
+  <link rel="stylesheet" href="../shared/step-transition.css?v=20261011-shared-step-2">
+  <script src="../shared/step-transition.js?v=20261011-shared-step"></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <main class="viewport" aria-label="REBUT 판단력 게임 편향 문장 판정 레벨 1">
+      <section id="game-stage" class="stage">
+        <button class="chrome-control game-menu menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+          <img src="./assets/game-menu.png" alt="" draggable="false" />
+        </button>
+
+        <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+          <div class="game-menu-shield" aria-hidden="true"></div>
+          <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+            <img class="game-menu-panel__background" src="./assets/menu-background.png" alt="" draggable="false" />
+            <header class="game-menu-header">
+              <h2 id="game-menu-title">게임 메뉴</h2>
+              <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기">
+                <img src="./assets/menu-close.png" alt="" draggable="false" />
+              </button>
+            </header>
+            <div class="game-menu-categories">
+              <section class="game-menu-category" data-menu-category="memory">
+                <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games">
+                  <span>기억력 게임</span>
+                  <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                  <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                </button>
+                <div class="game-menu-games" id="memory-games" aria-hidden="true"><div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../sequence-memory/index.html">순서 암기</a>
+                  <a class="game-menu-game" href="../missing-number/index.html">없는 숫자 찾기</a>
+                  <a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a>
+                </div></div>
+              </section>
+              <section class="game-menu-category" data-menu-category="judgment">
+                <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games">
+                  <span>판단력 게임</span>
+                  <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                  <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                </button>
+                <div class="game-menu-games" id="judgment-games" aria-hidden="true"><div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../hidden-weight/index.html">숨은 무게 찾기</a>
+                  <a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a>
+                  <button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>편향 문장 판정</button>
+                </div></div>
+              </section>
+              <section class="game-menu-category" data-menu-category="language">
+                <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games">
+                  <span>언어력 게임</span>
+                  <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                  <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                </button>
+                <div class="game-menu-games" id="language-games" aria-hidden="true"><div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../sentence-order/index.html">문장 인과 순서 배치</a>
+                  <a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a>
+                  <a class="game-menu-game" href="../word-block/index.html?v=20260927-menu-click-fix">단어 블록 맞추기</a>
+                </div></div>
+              </section>
+            </div>
+          </nav>
+        </aside>
+
+        <section id="game-screen" class="game-screen" aria-label="편향 문장 판정 게임">
+          <div class="game-logo" role="img" aria-label="REBUT">
+            <img src="../sequence-memory/assets/game-logo-r.png" data-logo-letter alt="" draggable="false" />
+            <img src="../sequence-memory/assets/game-logo-e.png" data-logo-letter alt="" draggable="false" />
+            <img src="../sequence-memory/assets/game-logo-b.png" data-logo-letter alt="" draggable="false" />
+            <img src="../sequence-memory/assets/game-logo-u.png" data-logo-letter alt="" draggable="false" />
+            <img src="../sequence-memory/assets/game-logo-t.png" data-logo-letter alt="" draggable="false" />
+          </div>
+
+          <div class="round-progress" aria-live="polite" aria-label="현재 진행 1-1">
+            <img id="level-progress-digit" src="../keyword-restore/assets/round-digit-1.png?v=20260924-1" alt="1" draggable="false" />
+            <span class="round-progress__dash" aria-hidden="true"></span>
+            <img
+              id="round-progress-digit"
+              class="round-progress__current"
+              src="../keyword-restore/assets/round-digit-1.png?v=20260924-1"
+              alt="1"
+              draggable="false"
+            />
+          </div>
+
+          <button id="help-toggle" class="chrome-control game-book" type="button" aria-label="튜토리얼 다시 보기">
+            <img src="../sequence-memory/assets/tutorial-book.png" alt="" draggable="false" />
+          </button>
+
+          <div id="game-card-stack" class="game-card-stack" aria-live="polite">
+            <div class="report-layer report-layer--base" data-report-layer="base">
+              <img class="report-layer__base-image" src="./assets/card-base.png" alt="" draggable="false" />
+              <div class="report-text" data-round-index="2"></div>
+            </div>
+
+            <div class="report-layer report-layer--middle" data-report-layer="middle">
+              <div class="report-plane">
+                <div class="report-plane__image">
+                  <img src="./assets/card-paper.png" alt="" draggable="false" />
+                </div>
+                <div class="report-text" data-round-index="1"></div>
+              </div>
+            </div>
+
+            <div class="report-layer report-layer--front" data-report-layer="front">
+              <div class="report-plane">
+                <div class="report-plane__image">
+                  <img src="./assets/card-paper.png" alt="" draggable="false" />
+                </div>
+                <div class="report-text" data-round-index="0"></div>
+              </div>
+            </div>
+
+            <img id="game-stamp-mark" class="game-stamp-mark" src="./assets/stamp-mark.png" alt="판정 도장 자국" draggable="false" />
+            <img id="game-stamp" class="game-stamp" src="./assets/stamp.png" alt="검정 손잡이 도장" draggable="false" />
+          </div>
+
+          <div class="game-choice-buttons" aria-label="문장 판정 선택지">
+            <button class="game-choice" type="button" data-game-choice="biased">
+              <img class="choice-fill" src="./assets/choice-button-fill.svg" alt="" draggable="false" />
+              <img class="choice-frame" src="./assets/choice-button-frame.png" alt="" draggable="false" />
+              <span>편향</span>
+            </button>
+            <button class="game-choice" type="button" data-game-choice="normal">
+              <img class="choice-fill" src="./assets/choice-button-fill.svg" alt="" draggable="false" />
+              <img class="choice-frame" src="./assets/choice-button-frame.png" alt="" draggable="false" />
+              <span>정상</span>
+            </button>
+          </div>
+
+          <section id="ipad-game" class="ipad-game" aria-label="편향 문장 찾기" hidden>
+            <div id="ipad-game-object" class="ipad-game-object">
+              <img class="ipad-game-outline" src="./assets/tutorial-ipad-outline.svg" alt="" draggable="false" />
+              <img class="ipad-game-device" src="./assets/tutorial-ipad.png" alt="" draggable="false" />
+              <div id="ipad-game-copy" class="ipad-game-copy">
+                <div id="ipad-highlight-layer" class="ipad-highlight-layer" aria-hidden="true"></div>
+                <p id="ipad-game-text"></p>
+              </div>
+              <img id="ipad-game-pencil" class="ipad-game-pencil" src="./assets/tutorial-pencil.png" alt="문장을 고르는 펜" draggable="false" />
+            </div>
+          </section>
+
+          <section id="desktop-game" class="desktop-game" aria-label="잘못 해석한 문장 찾기" hidden>
+            <div id="desktop-game-object" class="desktop-game-object">
+              <img class="desktop-game-shadow" src="./assets/desktop-game-shadow.svg" alt="" draggable="false" />
+              <img class="desktop-game-frame" src="./assets/desktop-game-frame.png" alt="" draggable="false" />
+
+              <div class="desktop-game-content">
+                <section class="desktop-chart" aria-labelledby="desktop-chart-title">
+                  <h2 id="desktop-chart-title"></h2>
+                  <p id="desktop-chart-note" class="desktop-chart-note"></p>
+                  <div id="desktop-bars" class="desktop-bars" aria-hidden="true"></div>
+                </section>
+
+                <img class="desktop-game-divider" src="./assets/tutorial-desktop-divider.svg" alt="" draggable="false" />
+                <div class="desktop-checkbox-mask" aria-hidden="true"></div>
+
+                <section class="desktop-question" aria-labelledby="desktop-question-title">
+                  <h2 id="desktop-question-title">잘못 해석한 한 문장은?</h2>
+                  <div id="desktop-answer-list" class="desktop-answer-list"></div>
+                </section>
+              </div>
+
+              <img id="desktop-game-cursor" class="desktop-game-cursor" src="./assets/desktop-game-cursor.png" alt="문장을 고르는 커서" draggable="false" />
+            </div>
+          </section>
+
+          <button class="chrome-control game-back" type="button" aria-label="판단력 재활 메뉴로 돌아가기">
+            <img src="../sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+          </button>
+          <button id="game-restart" class="chrome-control game-restart" type="button" aria-label="문제 다시 보기">
+            <img src="../sequence-memory/assets/tutorial-exit.png" alt="" draggable="false" />
+          </button>
+        </section>
+
+        <div id="tutorial-overlay" class="tutorial-overlay">
+          <div class="dim-layer" aria-hidden="true"></div>
+
+          <article id="tutorial-panel" class="tutorial-panel" aria-labelledby="tutorial-title" aria-describedby="tutorial-instructions">
+            <img class="popup-frame" src="../sequence-memory/assets/popup-frame.png" alt="" draggable="false" />
+            <h1 id="tutorial-title" class="tutorial-title">편향 문장 판정</h1>
+
+            <div id="tutorial-manuscript-page" class="tutorial-demo-page tutorial-demo-page--manuscript is-active">
+              <div id="tutorial-card" class="tutorial-card" aria-label="예문 원고지">
+                <img class="tutorial-card__base" src="./assets/card-base.png" alt="" draggable="false" />
+                <div class="tutorial-card__paper tutorial-card__paper--middle">
+                  <div class="tutorial-card__plane">
+                    <div class="tutorial-card__image"><img src="./assets/card-paper.png" alt="" draggable="false" /></div>
+                  </div>
+                </div>
+                <div class="tutorial-card__paper tutorial-card__paper--front">
+                  <div class="tutorial-card__plane">
+                    <div class="tutorial-card__image"><img src="./assets/card-paper.png" alt="" draggable="false" /></div>
+                    <div id="tutorial-example-grid" class="tutorial-example-grid"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tutorial-choice-buttons" aria-label="튜토리얼 문장 판정 선택지">
+                <div class="tutorial-choice" data-tutorial-choice="biased" aria-label="편향">
+                  <img class="choice-fill" src="./assets/choice-button-fill.svg" alt="" draggable="false" />
+                  <img class="choice-frame" src="./assets/choice-button-frame.png" alt="" draggable="false" />
+                  <span>편향</span>
+                </div>
+                <div class="tutorial-choice" data-tutorial-choice="normal" aria-label="정상">
+                  <img class="choice-fill" src="./assets/choice-button-fill.svg" alt="" draggable="false" />
+                  <img class="choice-frame" src="./assets/choice-button-frame.png" alt="" draggable="false" />
+                  <span>정상</span>
+                </div>
+              </div>
+
+              <img id="tutorial-stamp-mark" class="tutorial-stamp-mark" src="./assets/stamp-mark.png" alt="편향 제거 도장 자국" draggable="false" />
+              <img id="tutorial-stamp" class="tutorial-stamp" src="./assets/stamp.png" alt="검정 손잡이 도장" draggable="false" />
+              <img id="tutorial-cursor" class="tutorial-cursor" src="./assets/cursor.svg" alt="편향 버튼으로 움직이는 마우스 커서" draggable="false" />
+            </div>
+
+            <div id="tutorial-ipad-page" class="tutorial-demo-page tutorial-demo-page--ipad" aria-hidden="true">
+              <div class="tutorial-ipad-object" aria-label="편향 문장을 형광펜으로 표시하는 아이패드">
+                <img class="tutorial-ipad-outline" src="./assets/tutorial-ipad-outline.svg" alt="" draggable="false" />
+                <img class="tutorial-ipad" src="./assets/tutorial-ipad.png" alt="" draggable="false" />
+                <div class="tutorial-ipad-copy">
+                  <span class="tutorial-highlight tutorial-highlight--one"></span>
+                  <span class="tutorial-highlight tutorial-highlight--two"></span>
+                  <span class="tutorial-highlight tutorial-highlight--three"></span>
+                  <p>한 사람이 뉴스 앱의 자동 추천 기능만으로 세상 소식을 접하기 시작했다. 추천 목록에 이렇게 많이 오르는 걸 보면 이게 가장 중요한 뉴스임이 분명하다. 앱은 그가 오래 머물렀던 기사와 비슷한 내용을 주로 골라 보여주었다. 그는 가끔 다른 매체의 기사도 일부러 찾아 읽어 보았다.</p>
+                </div>
+                <img id="tutorial-pencil" class="tutorial-pencil" src="./assets/tutorial-pencil.png" alt="편향 문장을 표시하는 펜" draggable="false" />
+              </div>
+            </div>
+
+            <div id="tutorial-desktop-page" class="tutorial-demo-page tutorial-demo-page--desktop" aria-hidden="true">
+              <div class="tutorial-desktop-object" aria-label="잘못 해석한 문장을 체크하는 데스크톱 화면">
+                <img class="tutorial-desktop-shadow" src="./assets/tutorial-desktop-shadow.svg" alt="" draggable="false" />
+                <img class="tutorial-desktop-device" src="./assets/tutorial-desktop.png" alt="" draggable="false" />
+
+                <div class="tutorial-desktop-copy">
+                  <h2 class="tutorial-desktop-heading tutorial-desktop-heading--chart">학급 시험 평균</h2>
+                  <h2 class="tutorial-desktop-heading tutorial-desktop-heading--question">잘못 해석한 한 문장은?</h2>
+
+                  <img class="tutorial-desktop-divider" src="./assets/tutorial-desktop-divider.svg" alt="" draggable="false" />
+
+                  <div class="tutorial-desktop-bars" aria-hidden="true">
+                    <img class="tutorial-desktop-bar tutorial-desktop-bar--one" src="./assets/tutorial-desktop-bar-1.png" alt="" draggable="false" />
+                    <img class="tutorial-desktop-bar tutorial-desktop-bar--two" src="./assets/tutorial-desktop-bar-2.png" alt="" draggable="false" />
+                    <img class="tutorial-desktop-bar tutorial-desktop-bar--three" src="./assets/tutorial-desktop-bar-3.png" alt="" draggable="false" />
+                    <img class="tutorial-desktop-bar tutorial-desktop-bar--four" src="./assets/tutorial-desktop-bar-4.png" alt="" draggable="false" />
+                  </div>
+
+                  <span class="tutorial-desktop-score tutorial-desktop-score--one">72점</span>
+                  <span class="tutorial-desktop-score tutorial-desktop-score--two">74점</span>
+                  <span class="tutorial-desktop-score tutorial-desktop-score--three">73점</span>
+                  <span class="tutorial-desktop-score tutorial-desktop-score--four">91점</span>
+                  <span class="tutorial-desktop-class tutorial-desktop-class--one">1반</span>
+                  <span class="tutorial-desktop-class tutorial-desktop-class--two">2반</span>
+                  <span class="tutorial-desktop-class tutorial-desktop-class--three">3반</span>
+                  <span class="tutorial-desktop-class tutorial-desktop-class--four">4반</span>
+                  <span class="tutorial-desktop-note">비고: 4반은 시험 후 재시험 반영</span>
+
+                  <div class="tutorial-desktop-choices">
+                    <p>4반이 제일 높으니 4반이 가장 똑똑하다.</p>
+                    <p>1~3반의 평균은 서로 비슷했다.</p>
+                    <p>가장 평균이 높은 반은 4반이었다.</p>
+                    <p>4반과 1반의 평균 차이는 약 19점이었다.</p>
+                  </div>
+
+                  <img id="tutorial-desktop-check" class="tutorial-desktop-check" src="./assets/tutorial-desktop-check.png" alt="정답 문장 체크" draggable="false" />
+                  <img id="tutorial-desktop-cursor" class="tutorial-desktop-cursor" src="./assets/tutorial-desktop-cursor.svg" alt="정답 문장의 체크 박스로 움직이는 마우스 커서" draggable="false" />
+                </div>
+              </div>
+            </div>
+
+            <div class="page-indicator" aria-hidden="true"><span class="is-active" data-tutorial-dot="0"></span><span data-tutorial-dot="1"></span><span data-tutorial-dot="2"></span></div>
+            <p id="tutorial-instructions" class="tutorial-instructions">
+              <span>먼저, 문장이 한쪽으로 치우쳤는지 살펴보세요.</span>
+              <span>그다음, 치우친 문장을 찾아내세요.</span>
+            </p>
+
+            <button id="tutorial-start" class="tutorial-start" type="button">
+              <img src="./assets/tutorial-button.png" alt="" draggable="false" />
+              <span>시작하기</span>
+            </button>
+
+          </article>
+        </div>
+
+
+      </section>
+    </main>
+    <script src="./app.js?v=20261020-book-popup"></script>
+  </body>
+</html>

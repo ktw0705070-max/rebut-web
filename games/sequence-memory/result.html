@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf8" />
+    <title>REBUT — 순서대로 암기하기 진단 결과</title>
+    <link rel="stylesheet" href="./result.css?v=20261020-full-width-header" />
+    <script src="./result.js?v=20261020-cell-centering" defer></script>
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <div class="result-stage" id="result-stage">
+      <header class="main-navigation" aria-label="REBUT 주 메뉴">
+        <div class="main-navigation__paper" aria-hidden="true">
+          <img src="../../assets/header-outline.png" alt="" draggable="false" />
+        </div>
+        <a class="main-navigation__logo" href="../../index.html?intro=restart" aria-label="REBUT 메인으로">
+          <img src="../sentence-order/assets/rebut-logo.svg" alt="REBUT" draggable="false" />
+        </a>
+        <nav class="main-navigation__links" aria-label="진단 영역">
+          <a class="is-current" href="./index.html">기억력</a>
+          <a href="./index.html">판단력</a>
+          <a href="./index.html">언어력</a>
+        </nav>
+      </header>
+
+      <main>
+        <h1 class="result-title" aria-label="진단 결과">
+          <img src="../sentence-order/assets/result-title-1.svg" alt="진" draggable="false" />
+          <img src="../sentence-order/assets/result-title-2.svg" alt="단" draggable="false" />
+          <img src="../sentence-order/assets/result-title-3.svg" alt="결" draggable="false" />
+          <img src="../sentence-order/assets/result-title-4.svg" alt="과" draggable="false" />
+        </h1>
+
+        <div class="result-panels">
+          <div class="panel-shadow panel-shadow--left" aria-hidden="true">
+            <img src="../sentence-order/assets/result-metric-shadow-figma.svg" alt="" draggable="false" />
+          </div>
+          <div class="panel-shadow panel-shadow--right" aria-hidden="true">
+            <img src="../sentence-order/assets/result-advice-shadow-figma.svg" alt="" draggable="false" />
+          </div>
+
+          <section class="metric-panel" aria-labelledby="metric-panel-title">
+            <div class="panel-art panel-art--left" aria-hidden="true">
+              <img class="panel-frame-image" src="../awkward-sentence/assets/result-metric-frame-figma.png" alt="" draggable="false" />
+            </div>
+
+            <h2 class="vertical-title metric-vertical-title" id="metric-panel-title">
+              <span>기</span><span>억</span><span>력</span>
+            </h2>
+            <p class="metric-heading metric-item-heading">지표 항목</p>
+            <p class="metric-heading metric-score-heading">점수</p>
+
+            <dl class="metric-list" id="metric-list">
+              <div class="metric-row metric-row-accuracy" data-metric="accuracy">
+                <dt>순서 정확도</dt>
+                <dd><span id="accuracy-score">32</span><small>점</small></dd>
+              </div>
+              <div class="metric-row metric-row-reaction" data-metric="reactionTime">
+                <dt>반응 시간</dt>
+                <dd><span id="reaction-time">2</span><small>초</small></dd>
+              </div>
+              <div class="metric-row metric-row-retries" data-metric="retryCount">
+                <dt>재시도 횟수</dt>
+                <dd><span id="retry-count">5</span><small>회</small></dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="advice-panel" aria-labelledby="advice-panel-title">
+            <div class="panel-art panel-art--right" aria-hidden="true">
+              <img class="panel-frame-image" src="../awkward-sentence/assets/result-advice-frame-figma.png" alt="" draggable="false" />
+            </div>
+
+            <h2 class="vertical-title advice-vertical-title" id="advice-panel-title">
+              <span>기</span><span>억</span><span>력</span>
+            </h2>
+            <p class="advice-heading">점수 등급</p>
+            <p class="overall-score" id="overall-score">32</p>
+            <p class="result-label" id="result-label">실망스러워요</p>
+            <div class="advice-copy" id="advice-copy"></div>
+          </section>
+        </div>
+
+        <nav class="result-actions" aria-label="결과 화면 이동">
+          <button class="result-button" id="home-button" type="button">
+            <img src="assets/result-button-frame-new.png" alt="" draggable="false" />
+            <span>메인으로</span>
+          </button>
+          <button class="result-button" id="replay-button" type="button">
+            <img src="assets/result-button-frame-new.png" alt="" draggable="false" />
+            <span>다시하기</span>
+          </button>
+        </nav>
+      </main>
+
+      <p class="sr-only" id="result-status" aria-live="polite"></p>
+    </div>
+  </body>
+</html>

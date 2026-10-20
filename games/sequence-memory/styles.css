@@ -1,0 +1,253 @@
+.tutorial-stage {
+  isolation: isolate;
+}
+
+.menu-control {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 59.45px;
+  width: 50px;
+  height: 45.118px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-control img,
+.tutorial-back-guide img,
+.tutorial-restart-guide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-help-icon {
+  top: 159px;
+  left: 1797.45px;
+  width: 64.455px;
+  height: 56.852px;
+  cursor: default;
+}
+
+.tutorial-help-icon img {
+  width: 64.455px;
+  height: 56.852px;
+}
+
+.tutorial-help-icon:active,
+.tutorial-restart-guide:active > img {
+  transform: none;
+}
+
+.tutorial-stage .game-grid .game-cell {
+  pointer-events: none;
+}
+
+.tutorial-background-grid {
+  top: 266.3px;
+  left: 600.5px;
+  transform: scale(0.94233);
+  transform-origin: top left;
+}
+
+.tutorial-back-guide {
+  top: 977.87px;
+  left: 59.45px;
+  width: 62px;
+  height: 58.114px;
+  cursor: default;
+}
+
+.tutorial-restart-guide {
+  top: 253.6px;
+  left: 1801.45px;
+  width: 59.85px;
+  height: 55.366px;
+  cursor: default;
+}
+
+.tutorial-overlay {
+  position: absolute;
+  z-index: 70;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.tutorial-overlay.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tutorial-overlay[hidden] {
+  display: none;
+}
+
+.dim-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.36);
+}
+
+.tutorial-panel {
+  position: absolute;
+  z-index: 1;
+  top: 104px;
+  left: 596px;
+  width: 728px;
+  height: 871px;
+  overflow: visible;
+  isolation: isolate;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
+.popup-frame {
+  position: absolute;
+  z-index: 0;
+  top: -2px;
+  left: -2px;
+  display: block;
+  width: 732px;
+  height: 875px;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-title {
+  position: absolute;
+  z-index: 3;
+  top: 36px;
+  left: 55px;
+  width: 618px;
+  height: 74px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -1.15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tutorial-demo-window {
+  position: absolute;
+  z-index: 2;
+  top: 161px;
+  left: 158px;
+  width: 412px;
+  height: 376px;
+  overflow: visible;
+}
+
+.tutorial-demo-grid {
+  top: 0;
+  left: 0;
+  transform: scale(0.54, 0.5335);
+  transform-origin: top left;
+}
+
+.demo-cursor {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  width: 33px;
+  height: 31px;
+  transform: translate3d(584px, 318px, 0);
+  transform-origin: 9px 8px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.demo-cursor img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(1px 1px 0 #111);
+}
+
+.demo-cursor.is-clicking img {
+  transform: scale(0.86);
+  transform-origin: 8px 8px;
+}
+
+.tutorial-instructions {
+  position: absolute;
+  z-index: 4;
+  top: 605px;
+  left: 34px;
+  width: 660px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.7px;
+  text-align: center;
+}
+
+.tutorial-instructions span {
+  display: block;
+  white-space: nowrap;
+}
+
+.tutorial-start {
+  position: absolute;
+  z-index: 10;
+  top: 734px;
+  left: 252px;
+  width: 224px;
+  height: 68px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tutorial-start img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-start span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 1px;
+  color: #000;
+  font-size: 30.516px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.7629px;
+}
+
+.tutorial-start:active {
+  transform: scale(0.98);
+}
+
+.menu-control:focus-visible,
+.tutorial-start:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-overlay,
+  .demo-cursor {
+    transition-duration: 1ms !important;
+  }
+}

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta name="description" content="REBUT 판단력 게임 숨은 무게 찾기 튜토리얼" />
+    <title>REBUT — 숨은 무게 찾기</title>
+    <link rel="preload" as="image" href="../sequence-memory/assets/popup-frame.png" />
+    <link rel="preload" as="image" href="../sequence-memory/assets/result-button-frame-new.png" />
+    <link rel="stylesheet" href="./styles.css?v=20260926-1" />
+    <link rel="stylesheet" href="./game-menu.css?v=20260927-2" />
+    <script src="./app.js?v=20261020-book-popup" defer></script>
+    <script src="./game-menu.js?v=20261012-web-navigation" defer></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <main class="viewport" aria-label="REBUT 판단력 게임 숨은 무게 찾기">
+      <div class="stage-shell" id="stage-shell">
+        <section class="stage tutorial-stage" id="stage">
+          <button class="chrome-control game-menu menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+            <img src="../sequence-memory/assets/tutorial-menu.png" alt="" draggable="false" />
+          </button>
+
+          <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+            <div class="game-menu-shield" aria-hidden="true"></div>
+            <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+              <img class="game-menu-panel__background" src="./assets/menu-background.png" alt="" draggable="false" />
+              <header class="game-menu-header">
+                <h2 id="game-menu-title">게임 메뉴</h2>
+                <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기">
+                  <img src="./assets/menu-close.png" alt="" draggable="false" />
+                </button>
+              </header>
+              <div class="game-menu-categories">
+                <section class="game-menu-category" data-menu-category="memory">
+                  <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games">
+                    <span>기억력 게임</span>
+                    <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                    <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                  </button>
+                  <div class="game-menu-games" id="memory-games" aria-hidden="true"><div class="game-menu-games__inner">
+                    <a class="game-menu-game" href="../sequence-memory/index.html">순서 암기</a>
+                    <a class="game-menu-game" href="../missing-number/index.html">없는 숫자 찾기</a>
+                    <a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a>
+                  </div></div>
+                </section>
+                <section class="game-menu-category" data-menu-category="judgment">
+                  <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games">
+                    <span>판단력 게임</span>
+                    <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                    <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                  </button>
+                  <div class="game-menu-games" id="judgment-games" aria-hidden="true"><div class="game-menu-games__inner">
+                    <button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>숨은 무게 찾기</button>
+                    <a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a>
+                    <a class="game-menu-game" href="../bias-sentence/index.html">편향 문장 판정</a>
+                  </div></div>
+                </section>
+                <section class="game-menu-category" data-menu-category="language">
+                  <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games">
+                    <span>언어력 게임</span>
+                    <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                    <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+                  </button>
+                  <div class="game-menu-games" id="language-games" aria-hidden="true"><div class="game-menu-games__inner">
+                    <a class="game-menu-game" href="../sentence-order/index.html">문장 인과 순서 배치</a>
+                    <a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a>
+                    <a class="game-menu-game" href="../word-block/index.html?v=20260927-menu-click-fix">단어 블록 맞추기</a>
+                  </div></div>
+                </section>
+              </div>
+            </nav>
+          </aside>
+
+          <section class="game-screen" aria-label="숨은 무게 찾기 게임 미리보기" aria-hidden="true">
+            <div class="game-logo" role="img" aria-label="REBUT">
+              <img src="../sequence-memory/assets/game-logo-r.png" alt="" draggable="false" />
+              <img src="../sequence-memory/assets/game-logo-e.png" alt="" draggable="false" />
+              <img src="../sequence-memory/assets/game-logo-b.png" alt="" draggable="false" />
+              <img src="../sequence-memory/assets/game-logo-u.png" alt="" draggable="false" />
+              <img src="../sequence-memory/assets/game-logo-t.png" alt="" draggable="false" />
+            </div>
+
+            <div class="round-progress" aria-label="현재 진행 1-1">
+              <img src="./assets/round-digit-1.png" alt="1" draggable="false" />
+              <span class="round-progress__dash" aria-hidden="true"></span>
+              <img class="round-progress__current" src="./assets/round-digit-1.png" alt="1" draggable="false" />
+            </div>
+
+            <div class="chrome-control game-book">
+              <img src="../sequence-memory/assets/tutorial-book.png" alt="" draggable="false" />
+            </div>
+            <div class="chrome-control game-refresh">
+              <img src="../sequence-memory/assets/tutorial-exit.png" alt="" draggable="false" />
+            </div>
+
+            <div class="backdrop-balls" aria-hidden="true">
+              <div class="backdrop-ball"><img src="./assets/backdrop-ball-outline.svg" alt="" /><span>1</span></div>
+              <div class="backdrop-ball"><img src="./assets/backdrop-ball-outline.svg" alt="" /><span>2</span></div>
+              <div class="backdrop-ball"><img src="./assets/backdrop-ball-outline.svg" alt="" /><span>3</span></div>
+              <div class="backdrop-ball"><img src="./assets/backdrop-ball-outline.svg" alt="" /><span>4</span></div>
+            </div>
+
+            <div class="backdrop-scale" aria-hidden="true">
+              <img class="backdrop-scale-foot" src="./assets/backdrop-scale-foot.svg" alt="" />
+              <img class="backdrop-scale-base" src="./assets/backdrop-scale-base.svg" alt="" />
+              <div class="backdrop-scale-arm">
+                <img class="backdrop-scale-beam" src="./assets/backdrop-scale-beam.svg" alt="" />
+                <img class="backdrop-scale-pan backdrop-scale-pan--left" src="./assets/backdrop-scale-pan-left.svg" alt="" />
+                <img class="backdrop-scale-pan backdrop-scale-pan--right" src="./assets/backdrop-scale-pan-right.svg" alt="" />
+              </div>
+            </div>
+
+            <div class="backdrop-actions" aria-hidden="true">
+              <span>지목</span><span>측정</span><span>비우기</span>
+            </div>
+
+            <div class="chrome-control game-back">
+              <img src="../sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+            </div>
+          </section>
+
+          <div class="tutorial-overlay">
+            <div class="dim-layer" aria-hidden="true"></div>
+
+            <article class="tutorial-panel" aria-labelledby="tutorial-title" aria-describedby="tutorial-instructions">
+              <img class="popup-frame" src="../sequence-memory/assets/popup-frame.png" alt="" draggable="false" />
+              <h1 id="tutorial-title" class="tutorial-title">숨은 무게 찾기</h1>
+
+              <section class="demo-area" aria-label="저울질 자동 시연">
+                <div class="ball-options" id="ball-options" aria-label="숫자 공 1, 2, 3, 4"></div>
+
+                <div class="balance" aria-hidden="true">
+                  <img class="balance-foot" src="./assets/tutorial-scale-foot.svg" alt="" />
+                  <img class="balance-base" src="./assets/tutorial-scale-base.svg" alt="" />
+                  <div class="balance-arm" id="balance-arm">
+                    <img class="balance-beam" src="./assets/tutorial-scale-beam.svg" alt="" />
+                    <img class="balance-pan balance-pan--left" src="./assets/tutorial-scale-pan-left.svg" alt="" />
+                    <img class="balance-pan balance-pan--right" src="./assets/tutorial-scale-pan-right.svg" alt="" />
+                  </div>
+                </div>
+
+                <img class="demo-cursor" id="demo-cursor" src="./assets/tutorial-cursor.svg" alt="" draggable="false" />
+              </section>
+
+              <p id="tutorial-instructions" class="tutorial-instructions">
+                <span>먼저, 양쪽의 무게를 따져보세요.</span>
+                <span>그다음, 가장 무거운 숫자 공을 찾으세요.</span>
+              </p>
+
+              <button id="start-button" class="tutorial-start" type="button">
+                <img src="../sequence-memory/assets/result-button-frame-new.png" alt="" draggable="false" />
+                <span>시작하기</span>
+              </button>
+            </article>
+          </div>
+
+          <p class="sr-only" id="demo-status" aria-live="polite"></p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

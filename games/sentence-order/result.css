@@ -1,0 +1,494 @@
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("../shared/assets/fonts/60c0077fce069ba9.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fafaf8;
+  --ink: #111;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+body,
+button {
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+p,
+h1,
+h2,
+dl,
+dd {
+  margin: 0;
+}
+
+.result-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  /* The header rule extends beyond the centered, scaled results canvas. */
+  overflow: visible;
+  background: var(--paper);
+  transform: translateX(-50%) scale(var(--result-scale, 1));
+  transform-origin: top center;
+}
+
+.main-navigation {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 79px;
+}
+
+.main-navigation__paper {
+  position: absolute;
+  inset: 0 auto 0 50%;
+  /* Undo the canvas scale only for the viewport-wide decorative paper. */
+  width: max(100%, calc(100vw / var(--result-scale, 1)));
+  transform: translateX(-50%);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.main-navigation__paper img {
+  position: absolute;
+  top: -10.13%;
+  left: -3.28%;
+  display: block;
+  width: 106.61%;
+  height: 109.49%;
+  max-width: none;
+  user-select: none;
+}
+
+.main-navigation__logo {
+  position: absolute;
+  top: 26px;
+  left: 43px;
+  width: 131px;
+  height: 27px;
+}
+
+.main-navigation__logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.main-navigation__links {
+  position: absolute;
+  top: 19px;
+  left: 1503px;
+  display: flex;
+  width: 369px;
+  height: 39px;
+}
+
+.main-navigation__links a {
+  width: 99px;
+  height: 39px;
+  margin-right: 36px;
+  color: #1d1d1d;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.52px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.main-navigation__links a:last-child {
+  margin-right: 0;
+}
+
+.main-navigation__logo:focus-visible,
+.main-navigation__links a:focus-visible,
+.result-button:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 5px;
+}
+
+.result-title {
+  position: absolute;
+  z-index: 20;
+  top: 142px;
+  left: 50%;
+  display: flex;
+  width: 298px;
+  height: 67px;
+  align-items: center;
+  gap: 20px;
+  transform: translateX(-50%);
+}
+
+.result-title img {
+  display: block;
+  height: 67px;
+  object-fit: fill;
+}
+
+.result-title img:nth-child(1) { width: 55px; }
+.result-title img:nth-child(2) { width: 63px; }
+.result-title img:nth-child(3) { width: 57px; }
+.result-title img:nth-child(4) { width: 63px; }
+
+.result-panels {
+  position: absolute;
+  z-index: 10;
+  top: 279px;
+  left: 161px;
+  width: 1598px;
+  height: 627px;
+}
+
+.metric-panel,
+.advice-panel {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-weight: 800;
+}
+
+.panel-shadow {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.panel-shadow img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  max-width: none;
+}
+
+.panel-shadow--left {
+  top: 6px;
+  left: 5px;
+  width: 548px;
+  height: 606px;
+}
+
+.panel-shadow--left img {
+  width: 564px;
+  height: 622px;
+}
+
+.panel-shadow--right {
+  top: 6px;
+  left: 612px;
+  width: 978px;
+  height: 604px;
+}
+
+.panel-shadow--right img {
+  width: 994px;
+  height: 620px;
+}
+
+.metric-panel {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 560px;
+  height: 626px;
+}
+
+.advice-panel {
+  position: absolute;
+  top: 0;
+  left: 606px;
+  width: 992px;
+  height: 613px;
+}
+
+.panel-art {
+  position: absolute;
+  display: block;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.panel-frame-image {
+  position: absolute;
+  display: block;
+  max-width: none;
+  top: 0;
+  left: 0;
+  object-fit: fill;
+}
+
+.panel-art--left .panel-frame-image {
+  width: 101.53%;
+  height: 100%;
+}
+
+.panel-art--right .panel-frame-image {
+  width: 100.74%;
+  height: 102.08%;
+}
+
+.vertical-title,
+.metric-heading,
+.metric-row,
+.advice-heading,
+.overall-score,
+.result-label,
+.advice-copy {
+  position: absolute;
+  z-index: 5;
+}
+
+.vertical-title {
+  display: flex;
+  width: 61.217px;
+  height: 159px;
+  flex-direction: column;
+  align-items: center;
+  font-size: 35px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.metric-vertical-title {
+  top: 255.998px;
+  left: 18.551px;
+}
+
+.advice-vertical-title {
+  top: 255px;
+  left: 20.408px;
+}
+
+.metric-heading,
+.metric-row dt,
+.advice-heading,
+.result-label {
+  font-size: 35px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Frame-image grid boundaries, in the shared 1920 × 1080 design space.
+   Center in each actual cell, not in a text-width-dependent fixed slot. */
+.metric-heading,
+.advice-heading,
+.overall-score,
+.result-label {
+  top: 15.5px;
+  display: flex;
+  height: 83.5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-item-heading {
+  left: 13.75px;
+  width: 366.95px;
+}
+
+.metric-score-heading {
+  left: 380.7px;
+  width: 151.8px;
+}
+
+.metric-row {
+  left: 0;
+  width: 532.5px;
+}
+
+.metric-row-accuracy { top: 99px; height: 170.4px; }
+.metric-row-reaction { top: 269.4px; height: 162.65px; }
+.metric-row-retries { top: 432.05px; height: 157.65px; }
+
+.metric-row dt {
+  position: absolute;
+  top: 0;
+  left: 95.5px;
+  display: flex;
+  width: 285.2px;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-row dd {
+  position: absolute;
+  top: 50%;
+  left: 380.7px;
+  display: flex;
+  width: 151.8px;
+  height: 56px;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  transform: translateY(-50%);
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* The number and its unit remain one centered, baseline-aligned group. */
+.metric-row dd > span {
+  flex: 0 0 auto;
+  font-size: 56px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.metric-row dd > small {
+  flex: 0 0 auto;
+  margin: 0;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.advice-heading {
+  left: 15.5px;
+  width: 335.7px;
+}
+
+.overall-score {
+  left: 351.2px;
+  width: 233px;
+  font-size: 56px;
+  line-height: 1;
+  text-align: center;
+}
+
+.result-label {
+  left: 584.2px;
+  width: 375.25px;
+}
+
+.advice-copy {
+  top: 151.19px;
+  left: 133.56px;
+  display: grid;
+  width: 763.355px;
+  height: 360.808px;
+  grid-auto-rows: 45.449px;
+  row-gap: 33.391px;
+  overflow: visible;
+  font-size: 27.5px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.advice-copy p {
+  width: 100%;
+  height: 45.449px;
+  white-space: nowrap;
+}
+
+.result-actions {
+  position: absolute;
+  z-index: 20;
+  top: 946px;
+  left: 1322px;
+  display: flex;
+  width: 460px;
+  height: 68px;
+  align-items: center;
+  gap: 12px;
+}
+
+.result-button {
+  position: relative;
+  width: 224px;
+  height: 68px;
+  flex: 0 0 auto;
+  padding: 0 0 1px;
+  border: 0;
+  background: transparent;
+  font-size: 30.516px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.7629px;
+  text-align: center;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.result-button img {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+}
+
+.result-button:hover {
+  filter: brightness(0.96);
+}
+
+.result-button:active {
+  transform: scale(0.98);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,0 +1,33 @@
+/* Shared upper-right round label for all nine games (1920 × 1080 design). */
+.round-progress,
+.round-indicator {
+  top: 54px;
+  left: auto;
+  right: 53.45px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: max-content;
+  height: 50px;
+}
+
+/* Keep each original digit's aspect ratio, including when 1 changes to 2 or 3. */
+.round-progress > img:first-child,
+.round-progress > img:last-child,
+.round-indicator > img:first-child,
+.round-indicator > img:last-child {
+  display: block;
+  flex: 0 0 auto;
+  width: auto;
+  height: 50px;
+  max-width: none;
+  object-fit: contain;
+}
+
+.round-progress__dash,
+.round-divider {
+  display: block;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 7.2px;
+}

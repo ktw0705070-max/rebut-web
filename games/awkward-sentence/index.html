@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafaf8" />
+    <meta
+      name="description"
+      content="REBUT 언어력 게임 어색한 문장 찾기 튜토리얼 자동 재생 데모"
+    />
+    <title>REBUT · 어색한 문장 찾기</title>
+    <link rel="stylesheet" href="styles.css?v=20260927-1" />
+    <script src="app.js?v=20261020-book-popup" defer></script>
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <main class="viewport" aria-label="어색한 문장 찾기 튜토리얼">
+      <section class="stage" aria-labelledby="tutorial-title">
+        <iframe
+          class="game-background"
+          src="game.html?tutorial-bg=1&amp;v=20261005-4"
+          title="어색한 문장 찾기 1단계 1라운드 미리보기"
+          tabindex="-1"
+          aria-hidden="true"
+        ></iframe>
+
+        <div class="screen-dimmer" aria-hidden="true"></div>
+
+        <section
+          class="tutorial-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="tutorial-title"
+          aria-describedby="tutorial-instructions"
+        >
+          <h1 id="tutorial-title" class="tutorial-title">어색한 문장 찾기</h1>
+
+          <div class="demo-object" aria-label="어색한 문장을 찾아 지우는 자동 재생 예시">
+            <img class="demo-page-shadow" src="assets/tutorial-page-shadow.svg" alt="" />
+            <div class="demo-page-face" aria-hidden="true"></div>
+            <img class="demo-page-lines" src="assets/tutorial-page-lines.svg" alt="" />
+            <div id="paragraph" class="paragraph" aria-label="예시 문단"></div>
+            <img class="demo-page-side" src="assets/tutorial-page-side.svg?v=20261005-1" alt="" />
+            <img class="demo-page-bottom" src="assets/tutorial-page-bottom.svg" alt="" />
+            <img class="demo-page-outline" src="assets/tutorial-page-outline.svg" alt="" />
+          </div>
+
+          <img id="demo-cursor" class="demo-cursor" src="assets/tutorial-cursor.svg" alt="" />
+
+          <p id="tutorial-instructions" class="instructions">
+            먼저, 글을 천천히 읽으세요.<br />
+            그다음, 어색한 문장을 찾아 지우세요.
+          </p>
+
+          <button class="start-button" id="start-button" type="button">
+            <img src="../sequence-memory/assets/result-button-frame-new.png" alt="" />
+            <span>시작하기</span>
+          </button>
+
+          <p id="live-status" class="sr-only" aria-live="polite"></p>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

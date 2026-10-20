@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#fafaf8" />
+  <title>REBOOT — 단어 블록 맞추기</title>
+  <style>@font-face {
+  font-family: "Pretendard";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  --app-scale: 1;
+  --paper: #fafaf8;
+  --ink: #111111;
+  --dim-color: 0, 0, 0;
+  --dim-opacity: 0.36;
+  --popup-left: 596px;
+  --popup-top: 103.5px;
+  --level-fade-in: 600ms;
+  --level-fade-out: 800ms;
+  --logo-wave-letter-duration: 660ms;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #b9b9b9;
+  color: var(--ink);
+  font-family: "Pretendard", Arial, sans-serif;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; }
+
+#app {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--paper);
+  transform: translateX(-50%) scale(var(--app-scale));
+  transform-origin: top center;
+}
+
+#gameFrame {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 1920px;
+  height: 1080px;
+  border: 0;
+  background: var(--paper);
+}
+
+.chrome-layer {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  pointer-events: none;
+}
+
+.chrome-image,
+.chrome-button img,
+.round-progress img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.chrome-button {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 100ms ease-out;
+}
+
+.chrome-button:active { transform: scale(0.94); }
+.menu-control {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 60px;
+  width: 50px;
+  height: 45.118px;
+}
+
+.menu-control img {
+  width: 50px;
+  height: 45.118px;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.menu-control {
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.menu-control-legacy {
+  display: none;
+}
+
+.back-control {
+  position: absolute;
+  z-index: 20;
+  top: 977.87px;
+  left: 60px;
+  width: 62px;
+  height: 58.114px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.back-control-icon {
+  position: absolute;
+  inset: 0;
+  width: 62px;
+  height: 58.114px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.back-control:active {
+  transform: translateY(var(--responsive-y, 0px)) scale(0.96);
+}
+
+      .game-logo {
+        position: absolute;
+        z-index: 20;
+        top: 61px;
+        left: 819px;
+        width: 284px;
+        height: 56px;
+}
+
+.game-logo img {
+  position: absolute;
+  top: 0;
+  width: 52px;
+  height: 56px;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.game-logo img:nth-child(1) { left: 0; }
+.game-logo img:nth-child(2) { left: 58px; }
+.game-logo img:nth-child(3) { left: 116px; }
+.game-logo img:nth-child(4) { left: 174px; }
+.game-logo img:nth-child(5) { left: 232px; }
+
+.game-logo.is-waving img {
+  animation: correct-logo-wave var(--logo-wave-letter-duration) ease-in-out var(--logo-wave-delay) 1 both;
+  will-change: transform;
+}
+
+@keyframes correct-logo-wave {
+  0%,
+  100% { transform: translateY(0); }
+  36% { transform: translateY(-30px); }
+  58% { transform: translateY(8px); }
+  76% { transform: translateY(-3px); }
+}
+
+.utility-controls {
+  position: absolute;
+  z-index: 30;
+  top: 151px;
+  left: 1701px;
+  width: 161.455px;
+  height: 65px;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.help-button,
+.restart-control {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.help-button { top: 8px; right: 0; width: 64.455px; height: 56.852px; }
+.help-button img { width: 64.455px; height: 56.852px; display: block; object-fit: contain; }
+.help-button:active { transform: scale(0.96); }
+
+.restart-control {
+  z-index: 20;
+  top: 253.6px;
+  left: 1802px;
+  width: 59.85px;
+  height: 55.366px;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.restart-control > img {
+  position: absolute;
+  inset: 0;
+  width: 59.85px;
+  height: 55.366px;
+  display: block;
+  object-fit: contain;
+}
+
+.restart-control:active > img { transform: rotate(-18deg) scale(0.96); }
+
+.round-progress {
+  position: absolute;
+  z-index: 2;
+  left: 1751px;
+  top: 54px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 111px;
+  height: 55px;
+}
+
+.round-progress > img {
+  position: relative;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.round-progress__dash {
+  display: block;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 8px;
+  background: var(--ink);
+}
+
+.tutorial-overlay {
+  position: absolute;
+  z-index: 30;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.tutorial-overlay.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tutorial-overlay[hidden] { display: none; }
+
+.level-transition {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.level-transition.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.level-transition.is-fading {
+  opacity: 0;
+  transition: opacity var(--level-fade-out) ease-in-out;
+}
+
+.level-transition-copy {
+  width: 655px;
+  height: 456px;
+  color: #1d1d1d;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 162.555px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 3.2511px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--level-fade-in) ease-in-out;
+}
+
+.level-transition-copy p { margin: 0; }
+
+.level-transition.is-text-visible .level-transition-copy { opacity: 1; }
+
+.dim-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: rgba(var(--dim-color), var(--dim-opacity));
+}
+
+.tutorial-panel {
+  position: absolute;
+  z-index: 1;
+  left: var(--popup-left);
+  top: var(--popup-top);
+  width: 728px;
+  height: 873px;
+  overflow: visible;
+  isolation: isolate;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
+.popup-frame {
+  position: absolute;
+  z-index: 0;
+  left: -2px;
+  top: -2px;
+  display: block;
+  width: 732px;
+  height: 877px;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-title {
+  position: absolute;
+  z-index: 3;
+  left: 55px;
+  top: 36px;
+  width: 618px;
+  height: 74px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -1.15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tutorial-demo {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: visible;
+}
+
+.tutorial-target,
+.tutorial-piece,
+.tutorial-occluder,
+.tutorial-cursor {
+  position: absolute;
+  display: block;
+  max-width: none;
+  object-fit: fill;
+  pointer-events: none;
+  will-change: left, top, transform, filter;
+}
+
+.tutorial-target {
+  z-index: 1;
+  left: 303px;
+  top: 264px;
+  width: 169.977px;
+  height: 166.927px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 43.5% 100%, 43.5% 55.5%, 0 55.5%);
+}
+
+.tutorial-demo.has-bottom-piece .tutorial-target {
+  clip-path: polygon(0 0, 43.5% 0, 43.5% 43.8%, 53.8% 54.4%, 53.8% 55.5%, 13.1% 55.5%, 0 43.8%);
+}
+
+.tutorial-piece {
+  z-index: 3;
+  width: 97.19px;
+  height: 93.27px;
+  clip-path: polygon(4.7% 4.5%, 75.8% 4.5%, 94.1% 21.4%, 94.1% 97.3%, 23% 97.3%, 4.7% 78.7%);
+  transition:
+    left 650ms cubic-bezier(0.33, 1, 0.68, 1),
+    top 650ms cubic-bezier(0.33, 1, 0.68, 1),
+    filter 150ms ease-out;
+  transform-origin: center;
+}
+
+.tutorial-piece--su {
+  left: 91.796px;
+  top: 217.155px;
+  width: 99.53px;
+  height: 96.345px;
+  clip-path: polygon(4.59% 4.35%, 74.02% 4.35%, 91.89% 20.72%, 91.89% 94.19%, 22.46% 94.19%, 4.59% 76.18%);
+}
+.tutorial-piece--il { left: 91.796px; top: 363.66px; z-index: 7; }
+.tutorial-piece--gwa { left: 91.796px; top: 290.405px; }
+.tutorial-piece.is-dragging { z-index: 6; transform: scale(1.015); }
+
+.tutorial-occluder {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.tutorial-top-occluder,
+.tutorial-bottom-right-occluder,
+.tutorial-bottom-bottom-occluder {
+  filter: brightness(1.025);
+}
+
+.tutorial-top-frame-line {
+  z-index: 7;
+  left: 462.97px;
+  top: 278.38px;
+  width: 2.593px;
+  height: 146.507px;
+}
+
+.tutorial-top-occluder {
+  z-index: 8;
+  left: 464.1px;
+  top: 274.155px;
+  width: 15.077px;
+  height: 107px;
+}
+
+.tutorial-bottom-right-occluder {
+  z-index: 8;
+  left: 464.045px;
+  top: 274.155px;
+  width: 15.25px;
+  height: 160.5px;
+}
+
+.tutorial-bottom-bottom-occluder {
+  z-index: 8;
+  left: 390.795px;
+  top: 424.155px;
+  width: 83px;
+  height: 28.5px;
+}
+
+.tutorial-bottom-frame-line {
+  z-index: 9;
+  left: 462.97px;
+  top: 278.38px;
+  width: 2.593px;
+  height: 146.507px;
+}
+
+.tutorial-bottom-line-gray {
+  z-index: 9;
+  left: 391.795px;
+  top: 423.855px;
+  width: 73.775px;
+  height: 1.104px;
+}
+
+.tutorial-bottom-line-black {
+  z-index: 10;
+  left: 391.795px;
+  top: 422.75px;
+  width: 72.657px;
+  height: 1.101px;
+}
+
+.tutorial-demo.has-top-piece:not(.has-bottom-piece) .tutorial-top-frame-line,
+.tutorial-demo.has-top-piece:not(.has-bottom-piece) .tutorial-top-occluder,
+.tutorial-demo.has-bottom-piece .tutorial-bottom-right-occluder,
+.tutorial-demo.has-bottom-piece .tutorial-bottom-bottom-occluder,
+.tutorial-demo.has-bottom-piece .tutorial-bottom-frame-line,
+.tutorial-demo.has-bottom-piece .tutorial-bottom-line-gray,
+.tutorial-demo.has-bottom-piece .tutorial-bottom-line-black {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tutorial-piece.is-bouncing {
+  animation: tutorial-complete-bounce 540ms cubic-bezier(0.2, 0.85, 0.25, 1.18) both;
+}
+
+@keyframes tutorial-complete-bounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  48% { transform: translateY(-9px) scale(1.045); }
+}
+
+.tutorial-cursor {
+  --cursor-x: 0px;
+  --cursor-y: 0px;
+  --cursor-scale: 1;
+  --cursor-duration: 0ms;
+  z-index: 12;
+  left: 183px;
+  top: 378px;
+  width: 37.381px;
+  height: 35.579px;
+  transform: translate3d(var(--cursor-x), var(--cursor-y), 0) scale(var(--cursor-scale));
+  transform-origin: 5px 4px;
+  transition: transform var(--cursor-duration) cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.tutorial-cursor.is-clicking { --cursor-scale: 0.86; }
+
+.tutorial-instructions {
+  position: absolute;
+  z-index: 4;
+  left: 34px;
+  top: 605px;
+  width: 660px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.7px;
+  text-align: center;
+}
+
+.tutorial-instructions span {
+  display: block;
+  white-space: nowrap;
+}
+
+.tutorial-start {
+  position: absolute;
+  z-index: 10;
+  left: 252px;
+  top: 734px;
+  width: 224px;
+  height: 68px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 100ms ease-out;
+}
+
+.tutorial-start.is-pressed { transform: scale(0.96); }
+
+.tutorial-start img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-start span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 1px;
+  color: #000000;
+  font-size: 30.516px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.7629px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-overlay,
+  .level-transition,
+  .level-transition-copy,
+  .tutorial-piece,
+  .tutorial-cursor,
+  .tutorial-start,
+  .chrome-button { transition-duration: 0ms !important; }
+  .tutorial-piece.is-bouncing { animation: none !important; }
+  .game-logo.is-waving img {
+    animation-duration: 1ms;
+    animation-delay: 0ms !important;
+  }
+}
+</style>
+  <link rel="stylesheet" href="game-menu.css?v=20261020-menu-layer" />
+  <script src="game-menu.js?v=20261012-web-navigation" defer></script>
+  <link rel="stylesheet" href="../shared/step-transition.css?v=20261011-shared-step-2">
+  <script src="../shared/step-transition.js?v=20261011-shared-step"></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+<body>
+  <main id="app" aria-label="REBOOT 단어 블록 맞추기">
+    <iframe id="gameFrame" title="REBOOT Restore Memory 레벨 1" allow="fullscreen"></iframe>
+
+    <button class="menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+      <img src="../sequence-memory/assets/tutorial-menu.png" alt="" draggable="false" />
+    </button>
+
+    <section class="chrome-layer" aria-label="게임 도구">
+      <button class="menu-control-legacy" type="button" tabindex="-1" aria-hidden="true">
+        <img src="../sequence-memory/assets/tutorial-menu.png" alt="" draggable="false" />
+      </button>
+      <div class="game-logo" aria-label="REBUT">
+        <img src="../sequence-memory/assets/game-logo-r.png" alt="" draggable="false" />
+        <img src="../sequence-memory/assets/game-logo-e.png" alt="" draggable="false" />
+        <img src="../sequence-memory/assets/game-logo-b.png" alt="" draggable="false" />
+        <img src="../sequence-memory/assets/game-logo-u.png" alt="" draggable="false" />
+        <img src="../sequence-memory/assets/game-logo-t.png" alt="" draggable="false" />
+      </div>
+      <div class="round-progress" aria-live="polite" aria-label="현재 진행 1-1">
+        <img id="level-progress-digit" src="assets/extracted-f92c5161d1d6a016.png" alt="1" draggable="false" />
+        <span class="round-progress__dash" aria-hidden="true"></span>
+        <img src="assets/extracted-f92c5161d1d6a016.png" alt="1" draggable="false" />
+      </div>
+      <div class="utility-controls">
+
+        <button id="tutorial-open" class="help-button" type="button" aria-label="튜토리얼 다시 보기"><img src="../sequence-memory/assets/tutorial-book.png" alt="" draggable="false" /></button>
+      </div>
+      <button id="game-restart" class="restart-control" type="button" aria-label="현재 레벨 다시 시작"><img src="../sequence-memory/assets/tutorial-exit.png" alt="" draggable="false" /></button>
+      <button id="game-back" class="back-control chrome-button" type="button" aria-label="언어력 재활 메뉴로 돌아가기">
+        <img class="back-control-icon" src="../sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+      </button>
+    </section>
+
+    <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+      <div class="game-menu-shield" aria-hidden="true"></div>
+      <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+        <img class="game-menu-panel__background" src="assets/menu-background.png" alt="" draggable="false" />
+        <header class="game-menu-header">
+          <h2 id="game-menu-title">게임 메뉴</h2>
+          <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기"><img src="assets/menu-close.png" alt="" draggable="false" /></button>
+        </header>
+        <div class="game-menu-categories">
+          <section class="game-menu-category" data-menu-category="memory">
+            <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games"><span>기억력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+            <div class="game-menu-games" id="memory-games" aria-hidden="true"><div class="game-menu-games__inner"><a class="game-menu-game" href="../sequence-memory/index.html">순서 암기</a><a class="game-menu-game" href="../missing-number/index.html">없는 숫자 찾기</a><a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a></div></div>
+          </section>
+          <section class="game-menu-category" data-menu-category="judgment">
+            <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games"><span>판단력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+            <div class="game-menu-games" id="judgment-games" aria-hidden="true"><div class="game-menu-games__inner"><a class="game-menu-game" href="../hidden-weight/index.html">숨은 무게 찾기</a><a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a><a class="game-menu-game" href="../bias-sentence/index.html">편향 문장 판정</a></div></div>
+          </section>
+          <section class="game-menu-category" data-menu-category="language">
+            <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games"><span>언어력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+            <div class="game-menu-games" id="language-games" aria-hidden="true"><div class="game-menu-games__inner"><a class="game-menu-game" href="../sentence-order/index.html">문장 인과 순서 배치</a><a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a><button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>단어 블록 맞추기</button></div></div>
+          </section>
+        </div>
+      </nav>
+    </aside>
+
+    <div id="tutorial-overlay" class="tutorial-overlay">
+      <div class="dim-layer" aria-hidden="true"></div>
+      <article class="tutorial-panel" aria-labelledby="tutorial-title" aria-describedby="tutorial-instructions">
+        <img class="popup-frame" src="../sequence-memory/assets/popup-frame.png" alt="" draggable="false" />
+        <h1 id="tutorial-title" class="tutorial-title">단어 블록 맞추기</h1>
+        <div class="tutorial-demo" aria-label="과와 일을 빈칸에 끼워 단어 블록을 완성하는 예시">
+          <img id="tutorial-target" class="tutorial-target" src="assets/extracted-d41fc6f86f2acad4.png" alt="사 글자와 두 개의 빈칸" draggable="false" />
+          <img class="tutorial-piece tutorial-piece--su" src="assets/extracted-3328a08c0a70b06e.png" alt="수 글자 블록" draggable="false" />
+          <img id="tutorial-il" class="tutorial-piece tutorial-piece--il" src="assets/extracted-eccaea87154233a2.png" alt="일 글자 블록" draggable="false" />
+          <img id="tutorial-gwa" class="tutorial-piece tutorial-piece--gwa" src="assets/extracted-49bed882c1ab54bf.png" alt="과 글자 블록" draggable="false" />
+          <img class="tutorial-occluder tutorial-top-frame-line" src="assets/extracted-ad5bede2488b6412.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-top-occluder" src="assets/extracted-dcd753bde3e65c9a.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-bottom-right-occluder" src="assets/extracted-af6777ed1293a521.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-bottom-bottom-occluder" src="assets/extracted-323e97dfc2a284b6.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-bottom-frame-line" src="assets/extracted-ad5bede2488b6412.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-bottom-line-gray" src="assets/extracted-4c172988438eb897.svg" alt="" aria-hidden="true" draggable="false" />
+          <img class="tutorial-occluder tutorial-bottom-line-black" src="assets/extracted-5a3f30b88b211b0a.svg" alt="" aria-hidden="true" draggable="false" />
+          <img id="tutorial-cursor" class="tutorial-cursor" src="assets/extracted-de70053ebb174a3d.svg" alt="글자 블록을 끌어 놓는 마우스 커서" draggable="false" />
+        </div>
+        <p id="tutorial-instructions" class="tutorial-instructions">
+          <span>먼저, 흩어진 글자 블록을 살펴보세요.</span>
+          <span>그다음, 글자를 끌어다 빈칸에 끼우세요.</span>
+        </p>
+        <button id="tutorial-start" class="tutorial-start" type="button">
+          <img src="assets/extracted-16c4212056f15aee.png" alt="" draggable="false" />
+          <span>시작하기</span>
+        </button>
+      </article>
+    </div>
+
+  </main>
+  <script>window.__WORD_BLOCK_CONFIG__ = {"levelUrls":["./level-1.html","./level-2.html","./level-3.html"],"digitUrls":["assets/extracted-f92c5161d1d6a016.png","assets/extracted-b9406876415e5f8e.png","assets/extracted-ec3d6f7a7fd1dbf0.png"]};</script>
+  <script>(() => {
+  "use strict";
+
+  const WIDTH = 1920;
+  const HEIGHT = 1080;
+  const TOP_FIXED_END_Y = 133;
+  const RESULT_STORAGE_KEY = "rebut.word-block.result.v1";
+  const TIMING = Object.freeze({
+    POPUP_FADE_OUT: 300,
+    BUTTON_PRESS: 100,
+    LEVEL_BACKDROP_LEAD: 200,
+    LEVEL_FADE_IN: 600,
+    LEVEL_HOLD: 1200,
+    LEVEL_FADE_OUT: 800,
+    TUTORIAL_PRESENT: 1500,
+    CURSOR_MOVE: 500,
+    BLOCK_DRAG: 650,
+    INSERT_SETTLE: 330,
+    COMPLETE_STAGGER: 145,
+    COMPLETE_HOLD: 1200,
+    LOOP_PAUSE: 900,
+    RESET_SETTLE: 80,
+    CORRECT_LOGO_WAVE: 1000,
+    LOGO_WAVE_LETTER: 660,
+    LOGO_WAVE_STAGGER: 85,
+  });
+
+  const { levelUrls, digitUrls } = window.__WORD_BLOCK_CONFIG__;
+  const query = new URLSearchParams(window.location.search);
+  const requestedLevel = Number(query.get("level"));
+  const initialLevel = Number.isInteger(requestedLevel) && requestedLevel >= 1 && requestedLevel <= levelUrls.length
+    ? requestedLevel - 1
+    : 0;
+  const app = document.querySelector("#app");
+  const frame = document.querySelector("#gameFrame");
+  const backButton = document.querySelector("#game-back");
+  const utilityControls = document.querySelector(".utility-controls");
+  const restartControl = document.querySelector(".restart-control");
+  const roundProgress = document.querySelector(".round-progress");
+  const gameLogo = document.querySelector(".game-logo");
+  const gameLogoLetters = [...gameLogo.querySelectorAll("img")];
+  const levelDigit = document.querySelector("#level-progress-digit");
+  const overlay = document.querySelector("#tutorial-overlay");
+  const startButton = document.querySelector("#tutorial-start");
+  const demo = document.querySelector(".tutorial-demo");
+  const cursor = document.querySelector("#tutorial-cursor");
+  const gwa = document.querySelector("#tutorial-gwa");
+  const il = document.querySelector("#tutorial-il");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  let currentLevel = 0;
+  let transitionScheduled = false;
+  let tutorialRun = 0;
+  const roundResults = [];
+  const prefetchedLevels = new Set();
+
+  const sleep = (duration) => new Promise((resolve) => (window.RebutGameClock || window).setTimeout(resolve, duration));
+  const motionDelay = (duration) => reduceMotion.matches ? Math.min(duration, 40) : duration;
+
+  document.documentElement.style.setProperty(
+    "--logo-wave-letter-duration",
+    `${TIMING.LOGO_WAVE_LETTER}ms`,
+  );
+  gameLogoLetters.forEach((letter, index) => {
+    letter.style.setProperty(
+      "--logo-wave-delay",
+      `${index * TIMING.LOGO_WAVE_STAGGER}ms`,
+    );
+  });
+
+  function fitApp() {
+    const scale = Math.min(window.innerWidth / WIDTH, window.innerHeight / HEIGHT);
+    const verticalExtra = Math.max(0, window.innerHeight / scale - HEIGHT);
+
+    document.documentElement.style.setProperty("--app-scale", String(scale));
+    app.style.height = HEIGHT + verticalExtra + "px";
+    app.style.setProperty("--popup-top", 103.5 + verticalExtra * 0.5 + "px");
+    [
+      { element: utilityControls, y: 151 },
+      { element: backButton, y: 977.87 },
+      { element: restartControl, y: 253.6 },
+    ].forEach(({ element, y }) => {
+      const progress = Math.min(1, Math.max(0, (y - TOP_FIXED_END_Y) / (HEIGHT - TOP_FIXED_END_Y)));
+      element.style.setProperty("--responsive-y", verticalExtra * progress + "px");
+    });
+  }
+
+  function updateChrome() {
+    levelDigit.src = digitUrls[currentLevel];
+    levelDigit.alt = String(currentLevel + 1);
+    roundProgress.setAttribute("aria-label", "현재 진행 " + (currentLevel + 1) + "-1");
+  }
+
+  function loadLevel(index) {
+    currentLevel = Math.max(0, Math.min(levelUrls.length - 1, index));
+    transitionScheduled = false;
+    roundResults[currentLevel] = undefined;
+    frame.title = "REBOOT Restore Memory 레벨 " + (currentLevel + 1);
+    frame.src = levelUrls[currentLevel];
+    updateChrome();
+    // The next board is small now; warm it while this board is being played.
+    const next = levelUrls[currentLevel + 1];
+    if (next && !navigator.connection?.saveData && !prefetchedLevels.has(next)) {
+      prefetchedLevels.add(next);
+      const hint = document.createElement("link");
+      hint.rel = "prefetch";
+      hint.as = "document";
+      hint.href = next;
+      document.head.append(hint);
+    }
+  }
+
+  async function playCorrectLogoWave() {
+    gameLogo.classList.remove("is-waving");
+    void gameLogo.offsetWidth;
+    gameLogo.classList.add("is-waving");
+    await sleep(motionDelay(TIMING.CORRECT_LOGO_WAVE));
+    gameLogo.classList.remove("is-waving");
+  }
+
+  function recordRoundResult(data) {
+    const index = Number(data.level) - 1;
+    roundResults[index] = {
+      elapsedSeconds: Math.max(0, Number(data.elapsedSeconds) || 0),
+      retryCount: Math.max(0, Math.round(Number(data.retryCount) || 0)),
+      placementAttempts: Math.max(0, Math.round(Number(data.placementAttempts) || 0)),
+      correctPlacements: Math.max(0, Math.round(Number(data.correctPlacements) || 0)),
+    };
+  }
+
+  function saveFinalResult() {
+    const playedRounds = roundResults.filter(Boolean);
+    const totals = playedRounds.reduce((sum, result) => ({
+      elapsedSeconds: sum.elapsedSeconds + result.elapsedSeconds,
+      retryCount: sum.retryCount + result.retryCount,
+      placementAttempts: sum.placementAttempts + result.placementAttempts,
+      correctPlacements: sum.correctPlacements + result.correctPlacements,
+    }), { elapsedSeconds: 0, retryCount: 0, placementAttempts: 0, correctPlacements: 0 });
+
+    const accuracy = totals.placementAttempts > 0
+      ? Math.round((totals.correctPlacements / totals.placementAttempts) * 100)
+      : 0;
+    const result = {
+      accuracy: Math.min(100, Math.max(0, accuracy)),
+      time: totals.elapsedSeconds,
+      retry: totals.retryCount,
+    };
+
+    try {
+      sessionStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(result));
+    } catch {
+      // 저장소가 막힌 환경에서는 결과 페이지의 예시 값으로 안전하게 표시합니다.
+    }
+  }
+
+  async function scheduleNext(data) {
+    const completedLevel = Number(data.level);
+    if (completedLevel !== currentLevel + 1) return;
+    if (transitionScheduled) return;
+    transitionScheduled = true;
+    recordRoundResult(data);
+    if (currentLevel >= levelUrls.length - 1) saveFinalResult();
+    await playCorrectLogoWave();
+    if (currentLevel >= levelUrls.length - 1) {
+      window.location.href = "./result.html";
+      return;
+    }
+    const nextLevel = currentLevel + 2;
+    await showLevelTransition(nextLevel);
+    loadLevel(nextLevel - 1);
+  }
+
+  function resetDemo(instant = true) {
+    gwa.classList.remove("is-dragging", "is-complete", "is-bouncing");
+    il.classList.remove("is-dragging", "is-complete", "is-bouncing");
+    demo.classList.remove("has-top-piece", "has-bottom-piece", "is-complete");
+    if (instant) {
+      gwa.style.transition = "none";
+      il.style.transition = "none";
+    }
+    gwa.style.left = "91.796px";
+    gwa.style.top = "290.405px";
+    il.style.left = "91.796px";
+    il.style.top = "363.66px";
+    cursor.style.setProperty("--cursor-duration", "0ms");
+    cursor.style.setProperty("--cursor-x", "0px");
+    cursor.style.setProperty("--cursor-y", "0px");
+    cursor.classList.remove("is-clicking");
+    if (instant) {
+      void gwa.offsetWidth;
+      gwa.style.removeProperty("transition");
+      il.style.removeProperty("transition");
+    }
+  }
+
+  async function moveCursor(x, y, duration) {
+    cursor.style.setProperty("--cursor-duration", duration + "ms");
+    cursor.style.setProperty("--cursor-x", x - 183 + "px");
+    cursor.style.setProperty("--cursor-y", y - 378 + "px");
+    await sleep(duration);
+  }
+
+  async function pressCursor() {
+    cursor.classList.add("is-clicking");
+    await sleep(TIMING.BUTTON_PRESS);
+    cursor.classList.remove("is-clicking");
+  }
+
+  async function dragBlock(piece, left, top, cursorX, cursorY) {
+    await pressCursor();
+    piece.classList.add("is-dragging");
+    piece.style.left = left + "px";
+    piece.style.top = top + "px";
+    await moveCursor(cursorX, cursorY, TIMING.BLOCK_DRAG);
+    piece.classList.remove("is-dragging");
+    await sleep(TIMING.INSERT_SETTLE);
+  }
+
+  async function playTutorial(run) {
+    resetDemo(true);
+    if (reduceMotion.matches) {
+      gwa.style.left = "376.796px";
+      gwa.style.top = "264.155px";
+      il.style.left = "376.796px";
+      il.style.top = "337.155px";
+      demo.classList.add("has-top-piece", "has-bottom-piece", "is-complete");
+      gwa.classList.add("is-complete");
+      il.classList.add("is-complete");
+      return;
+    }
+
+    while (run === tutorialRun && !overlay.hidden) {
+      await sleep(TIMING.TUTORIAL_PRESENT);
+      if (run !== tutorialRun || overlay.hidden) return;
+
+      await dragBlock(gwa, 376.796, 264.155, 468, 352);
+      demo.classList.add("has-top-piece");
+      if (run !== tutorialRun || overlay.hidden) return;
+
+      await moveCursor(183, 452, TIMING.CURSOR_MOVE);
+      await dragBlock(il, 376.796, 337.155, 468, 425);
+      demo.classList.add("has-bottom-piece");
+      if (run !== tutorialRun || overlay.hidden) return;
+
+      demo.classList.add("is-complete");
+      gwa.classList.add("is-complete", "is-bouncing");
+      await sleep(TIMING.COMPLETE_STAGGER);
+      il.classList.add("is-complete", "is-bouncing");
+      await sleep(TIMING.COMPLETE_HOLD);
+
+      resetDemo(true);
+      await sleep(TIMING.RESET_SETTLE + TIMING.LOOP_PAUSE);
+    }
+  }
+
+  function openTutorial() {
+    tutorialRun += 1;
+    overlay.hidden = false;
+    overlay.classList.remove("is-closing");
+    startButton.disabled = false;
+    playTutorial(tutorialRun);
+  }
+
+  async function showLevelTransition(level) {
+    await window.RebutStepTransition.show(level);
+  }
+
+  async function closeTutorial() {
+    if (startButton.disabled) return;
+    startButton.disabled = true;
+    startButton.classList.add("is-pressed");
+    await sleep(TIMING.BUTTON_PRESS);
+    startButton.classList.remove("is-pressed");
+    tutorialRun += 1;
+    overlay.classList.add("is-closing");
+    await sleep(TIMING.POPUP_FADE_OUT);
+    overlay.hidden = true;
+    overlay.classList.remove("is-closing");
+    await showLevelTransition(1);
+    loadLevel(0);
+    startButton.disabled = false;
+  }
+
+  window.addEventListener("message", (event) => {
+    if (event.source !== frame.contentWindow) return;
+    const data = event.data;
+    if (!data || data.type !== "rebut-level-complete") return;
+    scheduleNext(data);
+  });
+
+  document.querySelector("#tutorial-open").addEventListener("click", () => window.RebutBookTutorial.open());
+  document.querySelector("#game-restart").addEventListener("click", () => loadLevel(currentLevel));
+  document.querySelector("#game-back").addEventListener("click", () => {
+    window.location.href = "../../?rehab=language";
+  });
+  startButton.addEventListener("click", closeTutorial);
+  window.addEventListener("resize", fitApp);
+  reduceMotion.addEventListener?.("change", () => {
+    if (!overlay.hidden) openTutorial();
+  });
+
+  fitApp();
+  if (query.get("tutorial") === "0") {
+    overlay.hidden = true;
+    void (async () => {
+      await showLevelTransition(initialLevel + 1);
+      loadLevel(initialLevel);
+    })();
+  } else {
+    loadLevel(initialLevel);
+    openTutorial();
+  }
+})();
+</script>
+</body>
+</html>

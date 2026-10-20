@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf8" />
+    <title>REBUT — 없던 숫자 찾기 튜토리얼</title>
+    <link rel="stylesheet" href="./game.css?v=20261004-3" />
+    <link rel="stylesheet" href="./styles.css?v=20261004-3" />
+    <link rel="stylesheet" href="./game-menu.css?v=20260927-1" />
+    <script src="./script.js?v=20261005-4" defer></script>
+    <script src="./game-menu.js?v=20261012-web-navigation" defer></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <main class="game-stage tutorial-stage" id="tutorial-stage" aria-label="없던 숫자 찾기 튜토리얼">
+      <button class="menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+        <img src="../sequence-memory/assets/tutorial-menu.png" alt="" draggable="false" />
+      </button>
+
+      <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+        <div class="game-menu-shield" aria-hidden="true"></div>
+        <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+          <img class="game-menu-panel__background" src="./assets/menu-background.png" alt="" draggable="false" />
+
+          <header class="game-menu-header">
+            <h2 id="game-menu-title">게임 메뉴</h2>
+            <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기">
+              <img src="./assets/menu-close.png" alt="" draggable="false" />
+            </button>
+          </header>
+
+          <div class="game-menu-categories">
+            <section class="game-menu-category" data-menu-category="memory">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games">
+                <span>기억력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="memory-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../sequence-memory/index.html">순서 암기</a>
+                  <button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>없는 숫자 찾기</button>
+                  <a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="game-menu-category" data-menu-category="judgment">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games">
+                <span>판단력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="judgment-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../hidden-weight/index.html">숨은 무게 찾기</a>
+                  <a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a>
+                  <a class="game-menu-game" href="../bias-sentence/index.html">편향 문장 판정</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="game-menu-category" data-menu-category="language">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games">
+                <span>언어력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="language-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                    <a class="game-menu-game" href="../sentence-order/index.html">문장 인과 순서 배치</a>
+                    <a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a>
+                    <a class="game-menu-game" href="../word-block/index.html?v=20260927-menu-click-fix">단어 블록 맞추기</a>
+                </div>
+              </div>
+            </section>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="game-logo" aria-label="REBUT">
+        <img src="../sequence-memory/assets/game-logo-r.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-e.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-b.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-u.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-t.png" alt="" />
+      </div>
+
+      <div class="round-progress" aria-label="현재 진행 1-1">
+        <img src="./assets/round-digit-1.png" alt="1" draggable="false" />
+        <span class="round-progress__dash" aria-hidden="true"></span>
+        <img class="round-progress__current" src="./assets/round-digit-1.png" alt="1" draggable="false" />
+      </div>
+
+      <div class="help-button tutorial-help-icon" aria-hidden="true">
+        <img src="../sequence-memory/assets/tutorial-book.png" alt="" draggable="false" />
+      </div>
+
+      <section class="memory-timer tutorial-background-timer" aria-hidden="true">
+        <span class="timer-copy">0:05</span>
+        <div class="timer-track">
+          <img src="../keyword-restore/assets/timer-line.png" alt="" />
+          <span class="timer-progress"></span>
+        </div>
+      </section>
+
+      <section
+        class="number-grid tutorial-background-grid is-locked"
+        id="background-number-grid"
+        aria-hidden="true"
+      ></section>
+
+      <div class="back-control tutorial-back-guide" aria-hidden="true">
+        <img src="../sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+      </div>
+
+      <div class="restart-control tutorial-restart-guide" aria-hidden="true">
+        <img src="../sequence-memory/assets/tutorial-exit.png" alt="" draggable="false" />
+      </div>
+
+      <section class="tutorial-overlay" id="tutorial-overlay" aria-label="튜토리얼 팝업">
+        <div class="dim-layer" aria-hidden="true"></div>
+
+        <article
+          class="tutorial-panel"
+          id="tutorial-panel"
+          aria-labelledby="tutorial-title"
+          aria-describedby="tutorial-instructions"
+        >
+          <img class="popup-frame" src="../sequence-memory/assets/popup-frame.png" alt="" draggable="false" />
+
+          <h1 class="tutorial-title" id="tutorial-title">없던 숫자 찾기</h1>
+
+          <section class="tutorial-demo-grid" id="tutorial-grid" aria-label="2×3 숫자 찾기 자동 시연">
+            <div class="demo-number-card" data-card-index="0"><span class="demo-card-number"></span></div>
+            <div class="demo-number-card" data-card-index="1"><span class="demo-card-number"></span></div>
+            <div class="demo-number-card" data-card-index="2"><span class="demo-card-number"></span></div>
+            <div class="demo-number-card" data-card-index="3"><span class="demo-card-number"></span></div>
+            <div class="demo-number-card" data-card-index="4"><span class="demo-card-number"></span></div>
+            <div class="demo-number-card" data-card-index="5"><span class="demo-card-number"></span></div>
+          </section>
+
+          <div class="demo-cursor" id="demo-cursor" aria-hidden="true">
+            <img src="./assets/cursor.svg" alt="" />
+          </div>
+
+          <p class="tutorial-instructions" id="tutorial-instructions">
+            <span>먼저, 화면에 나온 숫자들을 기억하세요.</span>
+            <span>그다음, 처음에 없던 숫자를 찾아 누르세요.</span>
+          </p>
+
+          <button class="tutorial-start" id="start-button" type="button">
+            <img src="./assets/tutorial-button.png" alt="" draggable="false" />
+            <span>시작하기</span>
+          </button>
+        </article>
+      </section>
+
+      <p class="sr-only" id="demo-status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

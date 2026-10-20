@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" width="691.664" height="90.2331" viewBox="0 0 691.664 90.2331" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 72.5548V0.368298L675.828 0L682.825 4.78788V81.3939H12.1538L0 72.5548Z" fill="#000" filter="url(#vector174DropShadow442V4)"/>
+  <defs>
+    <filter id="vector174DropShadow442V4" x="0" y="0" width="691.664" height="90.2331" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dx="4.41958" dy="4.41958" result="offsetShadow"/>
+      <feGaussianBlur in="offsetShadow" stdDeviation="2.20979" result="blurredShadow"/>
+      <feComposite in="blurredShadow" in2="hardAlpha" operator="out" result="outsideShadow"/>
+      <feColorMatrix in="outsideShadow" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.18 0"/>
+    </filter>
+  </defs>
+</svg>

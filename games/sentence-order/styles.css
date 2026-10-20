@@ -1,0 +1,486 @@
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "NanumMyeongjo";
+  src: url("../shared/assets/fonts/a03d520bccc43ae1.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fafaf8;
+  --ink: #111111;
+  --copy: #1d1d1d;
+  --black-front: #010101;
+  --black-bottom: #333333;
+  --black-side: #323232;
+  --card-width: 35.648906cqw;
+  --card-height: 4.315938cqw;
+  --slot-step: 4.853125cqw;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+body {
+  min-width: 320px;
+  min-height: 180px;
+  color: var(--copy);
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  user-select: none;
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  container-type: inline-size;
+  isolation: isolate;
+  background: var(--paper);
+  transform: translateX(-50%) scale(var(--scene-scale, 1));
+  transform-origin: top center;
+}
+
+.topbar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 10;
+  height: 4.010417cqw;
+}
+
+.brand {
+  position: absolute;
+  top: 1.354167cqw;
+  left: 2.239583cqw;
+  width: 6.100521cqw;
+  height: 1.325cqw;
+}
+
+.game-select {
+  position: absolute;
+  top: 1.015625cqw;
+  right: 2.265625cqw;
+  width: 5.15625cqw;
+  color: var(--copy);
+  font-size: 1.354167cqw;
+  font-variation-settings: "wght" 600;
+  line-height: 1.5;
+  letter-spacing: 0.027083cqw;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.topbar-line {
+  position: absolute;
+  top: 3.890625cqw;
+  left: -0.46875cqw;
+  width: 101.15625cqw;
+  height: 0.255208cqw;
+}
+
+.title {
+  position: absolute;
+  top: 6.979167cqw;
+  left: 50%;
+  width: 32.1875cqw;
+  margin: 0;
+  transform: translate(-50%, var(--responsive-y, 0px));
+  color: var(--copy);
+  font-size: 2.916667cqw;
+  font-variation-settings: "wght" 400;
+  line-height: 1.6;
+  letter-spacing: 0.058333cqw;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.demo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.timeline {
+  position: absolute;
+  top: 16.5625cqw;
+  left: 50%;
+  width: 39.285156cqw;
+  height: 16.458333cqw;
+  transform: translate(-50%, var(--responsive-y, 0px));
+}
+
+.spine-line {
+  position: absolute;
+  z-index: 0;
+  top: 8.196563cqw;
+  left: -7.275729cqw;
+  display: block;
+  width: 16.566042cqw;
+  height: 0.173958cqw;
+  transform: rotate(90deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+.spine-ticks {
+  position: absolute;
+  z-index: 1;
+  top: 3.126563cqw;
+  left: 1.461458cqw;
+  display: block;
+  width: 2.174948cqw;
+  height: 9.85526cqw;
+  pointer-events: none;
+}
+
+.spine-nodes {
+  position: absolute;
+  z-index: 3;
+  top: 2.484375cqw;
+  left: 0.340104cqw;
+  display: flex;
+  width: 1.155469cqw;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  gap: 3.772188cqw;
+  list-style: none;
+}
+
+.spine-nodes li {
+  display: flex;
+  width: 1.155469cqw;
+  height: 1.155469cqw;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding-top: 0.052083cqw;
+  border: 0.065208cqw solid #000;
+  border-radius: 50%;
+  background: #fff;
+  color: #000;
+  font-family: "NanumMyeongjo", "Nanum Myeongjo", serif;
+  font-size: 0.679688cqw;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.card-stack {
+  position: absolute;
+  z-index: 2;
+  top: 1.227604cqw;
+  left: 3.644792cqw;
+  width: var(--card-width);
+  height: 14.021979cqw;
+  isolation: isolate;
+}
+
+.sentence-card {
+  --slot-y: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--card-width);
+  height: var(--card-height);
+  overflow: visible;
+  color: var(--ink);
+  transform: translate3d(0, var(--slot-y), 0);
+  transform-origin: center;
+  backface-visibility: hidden;
+}
+
+.sentence-card.is-dragging,
+.sentence-card.is-correct-wave {
+  will-change: transform;
+}
+
+.sentence-card__figma-shadow,
+.sentence-card__front,
+.sentence-card__bottom,
+.sentence-card__texture,
+.sentence-card__side {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.sentence-card__figma-shadow {
+  z-index: 0;
+  top: 1.34%;
+  left: 0.215%;
+  width: 101.053%;
+  height: 108.89%;
+  object-fit: fill;
+  user-select: none;
+}
+
+.sentence-card__visual {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: center;
+}
+
+.sentence-card__front {
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 99.213%;
+  object-fit: fill;
+}
+
+.sentence-card__bottom {
+  z-index: 1;
+  top: 88.973%;
+  left: 0;
+  width: 100%;
+  height: 11.027%;
+  object-fit: fill;
+}
+
+.sentence-card__side {
+  z-index: 1;
+  top: 0;
+  left: 98.856%;
+  display: flex;
+  width: 1.144%;
+  height: 98.429%;
+  align-items: center;
+  justify-content: center;
+}
+
+.sentence-card__side img {
+  display: block;
+  width: calc(var(--card-height) * 0.98429);
+  height: calc(var(--card-width) * 0.01144);
+  flex: none;
+  transform: rotate(90deg) scaleY(-1);
+  transform-origin: center;
+}
+
+.sentence-card__label {
+  position: absolute;
+  z-index: 3;
+  top: 48.2%;
+  left: 49.38%;
+  width: 77.22%;
+  transform: translate(-50%, -50%);
+  color: var(--ink);
+  font-family: "NanumMyeongjo", "Nanum Myeongjo", serif;
+  font-size: 1.223438cqw;
+  font-weight: 800;
+  font-variation-settings: "CTGR" 0, "wdth" 100;
+  line-height: 1.5;
+  letter-spacing: -0.030583cqw;
+  text-align: center;
+  white-space: nowrap;
+  transition: color var(--state-fill-duration, 300ms) ease;
+}
+
+.sentence-card__texture {
+  z-index: 4;
+  top: -0.893%;
+  left: -0.108%;
+  width: 100.196%;
+  height: 102.44%;
+  object-fit: fill;
+  image-rendering: auto;
+}
+
+.sentence-card__state-layer {
+  transition: opacity var(--state-fill-duration, 300ms) ease;
+}
+
+.sentence-card__state-layer--dark {
+  opacity: 0;
+}
+
+.sentence-card.is-correct .sentence-card__state-layer--idle {
+  opacity: 0;
+}
+
+.sentence-card.is-correct .sentence-card__state-layer--dark {
+  opacity: 1;
+}
+
+.sentence-card.is-correct .sentence-card__label {
+  color: #fff;
+}
+
+.sentence-card.is-correct-wave {
+  animation: card-correct-wave var(--correct-wave-duration, 450ms)
+    cubic-bezier(0.2, 0.85, 0.25, 1.18) both;
+  animation-delay: var(--correct-wave-delay, 0ms);
+}
+
+@keyframes card-correct-wave {
+  0%,
+  100% {
+    transform: translate3d(0, var(--slot-y), 0);
+  }
+
+  42% {
+    transform: translate3d(0, calc(var(--slot-y) - 14px), 0);
+  }
+
+  72% {
+    transform: translate3d(0, calc(var(--slot-y) + 3px), 0);
+  }
+}
+
+.instructions {
+  position: absolute;
+  top: 37.916667cqw;
+  left: 32.864583cqw;
+  width: 34.375cqw;
+  margin: 0;
+  transform: translateY(var(--responsive-y, 0px));
+  color: var(--copy);
+  font-size: 1.770833cqw;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.035417cqw;
+  text-align: center;
+}
+
+.start-slot {
+  position: absolute;
+  top: 47.65625cqw;
+  left: 40.648021cqw;
+  width: 18.703958cqw;
+  height: 3.59375cqw;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.start-button {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 0.052083cqw;
+  border: 0;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-size: 1.589375cqw;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.039734cqw;
+  text-align: center;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.start-button:hover {
+  filter: brightness(0.97);
+}
+
+.start-button:active {
+  transform: scale(0.98);
+}
+
+.start-button:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 5px;
+}
+
+.start-button-frame {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.back-hint {
+  position: absolute;
+  top: 49.114583cqw;
+  left: 2.083333cqw;
+  display: flex;
+  width: 8.333333cqw;
+  height: 5.104167cqw;
+  align-items: center;
+  gap: 0.78125cqw;
+  transform: translateY(var(--responsive-y, 0px));
+  pointer-events: none;
+}
+
+.back-icon {
+  width: 5.104167cqw;
+  height: 5.104167cqw;
+}
+
+.mouse-icon {
+  width: 2.276104cqw;
+  height: 3.219271cqw;
+}
+
+.demo-cursor {
+  position: absolute;
+  z-index: 20;
+  top: calc(33.645833cqw + var(--responsive-y, 0px));
+  left: 66.354167cqw;
+  width: 1.693802cqw;
+  height: 1.612135cqw;
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.demo-cursor__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 10% 10%;
+  will-change: transform;
+}
+
+.reduced-motion-note {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  margin: 0;
+  font-size: 12px;
+}
+
+.stage.is-resetting .sentence-card__state-layer,
+.stage.is-resetting .sentence-card__label {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sentence-card__state-layer,
+  .sentence-card__label {
+    transition-duration: 1ms !important;
+  }
+
+  .sentence-card.is-correct-wave {
+    animation: none !important;
+  }
+}

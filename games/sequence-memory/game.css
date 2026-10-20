@@ -1,0 +1,537 @@
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("../shared/assets/fonts/60c0077fce069ba9.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fafaf8;
+  --ink: #151515;
+  --cell-transition: 120ms;
+  --level-fade-in: 600ms;
+  --level-fade-out: 800ms;
+  --wrong-shake: 420ms;
+  --logo-wave-letter-duration: 660ms;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+body,
+button {
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+button {
+  margin: 0;
+}
+
+.game-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--paper);
+  transform: translateX(-50%) scale(var(--game-scale, 1));
+  transform-origin: top center;
+}
+
+.top-up {
+  position: absolute;
+  z-index: 20;
+  top: 21px;
+  left: 40px;
+  width: 98px;
+  height: 98px;
+}
+
+.top-up img {
+  position: absolute;
+  top: 24.068px;
+  left: 5.229px;
+  width: 87.542px;
+  height: 49.863px;
+  display: block;
+}
+
+.menu-control {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 59.45px;
+  width: 50px;
+  height: 45.118px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-control img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.game-logo {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 819px;
+  width: 284px;
+  height: 56px;
+}
+
+.game-logo img {
+  position: absolute;
+  top: 0;
+  width: 52px;
+  height: 56px;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.game-logo img:nth-child(1) {
+  left: 0;
+}
+
+.game-logo img:nth-child(2) {
+  left: 58px;
+}
+
+.game-logo img:nth-child(3) {
+  left: 116px;
+}
+
+.game-logo img:nth-child(4) {
+  left: 174px;
+}
+
+.game-logo img:nth-child(5) {
+  left: 232px;
+}
+
+.game-logo.is-waving img {
+  animation: correct-logo-wave var(--logo-wave-letter-duration) ease-in-out var(--logo-wave-delay) 1 both;
+  will-change: transform;
+}
+
+@keyframes correct-logo-wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  36% {
+    transform: translateY(-30px);
+  }
+
+  58% {
+    transform: translateY(8px);
+  }
+
+  76% {
+    transform: translateY(-3px);
+  }
+}
+
+.round-progress {
+  position: absolute;
+  z-index: 20;
+  top: 54px;
+  left: 1745.45px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 56px;
+}
+
+.round-progress > img:first-child {
+  width: 34px;
+  height: 56px;
+  object-fit: fill;
+}
+
+.round-progress__dash {
+  display: block;
+  width: 34px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: #000;
+}
+
+.round-progress__current {
+  width: 37px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.help-button {
+  position: absolute;
+  z-index: 30;
+  top: 159px;
+  left: 1797.45px;
+  width: 64.455px;
+  height: 56.852px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.help-button img {
+  width: 64.455px;
+  height: 56.852px;
+  display: block;
+}
+
+.help-button:active {
+  transform: scale(0.96);
+}
+
+.help-button:focus-visible,
+.menu-control:focus-visible,
+.back-control:focus-visible,
+.restart-control:focus-visible,
+.game-cell:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 5px;
+}
+
+.help-popover {
+  position: absolute;
+  z-index: 25;
+  top: 228px;
+  left: 1625px;
+  width: 275px;
+  height: 189px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 0s linear 180ms;
+  pointer-events: none;
+}
+
+.help-popover.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.help-bubble {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 291px;
+  height: 205px;
+  display: block;
+}
+
+.help-popover p {
+  position: absolute;
+  top: 62px;
+  left: 43px;
+  width: 206px;
+  margin: 0;
+  color: #000;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -0.45px;
+}
+
+.game-grid {
+  position: absolute;
+  z-index: 10;
+  top: 244px;
+  left: 579px;
+  width: 763px;
+  height: 704px;
+}
+
+.game-grid.is-shaking {
+  animation: wrong-answer-shake var(--wrong-shake) cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  will-change: transform;
+}
+
+@keyframes wrong-answer-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  18% {
+    transform: translateX(-13px);
+  }
+
+  36% {
+    transform: translateX(11px);
+  }
+
+  54% {
+    transform: translateX(-8px);
+  }
+
+  72% {
+    transform: translateX(6px);
+  }
+
+  88% {
+    transform: translateX(-3px);
+  }
+}
+
+.game-cell {
+  position: absolute;
+  width: 269.825px;
+  height: 240.915px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: scale(1);
+  transform-origin: center;
+  filter: drop-shadow(4px 6px 5px rgb(0 0 0 / 18%));
+  -webkit-tap-highlight-color: transparent;
+}
+
+.game-grid.is-locked .game-cell {
+  pointer-events: none;
+  cursor: default;
+}
+
+.game-cell:nth-child(3n + 1) {
+  left: 0;
+}
+
+.game-cell:nth-child(3n + 2) {
+  left: 251px;
+}
+
+.game-cell:nth-child(3n) {
+  left: 502px;
+}
+
+.game-cell:nth-child(-n + 3) {
+  top: 0;
+}
+
+.game-cell:nth-child(n + 4):nth-child(-n + 6) {
+  top: 231px;
+}
+
+.game-cell:nth-child(n + 7) {
+  top: 463px;
+}
+
+.game-cell-face {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 262.481px;
+  height: 243px;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.game-cell-fill-idle {
+  z-index: 0;
+}
+
+.game-cell-fill-active {
+  z-index: 1;
+  opacity: 0;
+}
+
+.game-cell-outline-idle {
+  z-index: 2;
+  opacity: 1;
+}
+
+.game-cell-outline-active {
+  z-index: 3;
+  opacity: 0;
+}
+
+.game-cell-fill-active,
+.game-cell-outline-idle,
+.game-cell-outline-active {
+  transition: opacity var(--cell-transition) ease-out;
+}
+
+.game-cell.is-active .game-cell-fill-active,
+.game-cell.is-active .game-cell-outline-active {
+  opacity: 1;
+}
+
+.game-cell.is-active .game-cell-outline-idle {
+  opacity: 0;
+}
+
+.back-control,
+.restart-control {
+  position: absolute;
+  z-index: 20;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.back-control {
+  top: 977.87px;
+  left: 59.45px;
+  width: 62px;
+  height: 58.114px;
+}
+
+.back-control img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.restart-control {
+  top: 253.6px;
+  left: 1801.45px;
+  width: 59.85px;
+  height: 55.366px;
+}
+
+.restart-control > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.restart-control:active > img {
+  transform: rotate(-18deg) scale(0.96);
+}
+
+.paper-speck {
+  position: absolute;
+  top: 926px;
+  left: 1628px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #111;
+}
+
+.level-transition {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.level-transition.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.level-transition.is-fading {
+  opacity: 0;
+  transition: opacity var(--level-fade-out) ease-in-out;
+}
+
+.level-transition-copy {
+  width: 655px;
+  height: 456px;
+  color: #1d1d1d;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 162.555px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 3.2511px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--level-fade-in) ease-in-out;
+}
+
+.level-transition-copy p {
+  margin: 0;
+}
+
+.level-transition.is-text-visible .level-transition-copy {
+  opacity: 1;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-cell-fill-active,
+  .game-cell-outline-idle,
+  .game-cell-outline-active,
+  .help-popover,
+  .level-transition,
+  .level-transition-copy {
+    transition-duration: 1ms !important;
+  }
+
+  .game-grid.is-shaking {
+    animation-duration: 1ms;
+  }
+
+  .game-logo.is-waving img {
+    animation-duration: 1ms;
+    animation-delay: 0ms !important;
+  }
+}

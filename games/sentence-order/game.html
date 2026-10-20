@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf8" />
+    <title>REBUT — 문장 인과 순서 배치</title>
+    <link rel="stylesheet" href="game.css?v=20261020-book-tutorial" />
+    <link rel="stylesheet" href="game-menu.css?v=20261020-menu-layer" />
+    <script src="game.js?v=20261020-book-popup" defer></script>
+    <script src="game-menu.js?v=20261012-web-navigation" defer></script>
+  <link rel="stylesheet" href="../shared/step-transition.css?v=20261011-shared-step-2">
+  <script src="../shared/step-transition.js?v=20261011-shared-step"></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <main class="game-stage" id="game-stage" aria-label="문장 인과 순서 배치 게임">
+      <button class="game-menu menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+        <img src="../sequence-memory/assets/tutorial-menu.png" alt="" draggable="false" />
+      </button>
+
+      <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+        <div class="game-menu-shield" aria-hidden="true"></div>
+        <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+          <img class="game-menu-panel__background" src="assets/menu-background.png" alt="" draggable="false" />
+          <header class="game-menu-header">
+            <h2 id="game-menu-title">게임 메뉴</h2>
+            <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기"><img src="assets/menu-close.png" alt="" draggable="false" /></button>
+          </header>
+          <div class="game-menu-categories">
+            <section class="game-menu-category" data-menu-category="memory">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games"><span>기억력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+              <div class="game-menu-games" id="memory-games" aria-hidden="true"><div class="game-menu-games__inner"><a class="game-menu-game" href="../sequence-memory/index.html">순서 암기</a><a class="game-menu-game" href="../missing-number/index.html">없는 숫자 찾기</a><a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a></div></div>
+            </section>
+            <section class="game-menu-category" data-menu-category="judgment">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games"><span>판단력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+              <div class="game-menu-games" id="judgment-games" aria-hidden="true"><div class="game-menu-games__inner"><a class="game-menu-game" href="../hidden-weight/index.html">숨은 무게 찾기</a><a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a><a class="game-menu-game" href="../bias-sentence/index.html">편향 문장 판정</a></div></div>
+            </section>
+            <section class="game-menu-category" data-menu-category="language">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games"><span>언어력 게임</span><img class="game-menu-arrow game-menu-arrow--closed" src="../sequence-memory/assets/menu-arrow-black-transparent.png" alt="" /><img class="game-menu-arrow game-menu-arrow--open" src="../sequence-memory/assets/menu-arrow-white-transparent.png" alt="" /></button>
+              <div class="game-menu-games" id="language-games" aria-hidden="true"><div class="game-menu-games__inner"><button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>문장 인과 순서 배치</button><a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a><a class="game-menu-game" href="../word-block/index.html?v=20260927-menu-click-fix">단어 블록 맞추기</a></div></div>
+            </section>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="game-logo" aria-label="REBUT">
+        <img src="../sequence-memory/assets/game-logo-r.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-e.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-b.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-u.png" alt="" />
+        <img src="../sequence-memory/assets/game-logo-t.png" alt="" />
+      </div>
+
+      <div class="round-indicator" aria-live="polite" aria-label="현재 진행 1-1">
+        <img id="level-number" src="assets/round-digit-1.png" alt="1" draggable="false" />
+        <span class="round-divider" aria-hidden="true"></span>
+        <img id="round-number" class="round-current" src="assets/round-digit-1.png" alt="1" draggable="false" />
+      </div>
+
+      <button class="help-button" id="help-button" type="button" aria-label="튜토리얼 다시 보기">
+        <img src="../sequence-memory/assets/tutorial-book.png" alt="" draggable="false" />
+      </button>
+
+      <section class="order-board" id="order-board" data-level="1" aria-label="문장 순서 재배치 보드">
+        <img class="order-spine" id="order-spine" src="assets/game-spine-lv1.png" alt="" aria-hidden="true" />
+        <div class="game-card-stack" id="game-card-stack"></div>
+      </section>
+
+      <button class="assemble-button" id="assemble-button" type="button">
+        <img src="../sequence-memory/assets/start-button-frame-hires.png" alt="" />
+        <span>조립 완료</span>
+      </button>
+
+      <button class="back-control" id="back-control" type="button" aria-label="언어력 재활 메뉴로 돌아가기">
+        <img src="../sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+      </button>
+
+      <button class="restart-control" id="restart-control" type="button" aria-label="문제 다시 보기">
+        <img src="../sequence-memory/assets/tutorial-exit.png" alt="" draggable="false" />
+      </button>
+
+      <div class="tutorial-overlay" id="tutorial-overlay" aria-hidden="false">
+        <div class="tutorial-dim" aria-hidden="true"></div>
+
+        <article class="tutorial-panel" id="tutorial-panel" aria-labelledby="tutorial-title" aria-describedby="tutorial-instructions">
+          <img class="tutorial-popup-frame" src="../sequence-memory/assets/popup-frame.png" alt="" draggable="false" />
+          <h1 class="tutorial-title" id="tutorial-title">문장 인과 순서 배치</h1>
+
+          <div class="tutorial-order-demo" aria-label="문장을 시간 순서대로 재배치하는 예시">
+            <img class="tutorial-demo-spine" src="assets/game-spine-lv1.png" alt="" aria-hidden="true" draggable="false" />
+            <div class="tutorial-card-stack" id="tutorial-card-stack"></div>
+          </div>
+
+          <div class="tutorial-cursor" id="tutorial-cursor" aria-hidden="true">
+            <img id="tutorial-cursor-image" src="assets/popup-cursor.svg" alt="" draggable="false" />
+          </div>
+
+          <p class="tutorial-instructions" id="tutorial-instructions">
+            <span>먼저, 흩어진 문장들을 잘 읽으세요.</span>
+            <span>그다음, 일이 일어난 순서대로 놓으세요.</span>
+          </p>
+
+          <button class="tutorial-start" id="tutorial-start" type="button">
+            <img src="../sequence-memory/assets/result-button-frame-new.png" alt="" draggable="false" />
+            <span>시작하기</span>
+          </button>
+        </article>
+      </div>
+
+
+      <p class="sr-only" id="game-status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

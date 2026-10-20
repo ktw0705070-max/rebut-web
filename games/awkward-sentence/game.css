@@ -1,0 +1,683 @@
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("../shared/assets/fonts/a03d520bccc43ae1.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fafaf8;
+  --ink: #151515;
+  --wrong-shake-duration: 200ms;
+  --pick-press-duration: 100ms;
+  --sentence-erase-duration: 500ms;
+  --lock-unlock-duration: 700ms;
+  --round-erase-duration: 500ms;
+  --round-write-duration: 800ms;
+  --level-fade-in: 600ms;
+  --level-fade-out: 800ms;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+body,
+button {
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+button { margin: 0; }
+
+.game-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+  transform: translateX(-50%) scale(var(--game-scale, 1));
+  transform-origin: top center;
+  user-select: none;
+}
+
+/* 피그마 919:1527의 공통 게임 프레임 */
+.menu-control {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 60px;
+  width: 50px;
+  height: 45.118px;
+}
+
+.menu-control img {
+  width: 50px;
+  height: 45.118px;
+  display: block;
+  object-fit: contain;
+}
+
+.game-logo {
+  position: absolute;
+  z-index: 20;
+  top: 43px;
+  left: 819px;
+  width: 284px;
+  height: 56px;
+}
+
+.game-logo img {
+  position: absolute;
+  top: 0;
+  width: 52px;
+  height: 56px;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.game-logo img:nth-child(1) { left: 0; }
+.game-logo img:nth-child(2) { left: 58px; }
+.game-logo img:nth-child(3) { left: 116px; }
+.game-logo img:nth-child(4) { left: 174px; }
+.game-logo img:nth-child(5) { left: 232px; }
+
+.game-logo.is-waving img {
+  animation: correct-logo-wave var(--logo-wave-letter-duration) ease-in-out var(--logo-wave-delay) 1 both;
+  will-change: transform;
+}
+
+@keyframes correct-logo-wave {
+  0%, 100% { transform: translateY(0); }
+  36% { transform: translateY(-30px); }
+  58% { transform: translateY(8px); }
+  76% { transform: translateY(-3px); }
+}
+
+.round-indicator {
+  position: absolute;
+  z-index: 20;
+  top: 54px;
+  left: 1751.453px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: transparent;
+  font-size: 0;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.round-indicator > img {
+  display: block;
+  width: 34px;
+  height: 55px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.round-indicator .round-current {
+  width: 34px;
+}
+
+.round-divider {
+  width: 34px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: #111;
+}
+
+.utility-controls {
+  position: absolute;
+  z-index: 30;
+  top: 151px;
+  left: 1701px;
+  width: 161.455px;
+  height: 65px;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.help-button {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.help-button { top: 8px; right: 0; width: 64.455px; height: 56.852px; }
+.help-button img { width: 64.455px; height: 56.852px; display: block; object-fit: contain; }
+.help-button:active { transform: scale(.96); }
+
+.info-popover {
+  position: absolute;
+  z-index: 25;
+  top: 220px;
+  left: 1625px;
+  width: 275px;
+  height: 189px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(calc(var(--responsive-y, 0px) - 6px));
+  transition: opacity 180ms ease, transform 180ms ease, visibility 0s linear 180ms;
+  pointer-events: none;
+}
+
+.info-popover.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(var(--responsive-y, 0px));
+  transition-delay: 0s;
+}
+
+.info-bubble {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 291px;
+  height: 205px;
+  display: block;
+}
+
+.info-popover p {
+  position: absolute;
+  top: 62px;
+  left: 34px;
+  width: 216px;
+  margin: 0;
+  color: #111;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -.45px;
+}
+
+.hint-popover {
+  left: 1511px;
+  width: 275px;
+  height: 139px;
+}
+
+.hint-popover .info-bubble {
+  top: -5px;
+  left: -5px;
+  width: 291px;
+  height: 151px;
+}
+
+.hint-popover p {
+  top: 57px;
+  left: 137px;
+  width: 220px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+/* 교체 영역: Figma의 1206×717 손그림 공책 */
+.notebook-board {
+  position: absolute;
+  z-index: 10;
+  top: 228.92px;
+  left: 50%;
+  width: 1206px;
+  height: 717.156px;
+  transform: translate(-50%, var(--responsive-y, 0px)) scale(.977612);
+  transform-origin: top center;
+  isolation: isolate;
+}
+
+.notebook-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.notebook-shadow,
+.notebook-side,
+.notebook-bottom,
+.notebook-placeholder,
+.spread-placeholder,
+.notebook-ink,
+.notebook-lock {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.notebook-shadow {
+  z-index: 0;
+  top: 3.397px;
+  left: 5.945px;
+  width: 1210.246px;
+  height: 731.313px;
+}
+
+.notebook-side {
+  z-index: 1;
+  top: 4.246px;
+  left: 1195.808px;
+  width: 707.463px;
+  height: 11.89px;
+  transform: rotate(90deg);
+  transform-origin: left top;
+}
+
+.notebook-bottom {
+  z-index: 1;
+  top: 699.82px;
+  left: 5.096px;
+  width: 1190.712px;
+  height: 15.287px;
+}
+
+.page-face {
+  position: absolute;
+  z-index: 2;
+  top: 6.794px;
+  width: 591.11px;
+  height: 693.025px;
+  background: #fff;
+}
+
+.page-face-left { left: 6.794px; }
+.page-face-right { left: 591.11px; }
+
+.notebook-placeholder {
+  z-index: 3;
+  top: 26.7px;
+  left: 637.74px;
+  width: 520.341px;
+  height: 350.621px;
+  object-fit: cover;
+}
+
+.spread-placeholder {
+  z-index: 3;
+  top: .0717px;
+  left: 596.97px;
+  width: 596.97px;
+  height: 703.027px;
+  overflow: hidden;
+  display: none;
+}
+
+.spread-placeholder-row {
+  position: absolute;
+  left: 39px;
+  width: 520px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.spread-placeholder-row:nth-child(1) { top: 331px; }
+.spread-placeholder-row:nth-child(2) { top: 385px; }
+.spread-placeholder-row:nth-child(3) { top: 436px; }
+.spread-placeholder-row:nth-child(4) { top: 486px; }
+.spread-placeholder-row:nth-child(5) { top: 537px; }
+.spread-placeholder-row:nth-child(6) { top: 588px; }
+
+.spread-placeholder-row img {
+  position: absolute;
+  top: -253px;
+  left: 0;
+  display: block;
+  width: 520.364px;
+  height: 350.621px;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.notebook-ink {
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 1206px;
+  height: 723.6px;
+  object-fit: fill;
+  image-rendering: auto;
+}
+
+.notebook-lock {
+  z-index: 7;
+  top: 149.14px;
+  left: 867.22px;
+  width: 49.318px;
+  height: 65.78px;
+}
+
+.notebook-lock img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  pointer-events: none;
+  transform-origin: 50% 72%;
+}
+
+.notebook-lock-closed {
+  top: -4.223px;
+  left: -1.475px;
+  width: 51.881px;
+  height: 71.091px;
+  opacity: 1;
+}
+
+.notebook-lock-open {
+  top: -5.361px;
+  left: -1.475px;
+  width: 51.881px;
+  height: 72.231px;
+  opacity: 0;
+}
+
+.notebook-lock.is-unlocking .notebook-lock-closed {
+  animation: lock-release-closed var(--lock-unlock-duration) ease-out both;
+}
+
+.notebook-lock.is-unlocking .notebook-lock-open {
+  animation: lock-release-open var(--lock-unlock-duration) cubic-bezier(.22, .76, .25, 1) both;
+}
+
+.notebook-lock.is-unlocked .notebook-lock-closed { opacity: 0; }
+.notebook-lock.is-unlocked .notebook-lock-open { opacity: 1; }
+
+.notebook-board.is-spread-layout .notebook-placeholder {
+  display: none;
+}
+
+.notebook-board.is-spread-layout .spread-placeholder {
+  display: block;
+}
+
+.notebook-board.is-spread-layout .notebook-lock {
+  top: 445.08px;
+  left: 880px;
+}
+
+.paragraph {
+  position: absolute;
+  z-index: 6;
+  top: 25.78px;
+  left: 42.35px;
+  width: 537.637px;
+  height: 660px;
+  overflow: hidden;
+  color: #111;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 27.618px;
+  font-weight: 800;
+  font-variation-settings: "CTGR" 0, "wdth" 100;
+  line-height: 1.84;
+  letter-spacing: -.6905px;
+  word-break: break-word;
+  overflow-wrap: normal;
+  white-space: normal;
+}
+
+.notebook-board.is-spread-layout .paragraph {
+  top: 27.05px;
+  left: 42.35px;
+  width: 1108.76px;
+  height: 660px;
+  column-count: 2;
+  column-width: 521px;
+  column-gap: 66.76px;
+  column-fill: auto;
+}
+
+/* 단계 3: 피그마처럼 가림막·자물쇠 없이 양쪽 페이지를 모두 사용합니다. */
+.notebook-board.is-full-spread .notebook-placeholder,
+.notebook-board.is-full-spread .spread-placeholder,
+.notebook-board.is-full-spread .notebook-lock {
+  display: none;
+}
+
+.notebook-board.is-full-spread .paragraph {
+  top: 25.05px;
+  width: 1106.76px;
+  column-width: 519px;
+  column-gap: 68.76px;
+}
+
+.paragraph.is-round-erasing {
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 38%, rgba(0, 0, 0, .24) 44%, rgba(0, 0, 0, .72) 50%, #000 58%, #000 100%);
+  -webkit-mask-position: 100% 0;
+  -webkit-mask-size: 260% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 38%, rgba(0, 0, 0, .24) 44%, rgba(0, 0, 0, .72) 50%, #000 58%, #000 100%);
+  mask-position: 100% 0;
+  mask-size: 260% 100%;
+  mask-repeat: no-repeat;
+  animation: erase-paragraph var(--round-erase-duration) linear forwards;
+  will-change: mask-position, opacity;
+}
+
+.paragraph.is-round-writing {
+  animation: write-paragraph var(--round-write-duration) cubic-bezier(.22, .72, .18, 1) both;
+  will-change: clip-path, opacity, filter;
+}
+
+@keyframes erase-paragraph {
+  from { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 1; }
+  to { -webkit-mask-position: 0 0; mask-position: 0 0; opacity: .08; }
+}
+
+@keyframes write-paragraph {
+  0% { clip-path: inset(0 100% 0 0); opacity: .25; filter: blur(1.2px); }
+  55% { opacity: .82; filter: blur(.35px); }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; filter: blur(0); }
+}
+
+@keyframes lock-release-closed {
+  0% { opacity: 1; transform: rotate(0deg) scale(1); }
+  18% { transform: rotate(-5deg) scale(.98); }
+  36% { transform: rotate(4deg) scale(.98); }
+  54% { opacity: 1; transform: rotate(-2deg) scale(.96); }
+  70%, 100% { opacity: 0; transform: rotate(-2deg) scale(.9); }
+}
+
+@keyframes lock-release-open {
+  0%, 40% { opacity: 0; transform: translateY(4px) rotate(5deg) scale(.88); }
+  58% { opacity: 1; transform: translateY(-2px) rotate(-2deg) scale(1.08); }
+  78% { transform: translateY(1px) rotate(1deg) scale(.98); }
+  100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+.sentence-token {
+  position: relative;
+  display: inline;
+  min-height: 1em;
+  margin: 0;
+  padding: 0;
+  color: #111;
+  line-height: inherit;
+  vertical-align: baseline;
+  cursor: pointer;
+  transform: scale(1);
+  transform-origin: center;
+  transition: color 70ms linear, background-color 70ms linear;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.notebook-board.is-locked .sentence-token {
+  pointer-events: none;
+  cursor: default;
+}
+
+.sentence-token.is-hovered,
+.sentence-token.is-selected,
+.sentence-token:focus-visible {
+  z-index: 2;
+  color: #fff;
+  background: #050505;
+  box-shadow: 2px 0 0 #050505, -2px 0 0 #050505;
+  outline: none;
+}
+
+.sentence-token.is-tutorial-preview {
+  color: #111;
+  background: rgba(0, 0, 0, .1);
+  box-shadow: 2px 0 0 rgba(0, 0, 0, .1), -2px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sentence-token.is-pressed {
+  animation: pick-press var(--pick-press-duration) ease-out both;
+}
+
+.sentence-token.is-wrong {
+  animation: wrong-answer-shake var(--wrong-shake-duration) cubic-bezier(.36, .07, .19, .97) both;
+}
+
+.sentence-token.is-erasing {
+  color: #111;
+  background: transparent;
+  box-shadow: none;
+  animation: erase-token var(--token-duration, 320ms) linear var(--token-delay, 0ms) forwards;
+  will-change: clip-path, opacity, filter;
+}
+
+.sentence-token.is-erased {
+  visibility: hidden;
+}
+
+@keyframes pick-press {
+  0% { transform: scale(1); }
+  50% { transform: scale(.96); }
+  100% { transform: scale(1); }
+}
+
+@keyframes wrong-answer-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-11px); }
+  50% { transform: translateX(9px); }
+  75% { transform: translateX(-5px); }
+}
+
+@keyframes erase-token {
+  0% { clip-path: inset(0 0 0 0); opacity: 1; filter: blur(0); }
+  62% { opacity: .48; filter: blur(.55px); }
+  100% { clip-path: inset(0 0 0 100%); opacity: 0; filter: blur(1px); }
+}
+
+.back-control,
+.restart-control {
+  position: absolute;
+  z-index: 20;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(var(--responsive-y, 0px));
+}
+
+.back-control { top: 977.87px; left: 60px; width: 62px; height: 58.114px; }
+.back-control-icon { position: absolute; inset: 0; width: 62px; height: 58.114px; object-fit: contain; }
+.restart-control { top: 253.6px; left: 1802px; width: 59.85px; height: 55.366px; }
+.restart-control > img { position: absolute; inset: 0; width: 59.85px; height: 55.366px; display: block; object-fit: contain; }
+
+.back-control:active { transform: translateY(var(--responsive-y, 0px)) scale(.96); }
+.restart-control:active > img { transform: rotate(-18deg) scale(.96); }
+
+.paper-speck {
+  display: none;
+}
+
+.level-transition {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.level-transition.is-visible { opacity: 1; visibility: visible; pointer-events: auto; }
+.level-transition.is-fading { opacity: 0; transition: opacity var(--level-fade-out) ease-in-out; }
+
+.level-transition-copy {
+  width: 655px;
+  height: 456px;
+  color: #1d1d1d;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 162.555px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 3.2511px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--level-fade-in) ease-in-out;
+}
+
+.level-transition-copy p { margin: 0; }
+.level-transition.is-text-visible .level-transition-copy { opacity: 1; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.help-button:focus-visible,
+.back-control:focus-visible,
+.restart-control:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sentence-token,
+  .paragraph,
+  .notebook-lock img,
+  .info-popover,
+  .level-transition,
+  .level-transition-copy {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+
+  .game-logo.is-waving img {
+    animation-duration: 1ms;
+    animation-delay: 0ms !important;
+  }
+}

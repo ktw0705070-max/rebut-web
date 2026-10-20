@@ -1,0 +1,220 @@
+@font-face { font-family: Pretendard; src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+@font-face { font-family: NanumMyeongjo; src: url("../shared/assets/fonts/a03d520bccc43ae1.woff2") format("woff2"); font-weight: 700 900; font-display: block; }
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { background: #fafaf8; color: #111; font-family: Pretendard, sans-serif; cursor: default; }
+button { border: 0; padding: 0; color: inherit; background: transparent; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button:focus-visible { outline: 2px solid #111; outline-offset: 4px; }
+img { display: block; user-select: none; pointer-events: none; }
+p, h1 { margin: 0; }
+[hidden] { display: none !important; }
+.viewport { position: relative; width: 100vw; height: 100vh; height: 100dvh; overflow: hidden; background: #fafaf8; }
+/* 순서 암기와 동일: 1920×1080 비율로 축소하고 남는 세로 공간은 배경으로 채움. */
+.stage { position: absolute; top: 0; left: 50%; width: 1920px; height: 1080px; overflow: hidden; background: #fafaf8; transform: translateX(-50%) scale(var(--game-scale, 1)); transform-origin: top center; container-type: inline-size; isolation: isolate; }
+.game-screen { position: absolute; inset: 0; }
+.game-chrome, .game-board { position: absolute; top: 0; left: 0; width: 100%; height: 56.25cqw; }
+.game-board { transform: translateY(var(--board-shift, 0px)); }
+.chrome-control { position: absolute; z-index: 5; }
+.chrome-control img { width: 100%; height: 100%; object-fit: fill; }
+/* 순서 암기 game.css/styles.css의 원본 1920×1080 좌표와 이미지 배치. stage가 함께 확대·축소합니다. */
+.game-menu { left: 59.45px; top: 61px; width: 50px; height: 45.118px; }
+.game-logo { position: absolute; z-index: 5; left: 819px; top: 61px; width: 284px; height: 56px; }
+.game-logo img { position: absolute; top: 0; width: 52px; height: 56px; object-fit: cover; }
+.game-logo img:nth-child(1) { left: 0; }
+.game-logo img:nth-child(2) { left: 58px; }
+.game-logo img:nth-child(3) { left: 116px; }
+.game-logo img:nth-child(4) { left: 174px; }
+.game-logo img:nth-child(5) { left: 232px; }
+.round-progress { position: absolute; z-index: 5; left: 1745.45px; top: 54px; display: flex; align-items: center; gap: 5px; height: 56px; }
+.round-progress > img:first-child { width: 34px; height: 56px; object-fit: fill; }
+.round-progress__dash { display: block; width: 34px; height: 8px; flex: 0 0 auto; background: #000; }
+.round-progress__current { width: 37px; height: 55px; object-fit: contain; }
+.game-book { left: 1797.45px; top: 159px; width: 64.455px; height: 56.852px; }
+.game-restart { left: 1801.45px; top: 253.6px; width: 59.85px; height: 55.366px; }
+.game-back { left: 59.45px; top: var(--back-top, 977.87px); width: 62px; height: 58.114px; }
+.stage > .game-back { z-index: 25; }
+.game-conditions { position: absolute; top: var(--game-condition-top); left: 50%; transform: translateX(-50%); width: max-content; height: var(--game-condition-height); display: flex; gap: var(--game-condition-gap); align-items: center; }
+.game-condition { position: relative; flex: 0 0 var(--game-condition-width); width: var(--game-condition-width); height: 100%; display: grid; place-items: center; font-family: NanumMyeongjo, serif; font-weight: 800; font-size: 1.25cqw; letter-spacing: -.03125cqw; line-height: 1.5; }
+.game-condition img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.game-condition span { position: relative; width: 95.33184%; text-align: center; transform: translateX(.0145833cqw); white-space: nowrap; }
+.game-direction { position: absolute; top: 18.6979167cqw; width: 100%; text-align: center; font-family: NanumMyeongjo, serif; font-weight: 700; font-size: 1.02557cqw; color: #777; letter-spacing: -.0256cqw; line-height: 1.5; }
+.game-slots { position: absolute; top: var(--game-slot-top); left: 50%; transform: translateX(-50%); width: max-content; height: var(--game-card-height); display: flex; }
+.game-slot { position: relative; flex: 0 0 var(--game-card-pitch); width: var(--game-card-pitch); height: 100%; }
+.game-slot:last-child { flex-basis: var(--game-card-width); width: var(--game-card-width); }
+.game-slot img { position: absolute; top: 0; width: var(--game-slot-width); height: var(--game-slot-height); object-fit: cover; opacity: .5; }
+.game-slot.is-occupied img { opacity: 0; }
+.game-slot.is-target { background: rgb(17 17 17 / 8%); }
+.game-cards { position: absolute; inset: 0; pointer-events: none; isolation: isolate; }
+.game-cards > .logic-card { pointer-events: auto; cursor: grab; touch-action: none; z-index: var(--card-layer, 0); }
+.game-cards > .logic-card.is-dragging { cursor: grabbing; z-index: 10; }
+.logic-card:focus, .logic-card:focus-visible, .game-slot:focus, .game-slot:focus-visible { outline: none; }
+/* 편향 문장 판정 styles.css의 공통 팝업/딤 구조를 비례 단위로 추출. */
+.tutorial-overlay { position: absolute; z-index: 20; inset: 0; opacity: 1; transition: opacity var(--popup-fade) ease-out; cursor: default; }
+.tutorial-overlay.is-closing { opacity: 0; pointer-events: none; }
+.dim-layer { position: absolute; z-index: 0; inset: 0; background: rgba(var(--dim-color), var(--dim-opacity)); }
+.tutorial-panel { position: absolute; z-index: 1; left: var(--popup-left); top: var(--popup-top); width: var(--popup-width); height: var(--popup-height); overflow: visible; isolation: isolate; filter: drop-shadow(.208333cqw .208333cqw .520833cqw rgb(0 0 0 / 40%)); }
+.popup-frame { position: absolute; z-index: 0; top: -.2291%; left: -.2747%; width: 100.5495%; height: 100.4582%; object-fit: fill; }
+.tutorial-title { position: absolute; z-index: 3; top: 4.12371%; left: 7.55495%; width: 84.8901%; color: #1d1d1d; font-size: 2.395833cqw; font-weight: 600; line-height: 1.6; letter-spacing: -.0598958cqw; text-align: center; white-space: nowrap; }
+.tutorial-condition { position: absolute; z-index: 2; top: 16.036655%; left: 39.835165%; width: 20.192308%; min-height: 4.009164%; padding: 0 .208333cqw; display: flex; flex-direction: column; justify-content: center; border: 0; background: url("assets/1e011.png") center / 100% 100% no-repeat; font-family: NanumMyeongjo, serif; font-weight: 800; font-size: .745885cqw; line-height: 1.5; letter-spacing: -.018646cqw; text-align: center; white-space: nowrap; }
+.tutorial-condition span { display: block; }
+.tutorial-direction { position: absolute; z-index: 2; top: 24.1031%; width: 100%; font-family: NanumMyeongjo, serif; color: #777; font-size: .573125cqw; font-weight: 700; line-height: 1.5; letter-spacing: -.014328cqw; text-align: center; }
+.tutorial-demo { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.tutorial-slot { position: absolute; }
+.tutorial-slot__outline { position: absolute; object-fit: fill; opacity: .5; }
+.tutorial-slot.is-occupied .tutorial-slot__outline { opacity: 0; }
+.tutorial-cursor { position: absolute; z-index: 15; left: 0; top: 0; width: 5.60849%; height: 4.47092%; transform-origin: top left; will-change: transform; }
+.cursor-art { position: absolute; inset: 0; background: url("assets/1686a.svg") center / 100% 100% no-repeat; transform-origin: 10% 10%; }
+.tutorial-cursor.is-clicking .cursor-art { transform: scale(.96); }
+.tutorial-instructions { position: absolute; z-index: 4; top: 69.35853%; left: 4.67033%; width: 90.65934%; color: #1d1d1d; font-size: 1.458333cqw; font-weight: 500; line-height: 1.5; letter-spacing: -.036458cqw; text-align: center; }
+.tutorial-instructions span { display: block; white-space: nowrap; }
+.tutorial-start { position: absolute; z-index: 10; top: 84.30699%; left: 34.6841%; width: 30.6319%; height: 7.789%; }
+.tutorial-start img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
+.tutorial-start span { position: absolute; inset: 0; display: grid; place-items: center; padding-bottom: .0520833cqw; font-size: 1.589375cqw; font-weight: 500; line-height: 1.4; letter-spacing: -.0397344cqw; }
+
+/* Figma의 앞면, 옆면, 밑면, 손그림 선, 그림자를 원본 파일 그대로 합성. */
+.logic-card { position: absolute; left: 0; top: 0; user-select: none; transform-origin: center; will-change: transform; outline: none; -webkit-tap-highlight-color: transparent; }
+.card-motion { width: 100%; height: 100%; }
+.card-visual { position: relative; width: 100%; height: 100%; overflow: visible; isolation: isolate; transform-origin: center; }
+.card-shadow, .card-bottom, .card-front, .card-side, .card-outline, .card-label { position: absolute; }
+/* Vector 176: Figma SVG의 원래 크기·필터를 그대로 렌더링합니다. 그림자를 자르지 않습니다. */
+.card-shadow { left: 0; top: 0; max-width: none; transform: scale(var(--card-scale, 1)); transform-origin: top left; }
+.card-bottom { left: 0; top: 95.728%; width: 100%; height: 4.272%; background: url("assets/3deb9.svg") center / 100% 100% no-repeat; }
+.card-bottom--correct { background-image: url("assets/e3a83.svg"); opacity: 0; }
+.card-front { left: .4%; top: .35%; width: 95.5%; height: 95.847%; background: #fff; }
+.card-side { left: 95.369%; top: 0; width: 107.007%; height: 4.048%; transform-origin: top left; transform: rotate(90deg) scaleY(-1); background: url("assets/c450c.svg") center / 100% 100% no-repeat; }
+.card-side--correct { background-image: url("assets/381f8.svg"); opacity: 0; }
+.card-outline { inset: 0; background: url("assets/58877.png") center / 100% 100% no-repeat; }
+.card-outline--correct { background-image: url("assets/0759a.png"); opacity: 0; }
+.card-label { z-index: 3; inset: 0 4.47% 3.81% 0; display: grid; place-items: center; color: #111; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 500; font-size: var(--card-font-size, 2.819219cqw); line-height: 1.3; letter-spacing: -.070479cqw; }
+.game-cards .card-front { left: 0; top: 0; width: 95.902%; height: 96.197%; }
+.game-cards .card-label { letter-spacing: calc(var(--card-font-size) * -.025); }
+.game-cards .card-bottom { left: -.415562%; top: 95.726665%; width: 100.358214%; height: 4.272563%; background-image: url("assets/589e2.svg"); }
+.game-cards .card-bottom--correct { background-image: url("assets/e3a83.svg"); }
+.game-cards .card-side { left: 95.371464%; top: -.0809635%; width: 107.007196%; height: 4.048179%; background-image: url("assets/b8089.svg"); }
+.game-cards .card-side--correct { background-image: url("assets/381f8.svg"); }
+.game-cards .card-outline { left: -.831124%; top: -.273734%; width: 101.397120%; height: 100.626118%; background-image: url("assets/58877.png"); }
+.game-cards .card-outline--correct { inset: 0; width: 100%; height: 100%; background-image: url("assets/0759a.png"); }
+.logic-card.is-correct .card-front { background: #010101; }
+.logic-card.is-correct .card-label { color: #fff; }
+.logic-card.is-correct .card-outline:not(.card-outline--correct),
+.logic-card.is-correct .card-bottom:not(.card-bottom--correct),
+.logic-card.is-correct .card-side:not(.card-side--correct) { opacity: 0; }
+.logic-card.is-correct .card-outline--correct,
+.logic-card.is-correct .card-bottom--correct,
+.logic-card.is-correct .card-side--correct { opacity: 1; }
+.card-front, .card-label, .card-outline, .card-bottom, .card-side { transition: background-color var(--invert-duration) linear, color var(--invert-duration) linear, opacity var(--invert-duration) linear; }
+.logic-card.is-pressed .card-visual { animation: control-press var(--press-duration) ease-out 1 both; }
+@keyframes control-press { 0% { transform: scale(.96); } 100% { transform: scale(1); } }
+/* 기존 correct-logo-wave의 0/36/58/76/100% 키프레임과 translateY만 재사용. */
+.logic-card.is-waving .card-motion { animation: correct-card-wave var(--wave-duration) ease-in-out var(--wave-delay) 1 both; }
+@keyframes correct-card-wave {
+  0%, 100% { transform: translateY(0); }
+  36% { transform: translateY(var(--wave-up)); }
+  58% { transform: translateY(var(--wave-down)); }
+  76% { transform: translateY(var(--wave-settle)); }
+}
+.is-resetting .card-front, .is-resetting .card-label, .is-resetting .card-outline, .is-resetting .card-bottom, .is-resetting .card-side { transition: none; }
+/* Figma 1093:10874의 계단형 검은 블록 와이프와 1057:9988의 스텝 조각 조립. */
+.level-transition { position: absolute; z-index: 100; inset: 0; overflow: hidden; visibility: hidden; pointer-events: none; }
+.level-transition.is-visible { visibility: visible; pointer-events: auto; }
+.step-wipe { position: absolute; z-index: 0; inset: 0; }
+.step-wipe__block {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  left: calc(var(--step-index) * 12.5%);
+  width: calc(12.5% + 2px);
+  background: #111;
+  transform: translateY(calc(100% + 4px));
+  transition: transform var(--step-block-duration) cubic-bezier(.22, 1, .36, 1);
+  transition-delay: calc(var(--step-index) * var(--step-block-stagger));
+  will-change: transform;
+}
+.level-transition.is-covering .step-wipe__block { transform: translateY(0); }
+.level-transition.is-revealing .step-wipe__block {
+  transform: translateY(calc(100% + 4px));
+  transition-duration: var(--step-reveal-duration);
+  transition-delay: calc(var(--step-index) * var(--step-reveal-stagger));
+  transition-timing-function: cubic-bezier(.64, 0, .78, 0);
+}
+.step-title {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 840px;
+  height: 179px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--step-title-fade) ease-in-out;
+}
+.step-title[data-level="2"] { width: 840px; }
+.step-title[data-level="3"] { width: 836.338px; }
+.level-transition.is-title-active .step-title { opacity: 1; }
+.level-transition.is-title-fading .step-title { opacity: 0; }
+.step-word, .step-letter, .step-number { position: absolute; display: block; }
+.step-word { left: 0; top: 0; width: 638px; height: 179px; }
+.step-letter--s { left: 0; top: 0; width: 124px; height: 178.5px; }
+.step-letter--t { left: 140px; top: 0; width: 151px; height: 177px; }
+.step-letter--e { left: 307px; top: 0; width: 160px; height: 172px; }
+.step-letter--p { left: 483px; top: 0; width: 155px; height: 173px; }
+.step-title-piece { position: absolute; object-fit: fill; opacity: 0; transform-origin: center; }
+.step-letter--s .step-title-piece:nth-child(1) { left: 24px; top: 0; width: 100px; height: 30px; }
+.step-letter--s .step-title-piece:nth-child(2) { left: 0; top: 30.5px; width: 30px; height: 57px; }
+.step-letter--s .step-title-piece:nth-child(3) { left: 30px; top: 71.5px; width: 94px; height: 30px; }
+.step-letter--s .step-title-piece:nth-child(4) { left: 94px; top: 104.5px; width: 30px; height: 57px; }
+.step-letter--s .step-title-piece:nth-child(5) { left: 0; top: 148.5px; width: 94px; height: 30px; }
+.step-letter--t .step-title-piece:nth-child(1) { left: 0; top: 0; width: 151px; height: 30px; }
+.step-letter--t .step-title-piece:nth-child(2) { left: 58px; top: 30px; width: 30px; height: 147px; }
+.step-letter--e .step-title-piece:nth-child(1) { left: 36px; top: 0; width: 124px; height: 30px; }
+.step-letter--e .step-title-piece:nth-child(2) { left: 7px; top: 142px; width: 153px; height: 30px; }
+.step-letter--e .step-title-piece:nth-child(3) { left: 0; top: 7px; width: 30px; height: 135px; }
+.step-letter--e .step-title-piece:nth-child(4) { left: 35px; top: 48px; width: 124px; height: 65px; }
+.step-letter--p .step-title-piece:nth-child(1) { left: 0; top: 0; width: 30px; height: 173px; }
+.step-letter--p .step-title-piece:nth-child(2) { left: 32px; top: 0; width: 97px; height: 30px; }
+.step-letter--p .step-title-piece:nth-child(3) { left: 125px; top: 31px; width: 30px; height: 57px; }
+.step-letter--p .step-title-piece:nth-child(4) { left: 31px; top: 76px; width: 93px; height: 30px; }
+.step-number { left: 720px; }
+.step-number--1 { top: 3.25px; width: 120px; height: 172px; }
+.step-number--1 .step-title-piece:nth-child(1) { left: 4px; top: 0; width: 42px; height: 58px; }
+.step-number--1 .step-title-piece:nth-child(2) { left: 47px; top: 0; width: 30px; height: 142px; }
+.step-number--1 .step-title-piece:nth-child(3) { left: 0; top: 142px; width: 120px; height: 30px; }
+.step-number--2 { top: 4.875px; width: 120px; height: 168.75px; }
+.step-number--2 .step-title-piece:nth-child(1) { left: 0; top: 0; width: 120.073px; height: 141.164px; }
+.step-number--2 .step-title-piece:nth-child(2) { left: .83px; top: 141.25px; width: 118.75px; height: 27.308px; }
+.step-number--3 { top: 4.25px; width: 116.338px; height: 170px; }
+.step-number-half { left: 0; width: 116.338px; height: 85px; overflow: hidden; }
+.step-number-half:first-child { top: 0; }
+.step-number-half--flipped { top: 85px; }
+.step-number-half img { position: absolute; left: 0; top: -.06%; width: 100%; height: 103.16%; object-fit: fill; }
+.step-number-half--flipped img { transform: scaleY(-1); }
+.level-transition.is-title-active .step-title-piece {
+  animation: step-piece-assemble var(--step-title-duration) cubic-bezier(.22, 1, .36, 1)
+    calc(var(--piece-index) * var(--step-title-stagger)) both;
+}
+@keyframes step-piece-assemble {
+  0% { opacity: 1; transform: translate(var(--scatter-x), var(--scatter-y)) rotate(var(--scatter-rotate)) scale(.97); }
+  88% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+  100% { opacity: 1; transform: translate(0, 0) rotate(0) scale(1); }
+}
+.level-transition.is-title-shaking .step-title-piece {
+  animation: step-piece-shake var(--shake-duration) ease-out var(--shake-delay) 1 both;
+}
+@keyframes step-piece-shake {
+  0%, 100% { opacity: 1; transform: translate(0, 0) rotate(0); }
+  20% { opacity: 1; transform: translate(var(--shake-x-1), var(--shake-y-1)) rotate(var(--shake-r-1)); }
+  43% { opacity: 1; transform: translate(var(--shake-x-2), var(--shake-y-2)) rotate(var(--shake-r-2)); }
+  66% { opacity: 1; transform: translate(var(--shake-x-3), var(--shake-y-3)) rotate(var(--shake-r-3)); }
+  84% { opacity: 1; transform: translate(var(--settle-x), var(--settle-y)) rotate(var(--settle-rotate)); }
+}
+.level-transition.is-reduced .step-wipe__block { transform: translateY(0); transition: none; }
+.level-transition.is-reduced .step-title { opacity: 1; }
+.level-transition.is-reduced .step-title-piece { opacity: 1; transform: none; animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .step-wipe__block, .step-title { transition: none; }
+}
+.game-logo.is-waving img { animation: correct-logo-wave var(--logo-wave-duration) ease-in-out var(--logo-wave-delay) 1 both; }
+@keyframes correct-logo-wave { 0%, 100% { transform: translateY(0); } 36% { transform: translateY(-30px); } 58% { transform: translateY(8px); } 76% { transform: translateY(-3px); } }
+.game-board.is-wrong .card-motion { animation: wrong-card-shake var(--wrong-shake) ease-in-out 1; }
+@keyframes wrong-card-shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "REBUT Sequence Level";
+  src: url("../shared/assets/fonts/60c0077fce069ba9.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+}
+
+/*
+ * Every game uses the sequence-memory stage card as its single visual source
+ * of truth. Keeping this here also guarantees that the Roman numerals come
+ * from the exact same font file rather than a system fallback.
+ */
+.level-transition {
+  position: absolute;
+  z-index: 100;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fafaf8;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.level-transition.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.level-transition.is-fading {
+  opacity: 0;
+  transition: opacity var(--level-fade-out) ease-in-out;
+}
+
+.level-transition-copy {
+  width: 655px;
+  height: 456px;
+  color: #1d1d1d;
+  font-family: "REBUT Sequence Level", "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 162.555px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 3.2511px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--level-fade-in) ease-in-out;
+}
+
+.level-transition-copy p {
+  margin: 0;
+}
+
+.level-transition.is-text-visible .level-transition-copy {
+  opacity: 1;
+}
+

@@ -1,0 +1,22 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="215.028" height="94.2366" viewBox="0 0 215.028 94.2366" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Vector 3" filter="url(#filter0_dg_0_7)">
+<path d="M83.3295 85.522C81.3983 85.1351 78.8167 84.2283 76.3004 83.3326C71.3801 81.581 69.2714 81.1431 64.9948 79.7182H3.1986M206.332 40.8572V8.45329L201.031 3.1986H3.1986L3.1986 79.7182L12.3512 85.5402L83.3295 85.522M83.3295 85.522H169.92M206.332 85.522L201.031 79.7182M206.332 40.8572V85.522H169.92M201.031 79.7182H155.728L169.92 85.522M201.031 79.7182V35.2712L206.332 40.8572" stroke="#111111" stroke-width="0.899404" shape-rendering="crispEdges"/>
+</g>
+<defs>
+<filter id="filter0_dg_0_7" x="8.9407e-08" y="8.9407e-08" width="215.028" height="94.2366" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="2.7489" dy="2.7489"/>
+<feGaussianBlur stdDeviation="2.7489"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_7"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_7" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.027832521125674248 0.027832521125674248" numOctaves="3" seed="9897" />
+<feDisplacementMap in="shape" scale="1.6582702398300171" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect2_texture_0_7">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>

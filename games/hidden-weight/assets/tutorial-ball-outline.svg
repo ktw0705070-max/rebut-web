@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="76.4716" height="76.4716" viewBox="0 0 76.4716 76.4716" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Ellipse 6" filter="url(#filter0_g_0_28)">
+<circle cx="38.2358" cy="38.2358" r="37.5381" fill="white"/>
+<circle cx="38.2358" cy="38.2358" r="37.0113" stroke="black" stroke-width="1.05364"/>
+</g>
+<defs>
+<filter id="filter0_g_0_28" x="0" y="0" width="76.4716" height="76.4716" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.035279896110296249 0.035279896110296249" numOctaves="3" seed="1536" />
+<feDisplacementMap in="shape" scale="1.3954339027404785" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_0_28">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>

@@ -1,0 +1,20 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="4096"
+  height="3792"
+  viewBox="0 0 4096 3792"
+  preserveAspectRatio="none"
+  fill="none"
+>
+  <defs>
+    <clipPath id="outer-face-clip">
+      <path d="M28 28H3842L4068 258V3758H282L28 3498V28Z" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#outer-face-clip)">
+    <path d="M0 0H3848V3508H0V0Z" fill="#010101" />
+    <path d="M0 3478H3858L4096 3792H0V3478Z" fill="#333333" />
+    <path d="M3824 0H4096V3792L3824 3498V0Z" fill="#333333" />
+  </g>
+</svg>

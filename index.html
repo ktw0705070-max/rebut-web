@@ -1,0 +1,1654 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fafaf8" />
+    <title>REBUT — 당신의 뇌를 다시 깨우는 재활</title>
+    <style>
+      @font-face {
+        font-family: "Pretendard Variable";
+        src: url("./assets/PretendardVariable.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: "Nanum Myeongjo";
+        src: url("games/shared/assets/fonts/30a041ca85102256.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 800;
+        font-display: swap;
+      }
+
+      :root {
+        --paper: #fafaf8;
+        --ink: #111111;
+        --muted: #a0a0a0;
+        --stage-scale: 1;
+        --side-inset: 0px;
+        --stage-top-inset: 0px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-width: 320px;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      button,
+      img {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        color: var(--ink);
+        font-family: "Pretendard Variable", Pretendard, Arial, sans-serif;
+      }
+
+      .viewport {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        height: 100svh;
+        overflow: hidden;
+        isolation: isolate;
+        background: var(--paper);
+      }
+
+      .stage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform: translate(-50%, -50%) scale(var(--stage-scale));
+        transform-origin: center;
+        background: var(--paper);
+      }
+
+      .main-center {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        transition: opacity 420ms ease, filter 420ms ease;
+      }
+
+      .memory-open .main-center {
+        opacity: 0;
+        filter: blur(12px);
+        pointer-events: none;
+      }
+
+      .memory-open .object-anchor {
+        opacity: 1 !important;
+        animation: none !important;
+      }
+
+      .site-header {
+        position: absolute;
+        top: var(--stage-top-inset);
+        left: 0;
+        z-index: 20;
+        width: 100%;
+        height: 77px;
+        /* The outline image supplies the paper up to its uneven black edge. */
+        background: transparent;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .memory-open .site-header {
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      .site-header__outline {
+        position: absolute;
+        top: -1px;
+        left: -1px;
+        width: 1921px;
+        height: 79px;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .site-header__outline img {
+        position: absolute;
+        top: -8px;
+        left: -63px;
+        display: block;
+        width: 2048px;
+        height: 86.5px;
+        max-width: none;
+      }
+
+      .site-header__wordmark {
+        position: absolute;
+        top: 26px;
+        left: 43px;
+        display: block;
+        width: 131px;
+        height: 27px;
+        object-fit: contain;
+        transform: translateX(var(--side-inset));
+      }
+
+      .site-header__nav {
+        position: absolute;
+        top: 19px;
+        left: 1503px;
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        white-space: nowrap;
+        transform: translateX(calc(var(--side-inset) * -1));
+      }
+
+      .site-header__nav-item {
+        position: relative;
+        width: 99px;
+        height: 39px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #1d1d1d;
+        font: 600 26px/1.5 "Pretendard Variable", Pretendard, Arial, sans-serif;
+        letter-spacing: 0.52px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      .site-header__nav-item::after {
+        position: absolute;
+        right: 10px;
+        bottom: 0;
+        left: 10px;
+        height: 1px;
+        background: currentColor;
+        content: "";
+        transform: scaleX(0);
+        transition: transform 180ms ease;
+      }
+
+      .site-header__nav-item:hover::after,
+      .site-header__nav-item:focus-visible::after,
+      .site-header__nav-item.is-current::after {
+        transform: scaleX(1);
+      }
+
+      .site-header__nav-item:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 3px;
+      }
+
+      .memory-screen {
+        position: absolute;
+        inset: 0;
+        z-index: 15;
+        visibility: hidden;
+        pointer-events: none;
+        transition: visibility 0s linear 500ms;
+      }
+
+      .memory-screen::before {
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(11.6px);
+        -webkit-backdrop-filter: blur(11.6px);
+        content: "";
+        opacity: 0;
+        transition: opacity 500ms ease;
+      }
+
+      .memory-open .memory-screen {
+        visibility: visible;
+        pointer-events: auto;
+        transition-delay: 0s;
+      }
+
+      .memory-open .memory-screen::before {
+        opacity: 1;
+      }
+
+      .memory-screen__content {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 280ms ease;
+      }
+
+      .memory-open .memory-screen__content {
+        opacity: 1;
+        transition-delay: 260ms;
+      }
+
+      .memory-title-image {
+        position: absolute;
+        top: 278px;
+        left: 799px;
+        z-index: 1;
+        display: block;
+        width: var(--rehab-title-width, 322px);
+        height: var(--rehab-title-height, 66px);
+        max-width: none;
+        object-fit: cover;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .memory-card-slot {
+        position: absolute;
+        left: 482px;
+        width: 956px;
+        height: 164px;
+        cursor: pointer;
+        --memory-card-scale: 1;
+      }
+
+      .memory-card-slot:nth-of-type(1) { top: 389px; }
+      .memory-card-slot:nth-of-type(2) { top: 545px; }
+      .memory-card-slot:nth-of-type(3) { top: 701px; }
+
+      .memory-card {
+        position: absolute;
+        inset: 0;
+        will-change: auto;
+      }
+
+      .memory-card-visual {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 956px;
+        height: 164px;
+        transform: scale(var(--memory-card-scale));
+        transform-origin: top left;
+        transition: transform 320ms cubic-bezier(.2, .85, .25, 1.18);
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .memory-open .memory-card-slot:hover .memory-card-base-layer {
+          opacity: 0;
+        }
+
+        .memory-open .memory-card-slot:hover .memory-card-hover-layer {
+          opacity: 1;
+        }
+
+        .memory-open .memory-card-slot:hover .memory-card-label {
+          color: #ffffff;
+        }
+      }
+
+      .memory-open .memory-card-slot[data-game-link]:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 8px;
+      }
+
+      .memory-open .memory-card-slot[data-game-link]:focus-visible .memory-card-base-layer {
+        opacity: 0;
+      }
+
+      .memory-open .memory-card-slot[data-game-link]:focus-visible .memory-card-hover-layer {
+        opacity: 1;
+      }
+
+      .memory-open .memory-card-slot[data-game-link]:focus-visible .memory-card-label {
+        color: #ffffff;
+      }
+
+      @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+        .memory-open .memory-card-slot:hover .memory-card-visual {
+          transform: translateY(-10px) scale(var(--memory-card-scale));
+        }
+      }
+
+      .memory-card-layer {
+        position: absolute;
+        display: block;
+        max-width: none;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .memory-card-base-layer,
+      .memory-card-hover-layer,
+      .memory-card-label {
+        transition: opacity 140ms ease, color 140ms ease;
+      }
+
+      .memory-card-hover-layer {
+        opacity: 0;
+      }
+
+      .memory-card-shadow {
+        top: 1.97px;
+        left: -1.64px;
+        width: 959.122px;
+        height: 170.122px;
+      }
+
+      .memory-card-frame {
+        top: 0;
+        left: 1px;
+        width: 955px;
+        height: 164px;
+      }
+
+      .memory-card-line {
+        top: 0;
+        left: 0;
+        width: 955px;
+        height: 164px;
+      }
+
+      .memory-card-hover-shadow {
+        top: 1.975px;
+        left: 3.389px;
+        width: 965px;
+        height: 176px;
+      }
+
+      .memory-card-hover-frame {
+        top: 1.997px;
+        left: 2.996px;
+        width: 949.501px;
+        height: 160px;
+      }
+
+      .memory-card-hover-bottom {
+        top: 145px;
+        left: 2.996px;
+        width: 950.501px;
+        height: 17px;
+      }
+
+      .memory-card-hover-side {
+        top: 2.996px;
+        left: 937.999px;
+        display: flex;
+        width: 15px;
+        height: 157px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .memory-card-hover-side img {
+        display: block;
+        width: 157px;
+        height: 15px;
+        max-width: none;
+        transform: rotate(90deg) scaleY(-1);
+      }
+
+      .memory-card-hover-line {
+        top: 1.122px;
+        left: 1.122px;
+        width: 952.676px;
+        height: 162.707px;
+        object-fit: cover;
+      }
+
+      .memory-card-label {
+        position: absolute;
+        top: 37.97px;
+        left: 0;
+        width: 956px;
+        margin: 0;
+        color: var(--ink);
+        font: 800 45.548px/1.5 "Nanum Myeongjo", serif;
+        letter-spacing: -1.1387px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .memory-open .memory-card {
+        animation: memory-card-enter-from-right 820ms cubic-bezier(.12, .72, .2, 1) both;
+        animation-delay: calc(260ms + var(--card-index) * 45ms);
+        will-change: transform;
+      }
+
+      @keyframes memory-card-enter-from-right {
+        from { transform: translate3d(1400px, 0, 0); }
+        to { transform: translate3d(0, 0, 0); }
+      }
+
+      .memory-back {
+        position: absolute;
+        top: var(--rehab-back-top, 977.87px);
+        left: var(--rehab-back-left, 59.45px);
+        width: 62px;
+        height: 58.114px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        transform: scale(var(--rehab-back-scale, 1));
+        transform-origin: top left;
+      }
+
+      .memory-back img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        pointer-events: none;
+      }
+
+      .memory-back:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 5px;
+      }
+
+      .object-anchor,
+      .logo,
+      .tagline,
+      .actions {
+        position: absolute;
+      }
+
+      .object-anchor {
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .sentence-top,
+      .cards-left {
+        transform: translateX(var(--side-inset));
+      }
+
+      .crossword,
+      .sentence-bottom,
+      .card-11 {
+        transform: translateX(calc(var(--side-inset) * -1));
+      }
+
+      .object-float {
+        width: 100%;
+        height: 100%;
+        animation: object-float var(--float-duration) ease-in-out var(--float-delay) infinite alternate;
+        will-change: transform;
+      }
+
+      .object-float > img,
+      .logo {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        user-select: none;
+      }
+
+      .sentence-top {
+        top: 34px;
+        left: 0;
+        width: 733px;
+        height: 216px;
+        --reveal-delay: 80ms;
+        --float-distance: 12px;
+        --float-duration: 5.4s;
+        --float-delay: -2.3s;
+      }
+
+
+      .sentence-top-row {
+        position: absolute;
+        top: 0;
+        left: 8px;
+        display: flex;
+        gap: 3px;
+        width: max-content;
+        height: 82.895px;
+        transform: rotate(10.6deg);
+        transform-origin: top left;
+      }
+
+      .sentence-top-row .word-card {
+        position: relative;
+        flex: 0 0 auto;
+        transform: none;
+      }
+
+      .sentence-top-row .word-side > img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg) scaleY(-1);
+      }
+
+      .sentence-top-row .top-word-card--wide {
+        width: 190px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-face {
+        width: 186.21px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-bottom {
+        width: 189.39px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-side {
+        left: 186.21px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-outline {
+        width: 190.288px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-outline > img {
+        width: 202.183px;
+      }
+
+      .sentence-top-row .top-word-card--wide .word-label {
+        width: 150px;
+      }
+
+      .sentence-top-row .top-word-card--dark .word-face {
+        background: var(--ink);
+      }
+
+      .sentence-top-row .top-word-card--dark .word-label {
+        color: #fff;
+      }
+
+      .card-15 {
+        /* Keep the bitmap's cropped edge outside the stage at its lowest float. */
+        top: calc(-1 * var(--float-distance) - 1px);
+        left: 826px;
+        width: 301px;
+        height: 181px;
+        --reveal-delay: 180ms;
+        --float-distance: 16px;
+        --float-duration: 4.7s;
+        --float-delay: -3.7s;
+      }
+
+      .crossword {
+        top: calc(-1 * var(--float-distance) - 1px);
+        left: 1291px;
+        width: 629px;
+        height: 594px;
+        --reveal-delay: 260ms;
+        --float-distance: 14px;
+        --float-duration: 5.7s;
+        --float-delay: -1.1s;
+      }
+
+      .cards-left {
+        position: absolute;
+        top: 600px;
+        left: 0;
+        z-index: 1;
+        width: 450px;
+        height: 480px;
+        --reveal-delay: 140ms;
+        --float-distance: 18px;
+        --float-duration: 5.0s;
+        --float-delay: -4.2s;
+      }
+
+      .sentence-bottom {
+        top: 771.124px;
+        left: 1161px;
+        width: 793.988px;
+        height: 323.172px;
+        z-index: 2;
+        --reveal-delay: 320ms;
+        --float-distance: 16px;
+        --float-duration: 5.3s;
+        --float-delay: -2.8s;
+      }
+
+      .card-11 {
+        top: 926px;
+        left: 1739px;
+        width: 279.921px;
+        height: 271.105px;
+        z-index: 3;
+        --reveal-delay: 420ms;
+        --float-distance: 13px;
+        --float-duration: 4.5s;
+        --float-delay: -1.9s;
+      }
+
+      .sentence-row,
+      .card-11-visual {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+      }
+
+      .sentence-row {
+        width: 806.837px;
+        height: 82.695px;
+        transform: translate(-50%, -50%) rotate(-17.63deg);
+      }
+
+      .word-card {
+        position: absolute;
+        height: 81.752px;
+        transform: translate(-50%, -50%);
+        filter: drop-shadow(0 8px 4px rgb(0 0 0 / 18%));
+      }
+
+      .word-card--flower {
+        top: 41.447px;
+        left: 61.168px;
+      }
+
+      .word-card--owner {
+        top: 41.787px;
+        left: 205.378px;
+      }
+
+      .word-card--rose {
+        top: 40.937px;
+        left: 382.378px;
+      }
+
+      .word-card--best {
+        top: 40.967px;
+        left: 540.208px;
+      }
+
+      .word-card--likes {
+        top: 40.747px;
+        left: 684.178px;
+      }
+
+      .word-card--small {
+        width: 122.342px;
+      }
+
+      .word-card--medium,
+      .word-card--likes {
+        width: 159.502px;
+      }
+
+      .word-card--rose {
+        width: 189.801px;
+      }
+
+      .word-part,
+      .word-part > img,
+      .card11-part,
+      .card11-part > img {
+        position: absolute;
+        display: block;
+      }
+
+      .word-part > img,
+      .card11-part > img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .word-bottom {
+        top: 76.07px;
+        left: 0;
+      }
+
+      .word-face {
+        top: -0.53px;
+        left: 0;
+        height: 76.607px;
+        background: #ffffff;
+      }
+
+      .word-side {
+        top: -1.14px;
+        display: grid;
+        height: 82.895px;
+        place-items: center;
+      }
+
+      .word-side > img {
+        position: static;
+        max-width: none;
+        transform: rotate(90deg) scaleY(-1);
+      }
+
+      .word-outline {
+        top: -0.53px;
+        left: 0;
+      }
+
+      .word-outline > img {
+        top: -3.2px;
+        left: -3.2px;
+        max-width: none;
+      }
+
+      .word-label {
+        position: absolute;
+        z-index: 2;
+        margin: 0;
+        transform: translateX(-50%);
+        color: var(--ink);
+        font-family: "Nanum Myeongjo", serif;
+        font-size: 39.065px;
+        font-weight: 800;
+        line-height: 1.3;
+        letter-spacing: -0.9766px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .word-card--small .word-bottom {
+        width: 122.056px;
+        height: 5.717px;
+      }
+
+      .word-card--small .word-face {
+        width: 117.197px;
+      }
+
+      .word-card--small .word-side {
+        left: 117.2px;
+        width: 5.145px;
+      }
+
+      .word-card--small .word-side > img {
+        width: 82.895px;
+        height: 5.145px;
+      }
+
+      .word-card--small .word-outline {
+        width: 122.056px;
+        height: 82.323px;
+      }
+
+      .word-card--small .word-outline > img {
+        width: 133.951px;
+        height: 94.218px;
+      }
+
+      .word-card--small .word-label {
+        top: 12.006px;
+        left: calc(50% - 0.86px);
+        width: 86.325px;
+      }
+
+      .word-card--medium .word-bottom {
+        width: 158.89px;
+        height: 5.606px;
+      }
+
+      .word-card--medium .word-face {
+        width: 155.5px;
+      }
+
+      .word-card--medium .word-side {
+        left: 155.5px;
+        width: 4.594px;
+      }
+
+      .word-card--medium .word-side > img {
+        width: 82.895px;
+        height: 4.594px;
+      }
+
+      .word-card--medium .word-outline {
+        width: 159.788px;
+        height: 82.514px;
+      }
+
+      .word-card--medium .word-outline > img {
+        width: 171.683px;
+        height: 94.409px;
+      }
+
+      .word-card--medium .word-label {
+        top: 12.006px;
+        left: calc(50% - 2px);
+        width: 115.481px;
+      }
+
+      .word-card--rose .word-bottom {
+        width: 188.086px;
+        height: 5.891px;
+      }
+
+      .word-card--rose .word-face {
+        width: 185.228px;
+        background: var(--ink);
+      }
+
+      .word-card--rose .word-side {
+        top: -1.11px;
+        left: 185.23px;
+        width: 3.43px;
+      }
+
+      .word-card--rose .word-side > img {
+        width: 82.895px;
+        height: 3.43px;
+      }
+
+      .word-card--rose .word-outline {
+        width: 189.23px;
+        height: 82.347px;
+      }
+
+      .word-card--rose .word-outline > img {
+        width: 201.125px;
+        height: 94.242px;
+      }
+
+      .word-card--rose .word-label {
+        top: 12.396px;
+        left: calc(50% - 2.43px);
+        width: 115.481px;
+        color: #ffffff;
+      }
+
+      .word-card--likes .word-bottom {
+        width: 183.721px;
+        height: 5.887px;
+      }
+
+      .word-card--likes .word-face {
+        width: 197.022px;
+      }
+
+      .word-card--likes .word-outline {
+        width: 203.133px;
+        height: 82.342px;
+      }
+
+      .word-card--likes .word-outline > img {
+        width: 215.028px;
+        height: 94.237px;
+      }
+
+      .word-card--likes .word-label {
+        top: 11.356px;
+        left: calc(50% + 20.23px);
+        width: 157.438px;
+      }
+
+      .card-11-visual {
+        width: 213.91px;
+        height: 190.991px;
+        transform: translate(-50%, -50%) rotate(29.22deg);
+        filter: drop-shadow(0 4px 2px rgb(0 0 0 / 25%));
+      }
+
+      .card11-bottom {
+        top: 176.43px;
+        left: -0.05px;
+        width: 204.889px;
+        height: 14.324px;
+      }
+
+      .card11-face {
+        position: absolute;
+        top: -0.24px;
+        left: -0.05px;
+        width: 193.856px;
+        height: 176.667px;
+        background: #ffffff;
+      }
+
+      .card11-side {
+        top: -0.95px;
+        left: 193.86px;
+        display: grid;
+        width: 12.414px;
+        height: 190.991px;
+        place-items: center;
+      }
+
+      .card11-side > img {
+        position: static;
+        width: 190.991px;
+        height: 12.414px;
+        max-width: none;
+        transform: rotate(90deg) scaleY(-1);
+      }
+
+      .card11-outline {
+        top: -0.24px;
+        left: -0.05px;
+        width: 205.366px;
+        height: 190.036px;
+      }
+
+      .card11-outline > img {
+        top: -3.84px;
+        left: -3.84px;
+        width: 219.476px;
+        height: 204.145px;
+        max-width: none;
+      }
+
+      .card11-label {
+        position: absolute;
+        top: 19.315px;
+        left: 43.077px;
+        z-index: 2;
+        width: 118.096px;
+        margin: 0;
+        color: #333333;
+        font-family: "Nanum Myeongjo", serif;
+        font-size: 105.697px;
+        font-weight: 800;
+        line-height: 1.3;
+        letter-spacing: -2.6424px;
+        text-align: center;
+      }
+
+      .logo {
+        top: 434.039px;
+        left: 469.097px;
+        z-index: 3;
+        width: 982px;
+        height: 195px;
+      }
+
+      .logo-motion {
+        visibility: hidden;
+        overflow: visible;
+      }
+
+      .logo-motion.is-ready {
+        visibility: visible;
+      }
+
+      .logo-bar {
+        fill: var(--ink);
+        shape-rendering: geometricPrecision;
+      }
+
+      .tagline {
+        left: 50%;
+        z-index: 3;
+        margin: 0;
+        transform: translateX(-50%);
+        color: var(--muted);
+        font-family: "Nanum Myeongjo", serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 800;
+        line-height: 1.5;
+        letter-spacing: -0.5px;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      .tagline-ko {
+        top: 667px;
+        width: 689px;
+        --reveal-delay: 240ms;
+      }
+
+      .tagline-en {
+        top: 698px;
+        width: 747px;
+        --reveal-delay: 340ms;
+      }
+
+      .actions {
+        top: 772px;
+        left: 50%;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        height: 38px;
+        transform: translateX(-50%);
+        --reveal-delay: 500ms;
+      }
+
+      .action {
+        position: relative;
+        width: 120px;
+        height: 38px;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--ink);
+        font: 500 24px/1.6 "Pretendard Variable", Pretendard, Arial, sans-serif;
+        letter-spacing: 0.48px;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .action::after {
+        position: absolute;
+        right: 5px;
+        bottom: 2px;
+        left: 5px;
+        height: 1px;
+        content: "";
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 180ms ease;
+      }
+
+      .action:hover::after,
+      .action:focus-visible::after {
+        transform: scaleX(1);
+      }
+
+      .action:focus-visible {
+        outline: 2px solid var(--ink);
+        outline-offset: 5px;
+      }
+
+      .intro-pending .reveal-item {
+        opacity: 0;
+      }
+
+      .intro-pending .actions {
+        pointer-events: none;
+      }
+
+      .intro-settled .reveal-item {
+        opacity: 0;
+        animation: reveal-detail 800ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms) forwards;
+      }
+
+      @keyframes reveal-detail {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes object-float {
+        from {
+          transform: translate3d(0, var(--float-distance), 0);
+        }
+
+        to {
+          transform: translate3d(0, calc(var(--float-distance) * -1), 0);
+        }
+      }
+
+      @media (max-aspect-ratio: 1 / 1) {
+        .memory-card-slot {
+          left: 610px;
+          width: 700px;
+          height: 120px;
+          --memory-card-scale: 0.732218;
+        }
+      }
+
+      @media (max-aspect-ratio: 4 / 5) {
+        .memory-title-image {
+          top: 287px;
+        }
+
+        .memory-card-slot {
+          left: 745px;
+          width: 430px;
+          height: 74px;
+          --memory-card-scale: 0.449791;
+        }
+
+        .memory-card-slot:nth-of-type(1) { top: 430px; }
+        .memory-card-slot:nth-of-type(2) { top: 530px; }
+        .memory-card-slot:nth-of-type(3) { top: 630px; }
+
+        .site-header__wordmark {
+          left: 740px;
+        }
+
+        .site-header__nav {
+          left: 915px;
+          gap: 10px;
+        }
+
+        .site-header__nav-item {
+          width: 72px;
+          font-size: 18px;
+        }
+
+        .logo {
+          top: 429px;
+          left: 745px;
+          width: 430px;
+          height: 85.4px;
+        }
+
+        .tagline {
+          width: 450px;
+          font-size: 20px;
+          line-height: 1.55;
+          letter-spacing: -0.4px;
+          white-space: normal;
+        }
+
+        .tagline-ko {
+          top: 554px;
+        }
+
+        .tagline-en {
+          top: 659px;
+          font-size: 16px;
+        }
+
+        .actions {
+          top: 789px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .action {
+          width: 140px;
+          height: 50px;
+          font-size: 28px;
+        }
+
+        .sentence-top {
+          left: 590px;
+        }
+
+        .card-15 {
+          left: 875px;
+        }
+
+        .crossword {
+          left: 1110px;
+          width: 430px;
+          height: 406px;
+        }
+
+        .cards-left {
+          top: 780px;
+          left: 600px;
+          width: 420px;
+          height: 448px;
+        }
+
+        .sentence-bottom {
+          top: 890px;
+          left: 930px;
+          width: 560px;
+          height: 228px;
+        }
+
+        .sentence-row {
+          transform: translate(-50%, -50%) rotate(-17.63deg) scale(0.7053);
+        }
+
+        .card-11 {
+          top: 965px;
+          left: 1135px;
+          width: 181px;
+          height: 159px;
+        }
+
+        .card-11-visual {
+          transform: translate(-50%, -50%) rotate(29.22deg) scale(0.647);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .main-center,
+        .memory-screen,
+        .memory-screen::before,
+        .memory-screen__content {
+          transition: none;
+        }
+
+        .memory-open .memory-card {
+          animation: none;
+          will-change: auto;
+        }
+
+        .memory-card-base-layer,
+        .memory-card-hover-layer,
+        .memory-card-label {
+          transition: none;
+        }
+
+        .logo-motion {
+          visibility: visible;
+        }
+
+        .intro-pending .reveal-item,
+        .intro-settled .reveal-item {
+          opacity: 1;
+          animation: none;
+        }
+
+        .object-float {
+          animation: none;
+          transform: none;
+          will-change: auto;
+        }
+
+        .action::after {
+          transition: none;
+        }
+
+        .site-header__nav-item::after {
+          transition: none;
+        }
+      }
+    </style>
+<script src="games/shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body class="intro-pending">
+    <main class="viewport" aria-label="REBUT 메인 화면">
+      <section class="stage" aria-labelledby="rebut-heading">
+        <div class="object-anchor sentence-top reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <div class="sentence-top-row">
+              <div class="word-card word-card--small">
+                <span class="word-part word-bottom"><img src="./assets/word-small-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-small-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-small-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">빵집</p>
+              </div>
+              <div class="word-card word-card--medium top-word-card--wide">
+                <span class="word-part word-bottom"><img src="./assets/word-medium-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-medium-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-medium-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">아저씨는</p>
+              </div>
+              <div class="word-card word-card--medium top-word-card--dark">
+                <span class="word-part word-bottom"><img src="./assets/word-medium-bottom-dark.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-medium-side-dark.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-medium-outline-dark.svg" alt="" draggable="false" /></span>
+                <p class="word-label">새벽에</p>
+              </div>
+              <div class="word-card word-card--small">
+                <span class="word-part word-bottom"><img src="./assets/word-small-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-small-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-small-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">문을</p>
+              </div>
+              <div class="word-card word-card--small">
+                <span class="word-part word-bottom"><img src="./assets/word-small-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-small-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-small-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">연다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="object-anchor card-15 reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <img src="./assets/card-15.png" alt="" draggable="false" />
+          </div>
+        </div>
+
+        <div class="object-anchor crossword reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <img src="./assets/crossword.png" alt="" draggable="false" />
+          </div>
+        </div>
+
+        <div class="object-anchor cards-left reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <img src="./assets/cards-left.png" alt="" draggable="false" />
+          </div>
+        </div>
+
+        <div class="object-anchor sentence-bottom reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <div class="sentence-row">
+              <div class="word-card word-card--small word-card--flower">
+                <span class="word-part word-bottom"><img src="./assets/word-small-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-small-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-small-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">꽃집</p>
+              </div>
+
+              <div class="word-card word-card--medium word-card--owner">
+                <span class="word-part word-bottom"><img src="./assets/word-medium-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-medium-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-medium-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">주인은</p>
+              </div>
+
+              <div class="word-card word-card--rose">
+                <span class="word-part word-bottom"><img src="./assets/word-black-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-black-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-black-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">장미를</p>
+              </div>
+
+              <div class="word-card word-card--small word-card--best">
+                <span class="word-part word-bottom"><img src="./assets/word-small-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-side"><img src="./assets/word-small-side.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-outline"><img src="./assets/word-small-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">제일</p>
+              </div>
+
+              <div class="word-card word-card--likes">
+                <span class="word-part word-bottom"><img src="./assets/word-like-bottom.svg" alt="" draggable="false" /></span>
+                <span class="word-part word-face"></span>
+                <span class="word-part word-outline"><img src="./assets/word-like-outline.svg" alt="" draggable="false" /></span>
+                <p class="word-label">좋아한다.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="object-anchor card-11 reveal-item" aria-hidden="true">
+          <div class="object-float">
+            <div class="card-11-visual">
+              <span class="card11-part card11-bottom"><img src="./assets/card11-bottom.svg" alt="" draggable="false" /></span>
+              <span class="card11-face"></span>
+              <span class="card11-part card11-side"><img src="./assets/card11-side.svg" alt="" draggable="false" /></span>
+              <span class="card11-part card11-outline"><img src="./assets/card11-outline.svg" alt="" draggable="false" /></span>
+              <p class="card11-label">11</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-center">
+        <h1 id="rebut-heading" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap">REBUT</h1>
+        <svg
+          id="rebut-logo-motion"
+          class="logo logo-motion"
+          viewBox="0 0 982 195"
+          preserveAspectRatio="none"
+          role="img"
+          aria-label="REBUT"
+        >
+          <defs aria-hidden="true"></defs>
+        </svg>
+
+        <p class="tagline tagline-ko reveal-item">모든 인지를 AI가 대신하는 2050년, 당신의 뇌를 다시 깨우는 재활을 시작합니다.</p>
+        <p class="tagline tagline-en reveal-item" lang="en">In 2050, when AI replaces all cognition, we begin rehabilitation to reawaken your brain.</p>
+
+        <nav class="actions reveal-item" aria-label="게임 메뉴">
+          <button class="action" type="button" data-home-rehab="memory" aria-controls="rehab-screen" aria-expanded="false">게임 메뉴</button>
+        </nav>
+        </div>
+
+        <header class="site-header" aria-label="REBUT 상단 메뉴" inert>
+          <div class="site-header__outline" aria-hidden="true"><img src="./assets/header-outline.png" alt="" draggable="false" /></div>
+          <img class="site-header__wordmark" src="./assets/header-wordmark.png" alt="REBUT" draggable="false" />
+          <nav class="site-header__nav" aria-label="게임 영역">
+            <button class="site-header__nav-item" type="button" data-open-memory aria-controls="rehab-screen" aria-expanded="false">기억력</button>
+            <button class="site-header__nav-item" type="button" data-open-judgment aria-controls="rehab-screen" aria-expanded="false">판단력</button>
+            <button class="site-header__nav-item" type="button" data-open-language aria-controls="rehab-screen" aria-expanded="false">언어력</button>
+          </nav>
+        </header>
+
+        <section class="memory-screen" id="rehab-screen" aria-labelledby="rehab-title" aria-hidden="true" inert>
+          <div class="memory-screen__content">
+            <img class="memory-title-image" id="rehab-title" data-rehab-title src="./assets/rehab-title-memory.png" alt="기억력 게임" width="322" height="66" draggable="false" />
+            <div class="memory-card-slot" data-node-id="567:17695">
+              <div class="memory-card" style="--card-index: 0">
+                <div class="memory-card-visual">
+                  <img class="memory-card-layer memory-card-shadow memory-card-base-layer" src="./assets/memory-card-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-frame memory-card-base-layer" src="./assets/memory-card-outline.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-line memory-card-base-layer" src="./assets/memory-card-line-texture.png" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-shadow memory-card-hover-layer" src="./assets/memory-card-hover-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-frame memory-card-hover-layer" src="./assets/memory-card-hover-frame.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-bottom memory-card-hover-layer" src="./assets/memory-card-hover-bottom.svg" alt="" draggable="false" />
+                  <span class="memory-card-layer memory-card-hover-side memory-card-hover-layer"><img src="./assets/memory-card-hover-side.svg" alt="" draggable="false" /></span>
+                  <img class="memory-card-layer memory-card-hover-line memory-card-hover-layer" src="./assets/memory-card-hover-line.png" alt="" draggable="false" />
+                  <p class="memory-card-label" data-rehab-game="0">순서 암기</p>
+                </div>
+              </div>
+            </div>
+            <div class="memory-card-slot" data-node-id="567:17703">
+              <div class="memory-card" style="--card-index: 1">
+                <div class="memory-card-visual">
+                  <img class="memory-card-layer memory-card-shadow memory-card-base-layer" src="./assets/memory-card-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-frame memory-card-base-layer" src="./assets/memory-card-outline.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-line memory-card-base-layer" src="./assets/memory-card-line-texture.png" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-shadow memory-card-hover-layer" src="./assets/memory-card-hover-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-frame memory-card-hover-layer" src="./assets/memory-card-hover-frame.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-bottom memory-card-hover-layer" src="./assets/memory-card-hover-bottom.svg" alt="" draggable="false" />
+                  <span class="memory-card-layer memory-card-hover-side memory-card-hover-layer"><img src="./assets/memory-card-hover-side.svg" alt="" draggable="false" /></span>
+                  <img class="memory-card-layer memory-card-hover-line memory-card-hover-layer" src="./assets/memory-card-hover-line.png" alt="" draggable="false" />
+                  <p class="memory-card-label" data-rehab-game="1">없는 숫자 찾기</p>
+                </div>
+              </div>
+            </div>
+            <div class="memory-card-slot" data-node-id="567:17711">
+              <div class="memory-card" style="--card-index: 2">
+                <div class="memory-card-visual">
+                  <img class="memory-card-layer memory-card-shadow memory-card-base-layer" src="./assets/memory-card-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-frame memory-card-base-layer" src="./assets/memory-card-outline.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-line memory-card-base-layer" src="./assets/memory-card-line-texture.png" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-shadow memory-card-hover-layer" src="./assets/memory-card-hover-shadow.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-frame memory-card-hover-layer" src="./assets/memory-card-hover-frame.svg" alt="" draggable="false" />
+                  <img class="memory-card-layer memory-card-hover-bottom memory-card-hover-layer" src="./assets/memory-card-hover-bottom.svg" alt="" draggable="false" />
+                  <span class="memory-card-layer memory-card-hover-side memory-card-hover-layer"><img src="./assets/memory-card-hover-side.svg" alt="" draggable="false" /></span>
+                  <img class="memory-card-layer memory-card-hover-line memory-card-hover-layer" src="./assets/memory-card-hover-line.png" alt="" draggable="false" />
+                  <p class="memory-card-label" data-rehab-game="2">키워드 복원</p>
+                </div>
+              </div>
+            </div>
+            <button class="memory-back" type="button" aria-label="메인 화면으로 돌아가기">
+              <img src="./games/sequence-memory/assets/tutorial-back.png" alt="" draggable="false" />
+            </button>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const DESIGN_WIDTH = 1920;
+        const DESIGN_HEIGHT = 1080;
+        const root = document.documentElement;
+
+        const updateStageScale = () => {
+          const width = document.documentElement.clientWidth;
+          const height = window.visualViewport?.height || window.innerHeight;
+          const portrait = width / height < 0.8;
+          const fillScale = Math.max(width / DESIGN_WIDTH, height / DESIGN_HEIGHT);
+          const visibleDesignWidth = width / fillScale;
+          const visibleDesignHeight = height / fillScale;
+          const sideInset = Math.max(0, (DESIGN_WIDTH - visibleDesignWidth) / 2);
+          const topInset = Math.max(0, (DESIGN_HEIGHT - visibleDesignHeight) / 2);
+          const scale = portrait
+            ? height / DESIGN_HEIGHT
+            : fillScale;
+
+          root.style.setProperty("--stage-scale", scale.toFixed(6));
+          root.style.setProperty("--side-inset", portrait ? "0px" : `${sideInset.toFixed(3)}px`);
+          root.style.setProperty("--stage-top-inset", `${topInset.toFixed(3)}px`);
+
+          // Match the gameplay back control, despite the menu's cover-scaled stage.
+          const gameScale = Math.min(width / DESIGN_WIDTH, height / DESIGN_HEIGHT);
+          const stageLeft = (width - DESIGN_WIDTH * scale) / 2;
+          const stageTop = (height - DESIGN_HEIGHT * scale) / 2;
+          const backLeft = (width - DESIGN_WIDTH * gameScale) / 2 + 59.45 * gameScale;
+          const backTop = height - (DESIGN_HEIGHT - 977.87) * gameScale;
+          root.style.setProperty("--rehab-back-left", `${(backLeft - stageLeft) / scale}px`);
+          root.style.setProperty("--rehab-back-top", `${(backTop - stageTop) / scale}px`);
+          root.style.setProperty("--rehab-back-scale", gameScale / scale);
+        };
+
+        updateStageScale();
+        window.addEventListener("resize", updateStageScale, { passive: true });
+        window.visualViewport?.addEventListener("resize", updateStageScale, { passive: true });
+
+        const memoryNav = document.querySelector("[data-open-memory]");
+        const judgmentNav = document.querySelector("[data-open-judgment]");
+        const languageNav = document.querySelector("[data-open-language]");
+        const mainCenter = document.querySelector(".main-center");
+        const siteHeader = document.querySelector(".site-header");
+        const homeButtons = [...document.querySelectorAll("[data-home-rehab]")];
+        const memoryScreen = document.getElementById("rehab-screen");
+        const memoryBack = document.querySelector(".memory-back");
+        const rehabTitle = document.querySelector("[data-rehab-title]");
+        const rehabSlots = [...document.querySelectorAll(".memory-card-slot")];
+        const rehabGames = [...document.querySelectorAll("[data-rehab-game]")];
+        const rehabMenus = {
+          memory: {
+            titleImage: "./assets/rehab-title-memory.png",
+            titleAlt: "기억력 게임",
+            titleWidth: 322,
+            titleHeight: 66,
+            games: ["순서 암기", "없는 숫자 찾기", "키워드 복원"],
+            routes: ["./games/sequence-memory/index.html?v=20261005-4", "./games/missing-number/index.html?v=20261005-4", "./games/keyword-restore/index.html?v=20261005-4"],
+            nav: memoryNav,
+          },
+          judgment: {
+            titleImage: "./assets/rehab-title-judgment.png",
+            titleAlt: "판단력 게임",
+            titleWidth: 343.04,
+            titleHeight: 67,
+            games: ["숨은 무게 찾기", "논리 배치 퍼즐", "편향 문장 판정"],
+            routes: ["./games/hidden-weight/index.html?v=20261005-4", "./games/logic-puzzle/index.html?v=20261006-1", "./games/bias-sentence/index.html?v=20261005-4"],
+            nav: judgmentNav,
+          },
+          language: {
+            titleImage: "./assets/rehab-title-language.png",
+            titleAlt: "언어력 게임",
+            titleWidth: 321.064,
+            titleHeight: 66,
+            games: ["문장 인과 순서 배치", "어색한 문장 찾기", "단어 블록 맞추기"],
+            routes: ["./games/sentence-order/index.html?v=20261005-4", "./games/awkward-sentence/index.html?v=20261005-4", "./games/word-block/index.html?v=20261005-4"],
+            nav: languageNav,
+          },
+        };
+        let activeRehab = null;
+
+        const openRehab = (type, { focusNav = true } = {}) => {
+          const menu = rehabMenus[type];
+          if (!menu) return;
+
+          rehabTitle.src = menu.titleImage;
+          rehabTitle.alt = menu.titleAlt;
+          rehabTitle.style.setProperty("--rehab-title-width", `${menu.titleWidth}px`);
+          rehabTitle.style.setProperty("--rehab-title-height", `${menu.titleHeight}px`);
+          rehabGames.forEach((label, index) => {
+            label.textContent = menu.games[index];
+          });
+          rehabSlots.forEach((slot, index) => {
+            const route = menu.routes[index];
+            if (route) {
+              slot.dataset.gameLink = new URL(route, window.location.href).href;
+              slot.setAttribute("role", "link");
+              slot.setAttribute("tabindex", "0");
+              slot.setAttribute("aria-label", `${menu.games[index]} 튜토리얼 열기`);
+            } else {
+              delete slot.dataset.gameLink;
+              slot.removeAttribute("role");
+              slot.removeAttribute("tabindex");
+              slot.removeAttribute("aria-label");
+            }
+          });
+
+          Object.values(rehabMenus).forEach(({ nav }) => {
+            const current = nav === menu.nav;
+            nav.setAttribute("aria-expanded", String(current));
+            nav.classList.toggle("is-current", current);
+          });
+          homeButtons.forEach((button) => {
+            button.setAttribute("aria-expanded", "true");
+          });
+
+          memoryScreen.inert = false;
+          siteHeader.inert = false;
+          memoryScreen.setAttribute("aria-hidden", "false");
+          activeRehab = type;
+
+          if (!document.body.classList.contains("memory-open")) {
+            document.body.classList.add("memory-open");
+          } else {
+            memoryScreen.querySelectorAll(".memory-card").forEach((card) => {
+              card.getAnimations().forEach((animation) => {
+                animation.cancel();
+                animation.play();
+              });
+            });
+          }
+          if (focusNav) menu.nav.focus();
+          mainCenter.inert = true;
+          mainCenter.setAttribute("aria-hidden", "true");
+        };
+
+        const closeRehab = () => {
+          if (!document.body.classList.contains("memory-open")) return;
+          const focusTarget = homeButtons.find((button) => button.dataset.homeRehab === activeRehab) || homeButtons[0];
+          document.body.classList.remove("memory-open");
+          mainCenter.inert = false;
+          mainCenter.removeAttribute("aria-hidden");
+          siteHeader.inert = true;
+          memoryScreen.inert = true;
+          memoryScreen.setAttribute("aria-hidden", "true");
+          Object.values(rehabMenus).forEach(({ nav }) => {
+            nav.setAttribute("aria-expanded", "false");
+            nav.classList.remove("is-current");
+          });
+          homeButtons.forEach((button) => button.setAttribute("aria-expanded", "false"));
+          activeRehab = null;
+          focusTarget.focus();
+        };
+
+        memoryNav.addEventListener("click", () => openRehab("memory"));
+        judgmentNav.addEventListener("click", () => openRehab("judgment"));
+        languageNav.addEventListener("click", () => openRehab("language"));
+        homeButtons.forEach((button) => {
+          button.addEventListener("click", () => openRehab(button.dataset.homeRehab));
+        });
+        memoryScreen.addEventListener("click", (event) => {
+          const slot = event.target.closest("[data-game-link]");
+          if (slot) window.location.href = slot.dataset.gameLink;
+        });
+        memoryScreen.addEventListener("keydown", (event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          const slot = event.target.closest("[data-game-link]");
+          if (!slot) return;
+          event.preventDefault();
+          window.location.href = slot.dataset.gameLink;
+        });
+        memoryBack.addEventListener("click", closeRehab);
+        window.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeRehab();
+        });
+
+        const pageUrl = new URL(window.location.href);
+        const requestedRehab = pageUrl.searchParams.get("rehab");
+        const navigationType = window.performance?.getEntriesByType?.("navigation")?.[0]?.type;
+
+        // A game return opens its category; a refresh starts the home intro again.
+        if (navigationType === "reload" && pageUrl.searchParams.has("rehab")) {
+          pageUrl.searchParams.delete("rehab");
+          window.history.replaceState(window.history.state, "", pageUrl.href);
+        } else if (rehabMenus[requestedRehab]) {
+          openRehab(requestedRehab, { focusNav: false });
+        }
+      })();
+    </script>
+    <script src="./rebut-motion.js?v=4"></script>
+  </body>
+</html>

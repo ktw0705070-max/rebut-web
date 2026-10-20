@@ -1,0 +1,410 @@
+.tutorial-stage {
+  isolation: isolate;
+}
+
+.menu-control {
+  position: absolute;
+  z-index: 20;
+  top: 61px;
+  left: 59.45px;
+  width: 50px;
+  height: 45.118px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-control img,
+.tutorial-back-guide img,
+.tutorial-restart-guide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.round-progress {
+  position: absolute;
+  z-index: 20;
+  top: 54px;
+  left: 1745.45px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 56px;
+}
+
+.round-progress > img:first-child {
+  width: 34px;
+  height: 56px;
+  object-fit: fill;
+}
+
+.round-progress__dash {
+  display: block;
+  width: 34px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: #000;
+}
+
+.round-progress__current {
+  width: 37px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.tutorial-help-icon {
+  top: 159px;
+  left: 1797.45px;
+  width: 64.455px;
+  height: 56.852px;
+  cursor: default;
+}
+
+.tutorial-help-icon img {
+  width: 64.455px;
+  height: 56.852px;
+}
+
+.tutorial-help-icon:active,
+.tutorial-restart-guide:active > img {
+  transform: none;
+}
+
+.tutorial-background-timer {
+  top: 209px;
+  width: 884px;
+}
+
+.tutorial-background-grid {
+  top: 296px;
+  left: 50%;
+  width: max-content;
+  --grid-columns: 3;
+  --grid-width: 890px;
+  grid-template-columns: repeat(var(--grid-columns, 3), 280px);
+  grid-template-rows: repeat(2, 259.219px);
+  transform: translateX(-50%) scale(0.92584, 0.9511);
+  transform-origin: top center;
+}
+
+.tutorial-stage .tutorial-background-grid .number-card {
+  pointer-events: none;
+  cursor: default;
+}
+
+.tutorial-back-guide {
+  top: 977.87px;
+  left: 59.45px;
+  width: 62px;
+  height: 58.114px;
+  cursor: default;
+}
+
+.tutorial-restart-guide {
+  top: 253.6px;
+  left: 1801.45px;
+  width: 59.85px;
+  height: 55.366px;
+  cursor: default;
+}
+
+.tutorial-overlay {
+  position: absolute;
+  z-index: 70;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.tutorial-overlay.is-closing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tutorial-overlay[hidden] {
+  display: none;
+}
+
+.dim-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.36);
+}
+
+.tutorial-panel {
+  position: absolute;
+  z-index: 1;
+  top: 104px;
+  left: 596px;
+  width: 728px;
+  height: 871px;
+  overflow: visible;
+  isolation: isolate;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
+.popup-frame {
+  position: absolute;
+  z-index: 0;
+  top: -2px;
+  left: -2px;
+  display: block;
+  width: 732px;
+  height: 875px;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-title {
+  position: absolute;
+  z-index: 3;
+  top: 36px;
+  left: 55px;
+  width: 618px;
+  height: 74px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: -1.15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.tutorial-demo-grid {
+  --cover-duration: 300ms;
+  --answer-duration: 150ms;
+  position: absolute;
+  z-index: 2;
+  top: 174px;
+  left: 118px;
+  width: 492px;
+  height: 301px;
+}
+
+.demo-number-card {
+  position: absolute;
+  width: 171.964px;
+  height: 153.54px;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 100ms ease-out;
+  filter: drop-shadow(0 2.388px 1.194px rgba(0, 0, 0, 0.18));
+  pointer-events: none;
+}
+
+.demo-card-state {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 1;
+  transition: opacity var(--cover-duration) ease-in-out;
+}
+
+.demo-card-face {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  object-fit: fill;
+  clip-path: inset(1.2px 0.9px 0.9px 1.2px);
+}
+
+.demo-card-bottom {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  object-fit: fill;
+}
+
+.demo-card-side {
+  position: absolute;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-card-side img {
+  display: block;
+  max-width: none;
+  flex: none;
+  transform: rotate(90deg) scaleY(-1);
+  object-fit: fill;
+}
+
+.demo-card-outline {
+  position: absolute;
+  z-index: 4;
+  display: block;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.demo-surface--covered,
+.demo-surface--selected {
+  opacity: 0;
+}
+
+.demo-card-number {
+  position: absolute;
+  z-index: 2;
+  top: -0.19px;
+  left: -0.04px;
+  display: grid;
+  width: 155.843px;
+  height: 142.024px;
+  place-items: center;
+  padding: 0 0 2.8px;
+  color: #333;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 84.971px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2.124px;
+  text-align: center;
+  opacity: 1;
+  transition:
+    color var(--answer-duration) ease-in-out,
+    opacity 150ms ease-in-out;
+}
+
+.tutorial-demo-grid.is-covered .demo-surface--light {
+  opacity: 0;
+}
+
+.tutorial-demo-grid.is-covered .demo-surface--covered {
+  opacity: 1;
+}
+
+.tutorial-demo-grid.is-covered .demo-card-number {
+  color: #fff;
+  opacity: 0;
+}
+
+.demo-number-card.is-answer .demo-surface--light,
+.demo-number-card.is-answer .demo-surface--covered {
+  opacity: 0;
+}
+
+.demo-number-card.is-answer .demo-surface--selected {
+  opacity: 1;
+}
+
+.demo-number-card.is-answer .demo-card-state {
+  transition-duration: var(--answer-duration);
+}
+
+.demo-number-card.is-answer .demo-card-number {
+  color: #fff;
+  opacity: 1;
+}
+
+.demo-cursor {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  width: 32.521px;
+  height: 30.953px;
+  transform: translate3d(584px, 318px, 0);
+  transform-origin: 8px 7px;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.demo-cursor img {
+  display: block;
+  width: 35.52px;
+  height: 33.95px;
+  margin: -1.5px 0 0 -1.5px;
+  transform: scale(1);
+  transform-origin: 7px 6px;
+  transition: transform var(--cursor-press-duration, 50ms) ease-out;
+}
+
+.demo-cursor.is-clicking img {
+  transform: scale(0.9);
+}
+
+.tutorial-instructions {
+  position: absolute;
+  z-index: 4;
+  top: 605px;
+  left: 34px;
+  width: 660px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.7px;
+  text-align: center;
+}
+
+.tutorial-instructions span {
+  display: block;
+  white-space: nowrap;
+}
+
+.tutorial-start {
+  position: absolute;
+  z-index: 10;
+  top: 734px;
+  left: 252px;
+  width: 224px;
+  height: 68px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tutorial-start img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-start span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 1px;
+  color: #000;
+  font-size: 30.516px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.7629px;
+}
+
+.tutorial-start:active {
+  transform: scale(0.98);
+}
+
+.menu-control:focus-visible,
+.tutorial-start:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tutorial-overlay,
+  .demo-card-state,
+  .demo-card-number,
+  .demo-cursor {
+    transition-duration: 1ms !important;
+  }
+}

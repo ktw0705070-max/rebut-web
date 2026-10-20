@@ -1,0 +1,24 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="4096"
+  height="3792"
+  viewBox="0 0 4096 3792"
+  preserveAspectRatio="none"
+  fill="none"
+>
+  <defs>
+    <!-- Keep every face below the centre of the hand-drawn outer stroke. -->
+    <clipPath id="outer-face-clip">
+      <path d="M28 28H3842L4068 258V3758H282L28 3498V28Z" />
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#outer-face-clip)">
+    <!-- The front face deliberately overlaps the separators beneath the outline PNG. -->
+    <path d="M0 0H3848V3508H0V0Z" fill="#FFFFFF" />
+
+    <!-- Extended beneath both diagonal corners so no paper-coloured wedge can remain. -->
+    <path d="M0 3478H3858L4096 3792H0V3478Z" fill="#CCCCCE" />
+    <path d="M3824 0H4096V3792L3824 3498V0Z" fill="#CCCCCE" />
+  </g>
+</svg>

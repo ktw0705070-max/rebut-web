@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <script src="../shared/game-clock.js?v=20261020-book-popup"></script>
+    <script src="../shared/book-tutorial.js?v=20261020-book-popup" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fafaf8" />
+    <title>REBUT — 순서대로 암기하기</title>
+    <link rel="stylesheet" href="./game.css?v=20261020-grid-shadow-2" />
+    <link rel="stylesheet" href="./game-menu.css?v=20260927-3" />
+    <script src="./memory-grid.js?v=20260913-1" defer></script>
+    <script src="./game.js?v=20261020-book-popup" defer></script>
+    <script src="./game-menu.js?v=20261012-web-navigation" defer></script>
+  <link rel="stylesheet" href="../shared/step-transition.css?v=20261011-shared-step-2">
+  <script src="../shared/step-transition.js?v=20261011-shared-step"></script>
+    <link rel="stylesheet" href="../shared/round-progress.css?v=20261020-compact-rounds" />
+<script src="../shared/menu-prefetch.js?v=20261020-fast-entry" defer></script>
+</head>
+  <body>
+    <div class="game-stage" id="game-stage">
+      <button class="menu-control" type="button" aria-label="게임 메뉴 열기" aria-controls="game-menu" aria-expanded="false">
+        <img src="./assets/tutorial-menu.png" alt="" draggable="false" />
+      </button>
+
+      <aside class="game-menu-layer" id="game-menu" aria-label="게임 메뉴" aria-hidden="true">
+        <div class="game-menu-shield" aria-hidden="true"></div>
+        <nav class="game-menu-panel" aria-labelledby="game-menu-title">
+          <img class="game-menu-panel__background" src="./assets/menu-background.png" alt="" draggable="false" />
+
+          <header class="game-menu-header">
+            <h2 id="game-menu-title">게임 메뉴</h2>
+            <button class="game-menu-close" type="button" aria-label="게임 메뉴 닫기">
+              <img src="./assets/menu-close.png" alt="" draggable="false" />
+            </button>
+          </header>
+
+          <div class="game-menu-categories">
+            <section class="game-menu-category" data-menu-category="memory">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="memory-games">
+                <span>기억력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="./assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="./assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="memory-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                  <button class="game-menu-game is-current" type="button" aria-current="page" data-current-game>순서 암기</button>
+                  <a class="game-menu-game" href="../missing-number/index.html">없는 숫자 찾기</a>
+                  <a class="game-menu-game" href="../keyword-restore/index.html">키워드 복원</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="game-menu-category" data-menu-category="judgment">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="judgment-games">
+                <span>판단력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="./assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="./assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="judgment-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                  <a class="game-menu-game" href="../hidden-weight/index.html">숨은 무게 찾기</a>
+                  <a class="game-menu-game" href="../logic-puzzle/index.html?v=20261006-1">논리 배치 퍼즐</a>
+                  <a class="game-menu-game" href="../bias-sentence/index.html">편향 문장 판정</a>
+                </div>
+              </div>
+            </section>
+
+            <section class="game-menu-category" data-menu-category="language">
+              <button class="game-menu-category__toggle" type="button" aria-expanded="false" aria-controls="language-games">
+                <span>언어력 게임</span>
+                <img class="game-menu-arrow game-menu-arrow--closed" src="./assets/menu-arrow-black-transparent.png" alt="" />
+                <img class="game-menu-arrow game-menu-arrow--open" src="./assets/menu-arrow-white-transparent.png" alt="" />
+              </button>
+              <div class="game-menu-games" id="language-games" aria-hidden="true">
+                <div class="game-menu-games__inner">
+                    <a class="game-menu-game" href="../sentence-order/index.html">문장 인과 순서 배치</a>
+                    <a class="game-menu-game" href="../awkward-sentence/index.html">어색한 문장 찾기</a>
+                    <a class="game-menu-game" href="../word-block/index.html?v=20260927-menu-click-fix">단어 블록 맞추기</a>
+                </div>
+              </div>
+            </section>
+          </div>
+        </nav>
+      </aside>
+
+      <div class="game-logo" aria-label="REBUT">
+        <img src="./assets/game-logo-r.png" alt="" />
+        <img src="./assets/game-logo-e.png" alt="" />
+        <img src="./assets/game-logo-b.png" alt="" />
+        <img src="./assets/game-logo-u.png" alt="" />
+        <img src="./assets/game-logo-t.png" alt="" />
+      </div>
+
+      <div class="round-progress" id="round-progress" aria-live="polite" aria-label="현재 진행 1-1">
+        <img id="level-progress-digit" src="./assets/round-digit-1.png" alt="1" draggable="false" />
+        <span class="round-progress__dash" aria-hidden="true"></span>
+        <img
+          id="round-progress-digit"
+          class="round-progress__current"
+          src="./assets/round-digit-1.png"
+          alt="1"
+          draggable="false"
+        />
+      </div>
+
+      <button
+        class="help-button"
+        id="help-button"
+        type="button"
+        aria-label="튜토리얼 다시 보기"
+      >
+        <img src="./assets/tutorial-book.png" alt="" draggable="false" />
+      </button>
+
+      <div class="game-grid is-locked" id="game-grid" aria-label="3×3 기억력 게임 보드"></div>
+
+      <button class="back-control" id="back-control" type="button" aria-label="기억력 재활 메뉴로 돌아가기">
+        <img src="./assets/tutorial-back.png" alt="" draggable="false" />
+      </button>
+
+      <button class="restart-control" id="restart-control" type="button" aria-label="이번 입력 되돌리기">
+        <img src="./assets/tutorial-exit.png" alt="" draggable="false" />
+      </button>
+
+      <span class="paper-speck" aria-hidden="true"></span>
+
+
+      <p class="sr-only" id="game-status" aria-live="polite"></p>
+    </div>
+  </body>
+</html>

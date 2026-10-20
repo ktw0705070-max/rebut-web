@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1158.77" height="75.8271" viewBox="0 0 1158.77 75.8271" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 2085664519">
+<path id="Vector 101" d="M1.05953 74.7676V23.5571H25.7818V54.1656H1133.58V21.7912H1157.71V74.7676H1.05953Z" fill="#DADADA" stroke="#111111" stroke-width="2.11905"/>
+<g id="Vector 102" filter="url(#filter0_g_0_17)">
+<path d="M48.7384 32.9752L28.1364 54.1658L1134.17 55.343L1115.33 32.9752H48.7384Z" fill="white"/>
+<path d="M48.7384 32.9752L28.1364 54.1658L1134.17 55.343L1115.33 32.9752H48.7384Z" stroke="#111111" stroke-width="2.11905"/>
+</g>
+<path id="Vector 109" opacity="0.6" d="M130.557 53.5771C162.108 53.5771 181.571 40.2349 187.654 32.9752L48.1495 31.798L26.3704 53.5771H130.557Z" fill="#585858" fill-opacity="0.1"/>
+<path id="Vector 104" d="M1114.15 3.54415L1133.58 22.3802V54.7546L1125.34 44.487L1114.74 31.3673L1114.15 3.54415Z" fill="#CCCCCE" stroke="#111111" stroke-width="2.11905"/>
+<path id="Vector 110" d="M49.3269 2.13572L25.7817 20.0256V52.4L27.5477 53.5771L36.9657 44.1591L49.3269 31.798V2.13572Z" fill="#CCCCCE" stroke="#111111" stroke-width="2.11905"/>
+<path id="Vector 111" opacity="0.6" d="M1028.8 54.7544C997.251 54.7544 977.787 41.4122 971.704 34.1525L1115.33 32.9752L1132.99 54.7544H1028.8Z" fill="#585858" fill-opacity="0.1"/>
+</g>
+<defs>
+<filter id="filter0_g_0_17" x="23.7476" y="30.0321" width="1114.58" height="28.2565" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="0.013068237341940403 0.013068237341940403" numOctaves="3" seed="5010" />
+<feDisplacementMap in="shape" scale="3.7672083377838135" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_0_17">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+</defs>
+</svg>

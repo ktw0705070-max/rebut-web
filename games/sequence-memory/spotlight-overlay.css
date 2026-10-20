@@ -1,0 +1,139 @@
+.spotlight-overlay {
+  position: absolute;
+  z-index: 50;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--spotlight-fade, 250ms) ease;
+  pointer-events: none;
+}
+
+.spotlight-overlay.is-visible {
+  opacity: 1;
+}
+
+.spotlight-cutout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: var(--spotlight-radius, 2px);
+  box-shadow: 0 0 0 3000px var(--spotlight-dim, rgba(0, 0, 0, 0.55));
+  transition:
+    top var(--spotlight-fade, 250ms) ease-in-out,
+    left var(--spotlight-fade, 250ms) ease-in-out,
+    width var(--spotlight-fade, 250ms) ease-in-out,
+    height var(--spotlight-fade, 250ms) ease-in-out;
+  will-change: top, left, width, height;
+}
+
+.spotlight-bubble {
+  position: absolute;
+  z-index: 1;
+  width: var(--bubble-width, 450px);
+  min-height: var(--bubble-height, 120px);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 26px;
+  border: 0;
+  background: #fff url("./assets/start-button-frame-hires.png") center / 100% 100% no-repeat;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.15);
+  color: #151515;
+  transition:
+    top var(--spotlight-fade, 250ms) ease-in-out,
+    left var(--spotlight-fade, 250ms) ease-in-out;
+}
+
+.spotlight-bubble::before,
+.spotlight-bubble::after {
+  content: "";
+  position: absolute;
+  width: var(--bubble-tail, 20px);
+  height: 30px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
+  top: var(--bubble-tail-position, 44px);
+}
+
+.spotlight-bubble::before {
+  left: calc(-1 * var(--bubble-tail, 20px));
+  background: #151515;
+}
+
+.spotlight-bubble::after {
+  left: calc(-1 * var(--bubble-tail, 20px) + 4px);
+  transform: scale(0.82);
+  background: #fff;
+}
+
+.spotlight-bubble.is-left::before,
+.spotlight-bubble.is-left::after {
+  left: auto;
+  right: calc(-1 * var(--bubble-tail, 20px));
+  transform: rotate(180deg);
+}
+
+.spotlight-bubble.is-left::after {
+  right: calc(-1 * var(--bubble-tail, 20px) + 4px);
+  transform: rotate(180deg) scale(0.82);
+}
+
+.spotlight-bubble.is-bottom::before,
+.spotlight-bubble.is-bottom::after {
+  top: calc(-1 * var(--bubble-tail, 20px) - 1px);
+  left: var(--bubble-tail-position, 44px);
+  transform: rotate(90deg);
+}
+
+.spotlight-bubble.is-bottom::after {
+  top: calc(-1 * var(--bubble-tail, 20px) + 3px);
+  left: var(--bubble-tail-position, 44px);
+  transform: rotate(90deg) scale(0.82);
+}
+
+.spotlight-bubble.is-top::before,
+.spotlight-bubble.is-top::after {
+  top: auto;
+  bottom: calc(-1 * var(--bubble-tail, 20px) - 1px);
+  left: var(--bubble-tail-position, 44px);
+  transform: rotate(-90deg);
+}
+
+.spotlight-bubble.is-top::after {
+  bottom: calc(-1 * var(--bubble-tail, 20px) + 3px);
+  left: var(--bubble-tail-position, 44px);
+  transform: rotate(-90deg) scale(0.82);
+}
+
+.spotlight-bubble-icon {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  background: #151515;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 35px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.spotlight-bubble-text {
+  margin: 0;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.45;
+  letter-spacing: -0.045em;
+  word-break: keep-all;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-overlay,
+  .spotlight-cutout,
+  .spotlight-bubble {
+    transition-duration: 1ms !important;
+  }
+}

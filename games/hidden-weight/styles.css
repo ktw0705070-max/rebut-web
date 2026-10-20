@@ -1,0 +1,630 @@
+@font-face {
+  font-family: "Pretendard Variable";
+  src: url("../shared/assets/fonts/3090ccde0442bb34.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("../shared/assets/fonts/a03d520bccc43ae1.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --screen-paper: #fafaf8;
+  --dim-color: 0, 0, 0;
+  --dim-opacity: 0.36;
+  --popup-left: 596px;
+  --popup-top: 103.5px;
+  color: #1d1d1d;
+  background: var(--screen-paper);
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--screen-paper);
+}
+
+body,
+button {
+  color: #111;
+  font-family: "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+}
+
+body {
+  cursor: default;
+  user-select: none;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.viewport {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--screen-paper);
+}
+
+.stage-shell {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--screen-paper);
+}
+
+.stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--screen-paper);
+  transform: translateX(-50%) scale(var(--stage-scale, 1));
+  transform-origin: top center;
+}
+
+.game-screen {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  background: var(--screen-paper);
+  pointer-events: none;
+}
+
+.chrome-control {
+  position: absolute;
+  z-index: 8;
+}
+
+.chrome-control img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.game-menu {
+  left: 59.45px;
+  top: 61px;
+  width: 50px;
+  height: 45.118px;
+}
+
+.game-logo {
+  position: absolute;
+  z-index: 8;
+  top: 61px;
+  left: 819px;
+  width: 284px;
+  height: 56px;
+}
+
+.game-logo img {
+  position: absolute;
+  top: 0;
+  display: block;
+  width: 52px;
+  height: 56px;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.game-logo img:nth-child(1) { left: 0; }
+.game-logo img:nth-child(2) { left: 58px; }
+.game-logo img:nth-child(3) { left: 116px; }
+.game-logo img:nth-child(4) { left: 174px; }
+.game-logo img:nth-child(5) { left: 232px; }
+
+.round-progress {
+  position: absolute;
+  z-index: 8;
+  left: 1745.45px;
+  top: 54px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 56px;
+}
+
+.round-progress > img:first-child {
+  width: 34px;
+  height: 56px;
+  object-fit: fill;
+}
+
+.round-progress__dash {
+  display: block;
+  width: 34px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: #111;
+}
+
+.round-progress__current {
+  width: 37px;
+  height: 55px;
+  object-fit: contain;
+}
+
+.game-book {
+  left: 1797.45px;
+  top: 159px;
+  width: 64.455px;
+  height: 56.852px;
+}
+
+.game-refresh {
+  left: 1801.45px;
+  top: 253.6px;
+  width: 59.85px;
+  height: 55.366px;
+}
+
+.game-back {
+  left: 59.45px;
+  top: 977.87px;
+  width: 62px;
+  height: 58.114px;
+}
+
+.backdrop-balls {
+  position: absolute;
+  z-index: 4;
+  top: 209px;
+  left: 617.75px;
+  display: flex;
+  gap: 26.392px;
+  width: 685px;
+  height: 151.498px;
+}
+
+.backdrop-ball {
+  position: relative;
+  flex: 0 0 151.498px;
+  width: 151.498px;
+  height: 151.498px;
+}
+
+.backdrop-ball img {
+  position: absolute;
+  top: -1.408px;
+  left: -1.408px;
+  display: block;
+  width: 154.314px;
+  height: 154.314px;
+}
+
+.backdrop-ball span {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 7px;
+  color: #111;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 87.226px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.backdrop-scale {
+  position: absolute;
+  z-index: 3;
+  top: 509px;
+  left: 158.88px;
+  width: 1602.241px;
+  height: 398.5px;
+}
+
+.backdrop-scale-foot,
+.backdrop-scale-base,
+.backdrop-scale-beam,
+.backdrop-scale-pan {
+  position: absolute;
+  display: block;
+  object-fit: fill;
+}
+
+.backdrop-scale-foot {
+  z-index: 1;
+  left: 695.76px;
+  top: 363.77px;
+  width: 188.36px;
+  height: 34.456px;
+}
+
+.backdrop-scale-base {
+  z-index: 1;
+  left: 696.34px;
+  top: 203.66px;
+  width: 187.772px;
+  height: 194.835px;
+}
+
+.backdrop-scale-arm {
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto auto 0;
+  width: 1602.241px;
+  height: 204.253px;
+}
+
+.backdrop-scale-beam {
+  z-index: 1;
+  left: 204.25px;
+  top: 131.62px;
+  width: 1156.651px;
+  height: 72.632px;
+}
+
+.backdrop-scale-pan {
+  z-index: 2;
+  top: 0;
+  width: 482.674px;
+  height: 158.929px;
+}
+
+.backdrop-scale-pan--left { left: 0; }
+.backdrop-scale-pan--right { left: 1119.57px; }
+
+.backdrop-actions {
+  position: absolute;
+  z-index: 5;
+  top: 944px;
+  left: 748.5px;
+  display: flex;
+  gap: 15px;
+}
+
+.backdrop-actions span {
+  display: grid;
+  width: 131px;
+  height: 65px;
+  place-items: center;
+  border: 1.7px solid #111;
+  background: #fff;
+  color: #000;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.75px;
+}
+
+.tutorial-overlay {
+  position: absolute;
+  z-index: 20;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 300ms ease-out;
+}
+
+.dim-layer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: rgba(var(--dim-color), var(--dim-opacity));
+}
+
+.tutorial-panel {
+  position: absolute;
+  z-index: 1;
+  left: var(--popup-left);
+  top: var(--popup-top);
+  width: 728px;
+  height: 873px;
+  overflow: visible;
+  isolation: isolate;
+  filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.4));
+  pointer-events: none;
+}
+
+.popup-frame {
+  position: absolute;
+  z-index: 0;
+  top: -2px;
+  left: -2px;
+  display: block;
+  width: 732px;
+  height: 878px;
+  object-fit: fill;
+}
+
+.tutorial-title {
+  position: absolute;
+  z-index: 3;
+  top: 36px;
+  left: 55px;
+  width: 618px;
+  height: 74px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 46px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -1.15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.demo-area {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.ball-options {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+}
+
+.ball-slot {
+  position: absolute;
+  top: 192.92px;
+  width: 75.076px;
+  height: 75.076px;
+}
+
+.ball-slot:nth-child(1) { left: 194.224px; }
+.ball-slot:nth-child(2) { top: 191.76px; left: 282.224px; }
+.ball-slot:nth-child(3) { left: 370.534px; }
+.ball-slot:nth-child(4) { left: 458.694px; }
+
+.ball,
+.ball-ghost,
+.ball-choice {
+  position: absolute;
+  inset: 0;
+  width: 75.076px;
+  height: 75.076px;
+  transform-origin: 50% 50%;
+}
+
+.ball {
+  z-index: 3;
+  will-change: transform;
+}
+
+.ball-ghost {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 120ms linear;
+}
+
+.ball-slot.is-vacant .ball-ghost {
+  opacity: 0.2;
+}
+
+.ball-choice {
+  z-index: 4;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.ball-art,
+.ball-art img,
+.ball-number {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ball-art img {
+  display: block;
+  object-fit: contain;
+}
+
+.ball-art--selected .ball-black {
+  z-index: 1;
+}
+
+.ball-art--selected .selected-outline {
+  z-index: 2;
+  inset: 0.45px;
+  width: calc(100% - 0.9px);
+  height: calc(100% - 0.9px);
+}
+
+.ball-number {
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 0 0 3px;
+  color: #111;
+  font-family: "Nanum Myeongjo", "AppleMyungjo", serif;
+  font-size: 43.226px;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+}
+
+.ball-art--selected .ball-number {
+  color: #fff;
+}
+
+.balance {
+  position: absolute;
+  z-index: 2;
+  top: 357.76px;
+  left: 47.7595px;
+  width: 632.241px;
+  height: 157.247px;
+}
+
+.balance-foot,
+.balance-base,
+.balance-beam,
+.balance-pan {
+  position: absolute;
+  display: block;
+  object-fit: fill;
+}
+
+.balance-foot {
+  z-index: 1;
+  top: 143.54px;
+  left: 274.54px;
+  width: 74.327px;
+  height: 13.596px;
+}
+
+.balance-base {
+  z-index: 1;
+  top: 80.37px;
+  left: 274.78px;
+  width: 74.094px;
+  height: 76.882px;
+}
+
+.balance-arm {
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto auto 0;
+  width: 632.241px;
+  height: 80.598px;
+  transform: rotate(0deg);
+  transform-origin: 316.1205px 80.37px;
+  will-change: transform;
+}
+
+.balance-beam {
+  z-index: 1;
+  top: 51.94px;
+  left: 80.6px;
+  width: 456.412px;
+  height: 28.66px;
+}
+
+.balance-pan {
+  z-index: 2;
+  top: 0;
+  width: 190.462px;
+  height: 62.713px;
+}
+
+.balance-pan--left { left: 0; }
+.balance-pan--right { left: 441.78px; }
+
+.demo-cursor {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 37.381px;
+  height: 35.579px;
+  transform: translate3d(566px, 287px, 0);
+  transform-origin: 2px 2px;
+  will-change: transform;
+}
+
+.tutorial-instructions {
+  position: absolute;
+  z-index: 4;
+  top: 605px;
+  left: 34px;
+  width: 660px;
+  margin: 0;
+  color: #1d1d1d;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.7px;
+  text-align: center;
+}
+
+.tutorial-instructions span {
+  display: block;
+  white-space: nowrap;
+}
+
+.tutorial-start {
+  position: absolute;
+  z-index: 10;
+  top: 734px;
+  left: 252px;
+  width: 224px;
+  height: 68px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.tutorial-start img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.tutorial-start span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding-bottom: 1px;
+  color: #000;
+  font-size: 30.516px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.7629px;
+}
+
+.tutorial-start:active {
+  transform: scale(0.98);
+}
+
+.tutorial-start:focus-visible {
+  outline: 4px solid rgba(17, 17, 17, 0.3);
+  outline-offset: 5px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (forced-colors: active) {
+  .stage { forced-color-adjust: none; }
+}
